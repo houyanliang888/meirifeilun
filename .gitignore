@@ -1,6 +1,14 @@
 # 验证/临时产物（不入库）
 _cdf_profile/
+_cdf_online/
+_cdf_*/
 _srv.log
 _verify_pwa.js
+_verify_online.js
+_verify_install.js
+_regress.js
+_shot_install.js
+_shot_install.png
+_dbg.js
 node_modules/
 .DS_Store
