@@ -1,0 +1,6 @@
+# 验证/临时产物（不入库）
+_cdf_profile/
+_srv.log
+_verify_pwa.js
+node_modules/
+.DS_Store

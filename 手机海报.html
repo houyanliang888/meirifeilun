@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+html,body{margin:0;padding:0;width:1080px;height:1920px;overflow:hidden}
+*{box-sizing:border-box}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;
+  background:
+    radial-gradient(70% 42% at 82% 6%, rgba(255,122,61,.30) 0%, rgba(255,122,61,0) 60%),
+    linear-gradient(162deg,#132A48 0%,#1B3557 42%,#22405F 72%,#14263E 100%);
+  position:relative;overflow:hidden;color:#fff;
+}
+body::before{
+  content:"";position:absolute;left:50%;top:640px;transform:translate(-50%,-50%);
+  width:1000px;height:1000px;border-radius:50%;border:1px solid rgba(255,255,255,.05);
+}
+body::after{
+  content:"";position:absolute;left:50%;top:640px;transform:translate(-50%,-50%);
+  width:760px;height:760px;border-radius:50%;border:1px solid rgba(255,255,255,.04);
+}
+.wrap{position:relative;z-index:2;padding:80px 76px 44px;height:100%;display:flex;flex-direction:column}
+
+/* 顶部 */
+.brand{display:flex;align-items:center;gap:14px;font-size:28px;letter-spacing:.24em;color:rgba(255,255,255,.62)}
+.brand i{width:13px;height:13px;border-radius:50%;background:#FF7A3D;display:block;box-shadow:0 0 0 7px rgba(255,122,61,.16)}
+
+.title{margin-top:52px}
+.title .cn{
+  font-family:"Songti SC","Noto Serif SC","SimSun",serif;
+  font-size:132px;line-height:1.06;font-weight:700;letter-spacing:.03em;
+  display:block;
+}
+.title .enrow{display:flex;align-items:center;gap:22px;margin-top:18px}
+.title .bar{
+  display:block;width:3px;height:58px;border-radius:2px;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.55),rgba(255,255,255,.12));
+}
+.title .en{
+  font-family:"Segoe UI",-apple-system,Arial,sans-serif;
+  font-size:42px;font-weight:600;letter-spacing:.24em;line-height:1.3;
+  color:rgba(255,255,255,.9);text-transform:uppercase;white-space:nowrap;
+}
+.sub{margin-top:30px;font-size:32px;line-height:1.75;color:rgba(255,255,255,.72);max-width:880px}
+.sub b{color:#FF7A3D;font-weight:700}
+
+/* 飞轮 */
+.flywrap{margin-top:52px;display:flex;align-items:center;gap:56px;flex:1 1 auto}
+.fly{width:470px;height:470px;flex:0 0 470px}
+.fly text{font-family:"PingFang SC","Microsoft YaHei",sans-serif}
+.flyside{flex:1;min-width:0}
+.step{display:flex;align-items:flex-start;gap:18px;margin-bottom:34px}
+.step .n{
+  flex:0 0 auto;width:46px;height:46px;border-radius:50%;
+  border:1.5px solid rgba(255,122,61,.7);color:#FF7A3D;
+  font-size:21px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  font-family:Georgia,serif;margin-top:4px;
+}
+.step .tx b{display:block;font-size:37px;font-weight:700;letter-spacing:.04em;margin-bottom:5px}
+.step .tx span{font-size:26px;color:rgba(255,255,255,.6);line-height:1.5}
+
+/* 为什么值得装 */
+.why{
+  margin-top:54px;display:flex;gap:20px;
+}
+.why .w{
+  flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);
+  border-radius:20px;padding:28px 24px;
+}
+.why .w .k{
+  font-size:19px;letter-spacing:.14em;color:#FF7A3D;font-weight:700;margin-bottom:9px;
+  font-family:"Songti SC",Georgia,serif;
+}
+.why .w .v{font-size:25px;line-height:1.55;color:rgba(255,255,255,.78)}
+.why .w .v b{display:block;color:#fff;font-size:29px;font-weight:700;margin-bottom:5px}
+
+/* 安装条 */
+.install{
+  margin-top:64px;margin-bottom:52px;
+  background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.18);
+  border-radius:28px;padding:38px 40px;display:flex;align-items:center;gap:32px;
+}
+.install .icon{
+  flex:0 0 96px;width:96px;height:96px;border-radius:24px;overflow:hidden;
+  box-shadow:0 10px 26px -8px rgba(0,0,0,.5);
+}
+.install .icon img{width:100%;height:100%;display:block}
+.install .tx{flex:1;min-width:0}
+.install .tx b{display:block;font-size:34px;font-weight:700;margin-bottom:8px}
+.install .tx span{font-size:24px;color:rgba(255,255,255,.66);line-height:1.6}
+.install .tx span em{font-style:normal;color:#FF7A3D;font-weight:700}
+
+.foot{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:30px;border-top:1px solid rgba(255,255,255,.12);
+  font-size:24px;letter-spacing:.14em;color:rgba(255,255,255,.48);
+}
+.foot .r{display:flex;align-items:center;gap:16px}
+.foot .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,122,61,.75)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="brand"><i></i>每日飞轮 · 做一件小事</span>
+
+  <div class="title">
+    <span class="cn">做一件小事</span>
+    <span class="enrow"><i class="bar"></i><span class="en">Build in Public</span></span>
+    <p class="sub">想成功，先从<strong>做一件有价值的小事</strong>开始。<br>发现问题 → 解决问题 → 做成了，把方法分享出去。</p>
+  </div>
+
+  <div class="flywrap">
+    <svg class="fly" viewBox="0 0 320 320" aria-label="每日飞轮">
+      <path d="M122.9 45.9 A120 120 0 0 1 274.1 122.9" fill="none" stroke="#FF7A3D" stroke-width="14" stroke-linecap="round" opacity=".92"/>
+      <path d="M274.1 122.9 A120 120 0 0 1 197.1 274.1" fill="none" stroke="#FF7A3D" stroke-width="14" stroke-linecap="round" opacity=".92"/>
+      <path d="M197.1 274.1 A120 120 0 0 1 45.9 197.1" fill="none" stroke="#FF7A3D" stroke-width="14" stroke-linecap="round" opacity=".92"/>
+      <path d="M45.9 197.1 A120 120 0 0 1 122.9 45.9" fill="none" stroke="#FF7A3D" stroke-width="14" stroke-linecap="round" opacity=".92"/>
+      <circle cx="160" cy="40" r="20" fill="rgba(255,255,255,.10)" stroke="#fff" stroke-width="2.5"/>
+      <circle cx="280" cy="160" r="20" fill="rgba(255,255,255,.10)" stroke="#fff" stroke-width="2.5"/>
+      <circle cx="160" cy="280" r="20" fill="rgba(255,255,255,.10)" stroke="#fff" stroke-width="2.5"/>
+      <circle cx="40" cy="160" r="20" fill="rgba(255,255,255,.10)" stroke="#fff" stroke-width="2.5"/>
+      <circle cx="160" cy="160" r="62" fill="rgba(255,122,61,.16)" stroke="#FF7A3D" stroke-width="1.8"/>
+      <text x="160" y="151" text-anchor="middle" fill="#FF7A3D" font-size="30" font-weight="700" font-family="Songti SC,serif">越转</text>
+      <text x="160" y="186" text-anchor="middle" fill="#FF7A3D" font-size="30" font-weight="700" font-family="Songti SC,serif">越快</text>
+      <text x="160" y="12" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="16" font-weight="600">写一点</text>
+      <text x="288" y="212" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="16" font-weight="600">复盘</text>
+      <text x="160" y="314" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="16" font-weight="600">拍一条</text>
+      <text x="32" y="212" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="16" font-weight="600">方法库</text>
+    </svg>
+    <div class="flyside">
+      <div class="step">
+        <span class="n">01</span>
+        <span class="tx"><b>写一点</b><span>发现问题、怎么处理、对别人有啥用</span></span>
+      </div>
+      <div class="step">
+        <span class="n">02</span>
+        <span class="tx"><b>复盘一次</b><span>做成了啥、卡在哪、明天第一件事</span></span>
+      </div>
+      <div class="step">
+        <span class="n">03</span>
+        <span class="tx"><b>拍一条</b><span>自动出口播稿、拍摄与合规提醒</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="why">
+    <div class="w">
+      <div class="k">零成本</div>
+      <div class="v"><b>不收费</b>不用注册、不用充值</div>
+    </div>
+    <div class="w">
+      <div class="k">真离线</div>
+      <div class="v"><b>断网能用</b>数据只存自己手机</div>
+    </div>
+    <div class="w">
+      <div class="k">省力气</div>
+      <div class="v"><b>自动成稿</b>口播稿一步出</div>
+    </div>
+  </div>
+
+  <div class="install">
+    <div class="icon"><img src="icon-192.png" alt="每日飞轮图标"></div>
+    <div class="tx">
+      <b>装到手机桌面</b>
+      <span>浏览器打开 →「添加到主屏幕」，就有图标了。<em>跟 App 一样，断网也能用</em></span>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>写一点 · 复盘一次 · 拍一条</span>
+    <span class="r">
+      <span>不联网</span><span class="dot"></span>
+      <span>不上传</span><span class="dot"></span>
+      <span>不收费</span>
+    </span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+html,body{margin:0;padding:0;width:1000px;height:1180px;overflow:hidden}
+*{box-sizing:border-box}
+body{
+  font-family:"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif;
+  background:
+    radial-gradient(78% 58% at 82% 12%, rgba(255,122,61,.26) 0%, rgba(255,122,61,0) 58%),
+    linear-gradient(158deg,#132A48 0%,#1B3557 44%,#22405F 74%,#162C4A 100%);
+  position:relative;overflow:hidden;color:#fff;
+}
+/* 背景纹理：极淡的同心圆，呼应飞轮 */
+body::before{
+  content:"";position:absolute;left:50%;top:52%;width:760px;height:760px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  border:1px solid rgba(255,255,255,.055);
+}
+body::after{
+  content:"";position:absolute;left:50%;top:52%;width:1040px;height:1040px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  border:1px solid rgba(255,255,255,.035);
+}
+/* 橙色弧线：一笔飞轮 */
+.arc{
+  position:absolute;left:50%;top:52%;width:600px;height:600px;
+  transform:translate(-50%,-50%);border-radius:50%;
+  border:1.5px solid transparent;
+  border-top-color:rgba(255,122,61,.32);
+  border-right-color:rgba(255,122,61,.16);
+  transform-origin:center;
+}
+.stage{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 64px}
+
+.brand{display:flex;align-items:center;gap:12px;font-size:19px;letter-spacing:.30em;color:rgba(255,255,255,.62);margin-bottom:50px}
+.brand i{width:10px;height:10px;border-radius:50%;background:#FF7A3D;display:block;box-shadow:0 0 0 5px rgba(255,122,61,.14)}
+
+/* 标题行：中文 | 英文 */
+.title{display:flex;align-items:center;justify-content:center;gap:26px;width:100%}
+.title .cn{
+  font-family:"Songti SC","Noto Serif SC","Source Han Serif SC","SimSun","Microsoft YaHei",serif;
+  font-size:86px;font-weight:700;line-height:1.05;letter-spacing:.06em;
+  white-space:nowrap;
+}
+.title .vbar{
+  width:2px;height:86px;flex:0 0 2px;
+  background:linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.5),rgba(255,255,255,0));
+}
+.title .en{
+  font-family:"Segoe UI",-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-size:23px;font-weight:600;letter-spacing:.28em;line-height:1.4;
+  color:rgba(255,255,255,.9);white-space:nowrap;text-transform:uppercase;
+}
+
+.tag{
+  margin-top:40px;font-size:29px;font-weight:600;letter-spacing:.10em;
+  color:rgba(255,255,255,.80);
+}
+.tag b{color:#FF7A3D;font-weight:700}
+
+.rule{width:96px;height:3px;background:#FF7A3D;border-radius:2px;margin:44px 0 34px}
+
+.sub{
+  font-size:22px;line-height:1.95;color:rgba(255,255,255,.62);
+  text-align:center;max-width:660px;letter-spacing:.04em;
+}
+.sub em{font-style:normal;color:rgba(255,255,255,.92);font-weight:600}
+
+.foot{
+  position:absolute;left:0;right:0;bottom:54px;z-index:2;
+  display:flex;justify-content:center;gap:34px;align-items:center;
+  font-size:18px;letter-spacing:.20em;color:rgba(255,255,255,.46);
+}
+.foot span{white-space:nowrap}
+.foot .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,122,61,.7)}
+</style>
+</head>
+<body>
+<div class="arc"></div>
+<div class="stage">
+  <div class="brand"><i></i>每日飞轮 · 做一件小事</div>
+  <div class="title">
+    <span class="cn">做一件小事</span>
+    <span class="vbar"></span>
+    <span class="en">Build in Public</span>
+  </div>
+  <div class="tag">写一点 · 复盘一次 · 拍一条</div>
+  <div class="rule"></div>
+  <p class="sub">
+    做成一件事，就从<em>一件有价值的小事</em>开始。<br>
+    发现问题 → 解决问题 → 做成了，把方法分享出去。
+  </p>
+</div>
+<div class="foot">
+  <span>不联网</span><span class="dot"></span>
+  <span>不上传</span><span class="dot"></span>
+  <span>不收费</span>
+</div>
+</body>
+</html>

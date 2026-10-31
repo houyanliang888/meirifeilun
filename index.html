@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>做一件小事 · Build in Public · 每日飞轮</title>
+<meta name="description" content="每日飞轮：做一件小事，Build in Public。写一点、复盘一次、拍一条。离线可用，数据存本地。">
+<!-- PWA：可添加到手机主屏幕 -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1F3A5F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="每日飞轮">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<style>
+:root{
+  --bg:#F6F5F2;
+  --paper:#FFFFFF;
+  --ink:#17191D;
+  --ink-2:#4A5058;
+  --ink-3:#8A9099;
+  --line:#E6E2DA;
+  --line-2:#EFECE6;
+  --brand:#1F3A5F;
+  --brand-2:#274A73;
+  --brand-soft:#EDF1F6;
+  --accent:#FF7A3D;
+  --accent-soft:#FFF1EA;
+  --ok:#2F7D5D;
+  --ok-soft:#E9F4EF;
+  --warn:#B4690E;
+  --warn-soft:#FDF3E3;
+  --danger:#C0392B;
+  --danger-soft:#FCEDEB;
+  --radius:14px;
+  --shadow:0 1px 2px rgba(23,25,29,.04), 0 10px 30px -18px rgba(23,25,29,.22);
+  --serif:"Songti SC","Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.75;
+  letter-spacing:.01em;
+  padding:0 0 60px;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:0 20px}
+
+/* ---------- HERO ---------- */
+.hero{
+  /* 通栏满宽；内容用 padding 与 .wrap 的内容区对齐（不靠负边距，避免横向溢出） */
+  margin:0;
+  padding:44px max(20px, calc((100% - 940px)/2 + 20px)) 38px;
+  background:
+    radial-gradient(120% 140% at 88% -20%, rgba(255,122,61,.30) 0%, rgba(255,122,61,0) 52%),
+    linear-gradient(150deg,#1B3455 0%,#1F3A5F 42%,#24405F 100%);
+  color:#fff;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-70px;bottom:-90px;
+  width:280px;height:280px;border-radius:50%;
+  border:1px solid rgba(255,255,255,.10);
+}
+.hero::before{
+  content:"";position:absolute;right:40px;bottom:-40px;
+  width:150px;height:150px;border-radius:50%;
+  border:1px solid rgba(255,122,61,.30);
+}
+.hero-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;position:relative;z-index:1}
+.brand{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:rgba(255,255,255,.72);
+}
+.brand i{width:6px;height:6px;border-radius:50%;background:var(--accent);display:block}
+.hero h1{
+  font-family:var(--serif);
+  font-size:38px;line-height:1.28;font-weight:700;
+  margin:18px 0 12px;letter-spacing:.02em;position:relative;z-index:1;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero h1 .vbar{
+  width:2px;height:34px;flex:0 0 2px;border-radius:1px;
+  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.55),rgba(255,255,255,.12));
+}
+.hero h1 .en{
+  font-family:var(--sans);
+  font-size:17px;font-weight:600;letter-spacing:.22em;line-height:1.4;
+  color:rgba(255,255,255,.86);text-transform:uppercase;white-space:nowrap;
+}
+.hero .sub{
+  font-size:14.5px;color:rgba(255,255,255,.74);max-width:520px;position:relative;z-index:1;
+}
+.hero-stats{display:flex;gap:26px;margin-top:26px;position:relative;z-index:1;flex-wrap:wrap}
+.hstat{line-height:1.35}
+.hstat b{display:block;font-size:26px;font-family:var(--serif);font-weight:700;letter-spacing:.01em}
+.hstat b small{font-size:13px;font-weight:400;opacity:.72;margin-left:2px}
+.hstat span{font-size:11.5px;letter-spacing:.16em;color:rgba(255,255,255,.58)}
+
+/* ---------- TABS ---------- */
+.tabs{
+  display:flex;gap:4px;margin:26px 0 0;
+  border-bottom:1px solid var(--line);
+  overflow-x:auto;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--ink-3);
+  background:none;border:none;cursor:pointer;
+  padding:12px 16px 13px;white-space:nowrap;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .18s;
+}
+.tabs button i{font-style:normal;font-size:11px;color:var(--ink-3);margin-right:7px;font-variant-numeric:tabular-nums;letter-spacing:.1em}
+.tabs button:hover{color:var(--ink-2)}
+.tabs button.on{color:var(--brand);border-bottom-color:var(--brand)}
+.tabs button.on i{color:var(--accent)}
+
+/* ---------- CARD ---------- */
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  padding:26px 28px;margin-top:22px;box-shadow:var(--shadow);
+}
+.card-head{display:flex;align-items:baseline;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.card-head h2{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:.02em}
+.card-head .tag{
+  font-size:11px;letter-spacing:.14em;color:var(--brand);
+  background:var(--brand-soft);padding:3px 9px;border-radius:20px;font-weight:600;
+}
+.card-desc{font-size:13.5px;color:var(--ink-3);margin-bottom:20px}
+
+/* ---------- FIELDS ---------- */
+.field{margin-bottom:20px}
+.field>label{
+  display:block;font-size:13px;font-weight:600;color:var(--ink);
+  margin-bottom:8px;letter-spacing:.02em;
+}
+.field>label em{font-style:normal;color:var(--ink-3);font-weight:400;font-size:12px;margin-left:6px}
+textarea,input[type=text],input[type=date],select{
+  width:100%;font-family:var(--sans);font-size:14.5px;line-height:1.8;color:var(--ink);
+  background:#FBFAF8;border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;outline:none;resize:vertical;
+  transition:border-color .16s,background .16s,box-shadow .16s;
+}
+textarea::placeholder,input::placeholder{color:#B9BDC4}
+textarea:focus,input:focus,select:focus{
+  border-color:var(--brand-2);background:#fff;box-shadow:0 0 0 3px rgba(39,74,115,.10);
+}
+textarea{min-height:92px}
+.mono-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--ink-3);margin-top:6px}
+.count{font-variant-numeric:tabular-nums}
+
+/* ---------- BUTTONS ---------- */
+.btn{
+  font-family:var(--sans);font-size:14px;font-weight:600;
+  border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink-2);
+  padding:9px 16px;cursor:pointer;
+  transition:all .16s;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{border-color:#CFC9BE;color:var(--ink)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-2);border-color:var(--brand-2);color:#fff}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.accent:hover{background:#F06A2C;border-color:#F06A2C;color:#fff}
+.btn.ghost{background:transparent}
+.btn.sm{font-size:13px;padding:7px 12px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+
+/* ---------- CHIPS ---------- */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{
+  font-size:13px;padding:6px 13px;border-radius:20px;
+  border:1px solid var(--line);background:#fff;color:var(--ink-2);cursor:pointer;
+  transition:all .16s;
+}
+.chip:hover{border-color:var(--brand-2);color:var(--brand);background:var(--brand-soft)}
+
+/* ---------- PROMPT CARD ---------- */
+.prompt{
+  background:linear-gradient(135deg,#F8F5EF,#FBF8F3);
+  border:1px solid var(--line);border-left:3px solid var(--accent);
+  border-radius:10px;padding:18px 20px;margin-bottom:22px;position:relative;
+}
+.prompt .lbl{font-size:11px;letter-spacing:.18em;color:var(--ink-3);margin-bottom:7px}
+.prompt .txt{font-family:var(--serif);font-size:17px;line-height:1.65;color:var(--ink);font-weight:600}
+.prompt .swap{
+  position:absolute;right:14px;top:14px;font-size:12px;color:var(--ink-3);
+  background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:20px;
+  padding:3px 10px;cursor:pointer;
+}
+.prompt .swap:hover{color:var(--brand);border-color:var(--brand-2)}
+
+/* ---------- OUTPUT ---------- */
+.out{background:#FBFAF8;border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.out-label{
+  font-size:11px;letter-spacing:.16em;color:var(--ink-3);
+  margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.point{
+  display:flex;gap:11px;padding:11px 0;border-bottom:1px dashed var(--line);
+}
+.point:last-child{border-bottom:none;padding-bottom:0}
+.point .n{
+  flex:0 0 22px;height:22px;border-radius:50%;background:var(--brand);color:#fff;
+  font-size:11.5px;display:flex;align-items:center;justify-content:center;font-weight:700;
+  margin-top:2px;font-variant-numeric:tabular-nums;
+}
+.point .t{font-size:14px;line-height:1.7;color:var(--ink-2)}
+.note-list{list-style:none}
+.note-list li{
+  display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);
+  font-size:14px;line-height:1.7;color:var(--ink-2);
+}
+.note-list li:last-child{border-bottom:none}
+.note-list .ic{flex:0 0 16px;color:var(--ok);font-weight:700;font-size:13px;margin-top:3px}
+.note-list .ic.warn{color:var(--warn)}
+.note-list .ic.bad{color:var(--danger)}
+.note-list b{color:var(--ink);font-weight:600}
+
+/* ---------- SCRIPT ---------- */
+.script{
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:18px 20px;font-size:14.5px;line-height:2.05;white-space:pre-wrap;
+  color:var(--ink);font-family:var(--sans);
+}
+.script .sec{color:var(--accent);font-weight:700;letter-spacing:.04em}
+
+/* ---------- CHECK ---------- */
+.check{border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:8px}
+.check-item{
+  display:flex;gap:11px;align-items:flex-start;padding:12px 15px;
+  border-bottom:1px solid var(--line-2);font-size:14px;line-height:1.7;color:var(--ink-2);
+  cursor:pointer;background:#fff;transition:background .14s;
+}
+.check-item:last-child{border-bottom:none}
+.check-item:hover{background:#FBFAF8}
+.check-item .box{
+  flex:0 0 17px;height:17px;border:1.5px solid #C8C2B7;border-radius:4px;margin-top:3px;
+  display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;transition:all .14s;
+}
+.check-item.done .box{background:var(--ok);border-color:var(--ok)}
+.check-item.done{color:var(--ink-3);text-decoration:line-through;text-decoration-color:#D5D0C7}
+.check-item .side{margin-left:auto;font-size:11.5px;color:var(--ink-3);white-space:nowrap;flex:0 0 auto}
+
+/* ---------- BAN LIST ---------- */
+.ban{
+  border:1px solid var(--danger-soft);background:var(--danger-soft);border-radius:10px;
+  padding:14px 16px;margin-top:8px;
+}
+.ban h4{font-size:13px;color:var(--danger);margin-bottom:9px;font-weight:700;display:flex;align-items:center;gap:7px}
+.ban-row{display:flex;gap:9px;align-items:baseline;font-size:13.5px;padding:5px 0;color:var(--ink-2);flex-wrap:wrap}
+.ban-row .w{background:#fff;color:var(--danger);padding:1px 7px;border-radius:4px;font-weight:600;border:1px solid #F0CFC9}
+.ban-row .fix{color:var(--ink-3)}
+.ban-row .fix b{color:var(--ok);font-weight:600}
+.ok-box{
+  border:1px solid var(--ok-soft);background:var(--ok-soft);border-radius:10px;
+  padding:13px 16px;font-size:13.5px;color:var(--ok);display:flex;gap:9px;align-items:flex-start;
+}
+
+/* ---------- METHODS ---------- */
+.method{
+  border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin-top:14px;background:#fff;
+  position:relative;
+}
+.method .date{font-size:11.5px;letter-spacing:.14em;color:var(--ink-3);margin-bottom:7px}
+.method h3{font-family:var(--serif);font-size:17px;font-weight:700;margin-bottom:10px;line-height:1.5}
+.method .mline{font-size:14px;color:var(--ink-2);line-height:1.8;margin-bottom:5px}
+.method .mline b{color:var(--brand);font-weight:600}
+.method .steps{margin:12px 0 14px;padding-left:0;list-style:none}
+.method .steps li{
+  counter-increment:st;position:relative;padding-left:26px;font-size:14px;color:var(--ink-2);
+  line-height:1.8;margin-bottom:5px;
+}
+.method .steps li::before{
+  counter-increment:st;content:counter(st);
+  position:absolute;left:0;top:4px;width:18px;height:18px;border-radius:50%;
+  background:var(--brand-soft);color:var(--brand);font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.method .steps{counter-reset:st}
+.empty{text-align:center;padding:46px 20px;color:var(--ink-3);font-size:14px}
+.empty .big{font-size:30px;margin-bottom:10px;opacity:.5}
+
+/* ---------- FOOTER ---------- */
+.foot{
+  margin-top:34px;padding-top:22px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.foot .l{font-size:12.5px;color:var(--ink-3)}
+.savehint{font-size:12px;color:var(--ok);opacity:0;transition:opacity .3s}
+.savehint.on{opacity:1}
+
+/* ---------- TOAST ---------- */
+#toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,14px);
+  background:var(--ink);color:#fff;font-size:13.5px;padding:10px 20px;border-radius:24px;
+  opacity:0;pointer-events:none;transition:all .26s;z-index:99;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.5);max-width:86vw;text-align:center;
+}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- 安装到手机（PWA） ---------- */
+.installbar{
+  position:fixed;left:12px;right:12px;bottom:12px;z-index:120;
+  background:rgba(23,25,29,.95);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.14);border-radius:16px;
+  padding:13px 15px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 14px 40px -12px rgba(0,0,0,.6);
+  transform:translateY(140%);transition:transform .34s cubic-bezier(.22,1,.36,1);
+}
+.installbar.on{transform:translateY(0)}
+.installbar .ib-txt{flex:1;min-width:0;color:#fff;line-height:1.55}
+.installbar .ib-txt b{display:block;font-size:14px;font-weight:600}
+.installbar .ib-txt span{font-size:12px;color:rgba(255,255,255,.66)}
+.installbar button{
+  flex:0 0 auto;border:0;cursor:pointer;font-family:inherit;
+  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
+  padding:9px 15px;border-radius:10px;white-space:nowrap;
+}
+.installbar button.ghost{background:rgba(255,255,255,.12);color:rgba(255,255,255,.82)}
+.installbar .ib-x{
+  flex:0 0 auto;background:none;border:0;color:rgba(255,255,255,.45);
+  font-size:19px;cursor:pointer;padding:0 2px;line-height:1;
+}
+
+.hidden{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- ICONS ---------- */
+.ic{display:inline-flex;align-items:center;justify-content:center;vertical-align:-0.16em;flex:0 0 auto;color:inherit}
+.ic svg{display:block}
+.card-head h2 .ic{color:var(--brand);margin-right:2px}
+.note-list .ic{margin-top:3px}
+.statchip .ic{color:var(--accent)}
+.btn .ic{margin-right:1px}
+
+/* ---------- HERO LAYOUT (飞轮) ---------- */
+.hero-grid{display:flex;gap:34px;align-items:center;margin-top:16px;position:relative;z-index:1}
+.hero-lead{flex:1 1 auto;min-width:0}
+.hero-fly{flex:0 0 250px;display:flex;justify-content:center;position:relative;z-index:1}
+.flywheel{width:250px;height:250px;display:block;filter:drop-shadow(0 12px 30px rgba(0,0,0,.28))}
+.fly-rim-base{fill:none;stroke:rgba(255,255,255,.16);stroke-width:1.6}
+.fly-tick{stroke:rgba(255,255,255,.14);stroke-width:1}
+.fly-sec{fill:none;stroke:rgba(255,255,255,.10);stroke-width:7;stroke-linecap:round;transition:stroke .4s,opacity .4s}
+.fly-sec.lit{stroke:var(--accent);opacity:.92}
+.fly-node circle{fill:rgba(255,255,255,.08);stroke:rgba(255,255,255,.34);stroke-width:1.5;transition:.35s}
+.fly-node .fic{stroke:rgba(255,255,255,.82);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.35s}
+.fly-node.lit circle{fill:var(--accent);stroke:#fff}
+.fly-node.lit .fic{stroke:#fff}
+.fly-lbl{fill:rgba(255,255,255,.92);font-size:12px;font-weight:600;font-family:var(--sans)}
+.fly-ga-b{fill:none;stroke:rgba(255,255,255,.12);stroke-width:9}
+.fly-ga{fill:none;stroke:var(--accent);stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .7s ease}
+.fly-num{fill:#fff;font-family:var(--serif);font-weight:700;font-size:40px;text-anchor:middle}
+.fly-den{fill:rgba(255,255,255,.72);font-size:12.5px;text-anchor:middle;letter-spacing:.06em}
+.fly-cap{fill:rgba(255,255,255,.55);font-size:10px;letter-spacing:.22em;text-anchor:middle}
+.fly-arrow{fill:var(--accent);opacity:.85}
+
+.statrow{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;position:relative;z-index:1}
+.statchip{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);padding:8px 14px;border-radius:13px}
+.statchip b{color:#fff;font-size:16px;font-variant-numeric:tabular-nums;font-family:var(--serif);font-weight:700}
+.statchip span{color:rgba(255,255,255,.68);font-size:11px;letter-spacing:.02em}
+
+/* ---------- 轻量可视化：复盘环 / 拍一条流水线 ---------- */
+.mini{
+  display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+  background:linear-gradient(135deg,#F4F8FC,#FBFCFE);
+  border:1px solid var(--brand-soft);border-radius:14px;
+  padding:18px 20px;margin:16px 0 4px;
+}
+.mini-side{flex:1 1 210px;min-width:0}
+.mini-title{
+  font-size:12px;letter-spacing:.16em;color:var(--brand);
+  font-weight:600;margin-bottom:6px;
+}
+.mini-hint{font-size:13px;color:var(--ink-2);line-height:1.7}
+.mini-hint b{color:var(--ink);font-weight:600}
+.mini-hint .num{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums}
+
+/* 复盘四问环 */
+/* 复盘四问环：viewBox 260x200，CSS 宽度与之 1:1，避免缩放导致文字变小 */
+.ring{flex:0 0 260px;width:260px;height:200px;display:block;margin:0 auto}.ring-arc{fill:none;stroke:var(--brand-soft);stroke-width:4.5;stroke-linecap:round;transition:stroke .45s}
+.ring-arc.lit{stroke:var(--accent)}
+.ring-dot circle{fill:#fff;stroke:var(--line);stroke-width:1.6;transition:.35s}
+.ring-dot .rd-ic{stroke:var(--ink-3);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.35s}
+.ring-dot.lit circle{fill:var(--accent);stroke:var(--accent)}
+.ring-dot.lit .rd-ic{stroke:#fff}
+.ring-lbl{fill:var(--ink-3);font-size:12px;font-weight:600;font-family:var(--sans);text-anchor:middle;transition:.35s}
+.ring-dot.lit + .ring-lbl{fill:var(--accent)}
+.ring-num{fill:var(--brand);font-family:var(--serif);font-weight:700;font-size:26px;text-anchor:middle}
+.ring-cap{fill:var(--ink-3);font-size:10px;letter-spacing:.06em;text-anchor:middle;font-family:var(--sans)}
+
+/* 拍一条流水线 */
+.pipe{flex:1 1 100%;min-width:0;position:relative;padding:2px 0 0}
+.pipe-track{display:flex;align-items:flex-start;gap:0;position:relative}
+/* 连接线：走节点中心线，但要避让节点圆点（起止各留半个身位） */
+.pipe-bar{position:absolute;top:16px;left:12.5%;right:12.5%;height:2px;background:var(--brand-soft);z-index:0}
+.pipe-bar-fill{position:absolute;top:16px;left:12.5%;height:2px;background:var(--accent);z-index:0;transition:width .55s ease;width:0}
+.pipe-step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;text-align:center;z-index:1}
+.pipe-node{
+  width:34px;height:34px;border-radius:50%;
+  background:#fff;border:1.6px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  transition:.35s;position:relative;z-index:2;
+}
+.pipe-node .rd-ic{stroke:var(--ink-3);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.35s}
+.pipe-step.done .pipe-node{background:var(--accent);border-color:var(--accent)}
+.pipe-step.done .pipe-node .rd-ic{stroke:#fff}
+.pipe-step.active .pipe-node{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.pipe-lbl{font-size:12px;color:var(--ink-2);margin-top:9px;font-weight:600;line-height:1.4}
+.pipe-step.done .pipe-lbl{color:var(--ink)}
+.pipe-step.active .pipe-lbl{color:var(--accent)}
+.pipe-desc{font-size:12.5px;color:var(--ink-3);margin-top:12px;text-align:center;line-height:1.7}
+
+/* ---------- 轻量可视化：写一点三层扩散环 ---------- */
+.wr3{flex:0 0 340px;width:340px;height:230px;display:block;margin:0 auto}
+.wr3-arc{fill:none;stroke:var(--brand-soft);stroke-width:9;stroke-linecap:round;transition:stroke .5s}
+.wr3-arc.lit{stroke:var(--accent)}
+.wr3-dot{fill:#fff;stroke:var(--line);stroke-width:1.6;transition:.35s}
+.wr3-dot .rd-ic{stroke:var(--ink-3);stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.35s}
+.wr3-dot.lit{fill:var(--accent);stroke:var(--accent)}
+.wr3-dot.lit .rd-ic{stroke:#fff}
+.wr3-lbl{fill:var(--ink-3);font-size:13px;font-weight:600;font-family:var(--sans);text-anchor:middle;transition:.35s}
+.wr3-lbl.lit{fill:var(--accent)}
+.wr3-num{fill:var(--brand);font-family:var(--serif);font-weight:700;font-size:26px;text-anchor:middle}
+.wr3-cap{fill:var(--ink-3);font-size:10px;letter-spacing:.05em;text-anchor:middle;font-family:var(--sans)}
+.wr3-ok{fill:var(--accent);font-family:var(--sans);font-weight:700;font-size:14px;text-anchor:middle}
+
+
+.opt{border:1px solid var(--brand-soft);background:linear-gradient(135deg,#F4F8FC,#FBFCFE);border-radius:12px;padding:18px 20px;margin-top:16px}
+.opt h3{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px;color:var(--brand)}
+.opt .sug{list-style:none;margin:0 0 14px}
+.opt .sug li{display:flex;gap:9px;padding:7px 0;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.opt .sug .ic{color:var(--accent);margin-top:2px}
+.opt .field{margin:0}
+.opt .field>label{font-size:12.5px;color:var(--ink-3)}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:640px){
+  .hero{padding:32px 20px 28px}
+  .hero h1{font-size:27px;gap:9px}
+  .hero h1 .vbar{height:24px}
+  .hero h1 .en{font-size:13px;letter-spacing:.18em}
+  .hero-grid{flex-direction:column;align-items:stretch;gap:18px}
+  .hero-fly{align-self:center;order:-1}
+  .flywheel{width:200px;height:200px}
+  .mini{gap:14px;padding:14px 16px}
+  .mini-side{flex:1 1 100%}
+  .ring{flex:0 0 100%;width:100%;height:auto;max-width:260px;margin:0 auto}
+  .wr3{flex:0 0 100%;width:100%;height:auto;max-width:340px;margin:0 auto}
+  .pipe-lbl{font-size:11px}
+  .pipe-node{width:30px;height:30px}
+  .pipe-bar,.pipe-bar-fill{top:14px}
+  .statrow{gap:8px}
+  .card{padding:20px 18px;border-radius:12px}
+  .wrap{padding:0 16px}
+  .tabs button{padding:11px 11px;font-size:13.5px}
+  .field>label{font-size:13.5px}
+  textarea{min-height:100px}
+}
+@media print{
+  body{background:#fff;padding:0}
+  .hero{background:#1F3A5F !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:24px;margin:0}
+  .tabs,.btn-row,.foot,.swap,.prompt .swap,.check-item{display:none !important}
+  .card{box-shadow:none;border:1px solid #ddd;break-inside:avoid;page-break-inside:avoid}
+  .tabs{display:none}
+  .wrap{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-top">
+    <span class="brand"><i></i>每日飞轮 · 做一件小事</span>
+  </div>
+  <div class="hero-grid">
+    <div class="hero-lead">
+      <h1>做一件小事<span class="vbar"></span><span class="en">Build in Public</span></h1>
+      <p class="sub">成功起手式就一句：<em>做一件有价值的小事</em>——发现问题、解决问题，做成了就把方法分享出去。每天写一点、复盘一次、拍一条，转完一圈，越转越快。</p>
+    </div>
+    <div class="hero-fly">
+      <div id="flywheelBox" aria-label="每日飞轮进度"></div>
+    </div>
+  </div>
+  <div class="statrow">
+    <div class="statchip"><span class="ic" data-ic="flame"></span><b id="stStreak">0</b><span>连续打卡 · 天</span></div>
+    <div class="statchip"><span class="ic" data-ic="calendar"></span><b id="stDays">0</b><span>累计记录 · 天</span></div>
+    <div class="statchip"><span class="ic" data-ic="box"></span><b id="stTotal">0</b><span>方法沉淀 · 条</span></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="tabs" id="tabs">
+    <button data-v="write" class="on"><span class="ic" data-ic="write"></span><i>01</i>写一点</button>
+    <button data-v="review"><span class="ic" data-ic="review"></span><i>02</i>复盘一次</button>
+    <button data-v="shoot"><span class="ic" data-ic="shoot"></span><i>03</i>拍一条</button>
+    <button data-v="methods"><span class="ic" data-ic="box"></span><i>04</i>方法库</button>
+  </nav>
+
+  <!-- ============ 01 写一点 ============ -->
+  <section id="v-write">
+    <div class="card">
+      <div class="card-head"><h2><span class="ic" data-ic="write"></span>今天写点什么</h2><span class="tag">发现问题</span></div>
+      <p class="card-desc">不用写文章，写清楚一件事就行：遇到了什么、你怎么做的、这事儿对别人有什么用。哪怕只有三句话。</p>
+
+      <div class="prompt">
+        <div class="lbl"><span class="ic" data-ic="bulb"></span>今日思考题</div>
+        <div class="txt" id="promptTxt">加载中…</div>
+        <button class="swap" id="promptSwap">换一题</button>
+      </div>
+
+      <div class="chips" id="quickChips"></div>
+
+      <div class="mini">
+        <svg class="wr3" id="writeRing" viewBox="0 0 340 230" role="img" aria-label="写一点三层进度"></svg>
+        <div class="mini-side">
+          <div class="mini-title">一件事往外扩三层</div>
+          <div class="mini-hint" id="writeHint">从<b>你自己的问题</b>，一层层推到<b>别人也能用</b>。三层都亮了，这条内容才算能分享出去。</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="wFound">① 今天我发现了什么问题？<em>越具体越好</em></label>
+        <textarea id="wFound" placeholder="例：老房客厅只有两组插座，客人一进门手机就没电，路由器还压在电视柜后面……"></textarea>
+        <div class="mono-meta"><span>写下来就是记录</span><span class="count" id="cFound">0 字</span></div>
+      </div>
+
+      <div class="field">
+        <label for="wFix">② 我打算/已经怎么处理？<em>写具体动作，别写"多想想"</em></label>
+        <textarea id="wFix" placeholder="例：先量了插座到沙发的距离，再决定是加插排还是走暗线；已经跟师傅约了周三来改……"></textarea>
+        <div class="mono-meta"><span>动词开头：查 / 问 / 量 / 改 / 试 / 记</span><span class="count" id="cFix">0 字</span></div>
+      </div>
+
+      <div class="field">
+        <label for="wValue">③ 这件事对别人有什么用？<em>这是能分享出去的价值</em></label>
+        <textarea id="wValue" placeholder="例：同样的户型，插座位置先量后定，能少走一次线；这个顺序别人也能照抄……"></textarea>
+        <div class="mono-meta"><span>能分享 = 有价值</span><span class="count" id="cValue">0 字</span></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="saveWrite"><span class="ic" data-ic="check"></span>保存今天的记录</button>
+        <button class="btn" id="optWrite"><span class="ic" data-ic="magic"></span>智能优化（不联网）</button>
+        <button class="btn ghost" id="toReview">写完了，去复盘 →</button>
+      </div>
+
+      <div class="card hidden" id="cardOpt" style="margin-top:18px">
+        <div class="card-head"><h2><span class="ic" data-ic="magic"></span>智能优化</h2><span class="tag">本地 · 不联网</span></div>
+        <div class="opt" id="optBox"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 02 复盘 ============ -->
+  <section id="v-review" class="hidden">
+    <div class="card">
+      <div class="card-head"><h2><span class="ic" data-ic="review"></span>复盘一次</h2><span class="tag">反思改进</span></div>
+      <p class="card-desc">不写流水账，只问四个问题。做成的、没做成的、卡在哪、明天第一件事。</p>
+
+      <div class="mini">
+        <svg class="ring" id="reviewRing" viewBox="0 0 260 200" role="img" aria-label="复盘四问进度"></svg>
+        <div class="mini-side">
+          <div class="mini-title">复盘四问</div>
+          <div class="mini-hint" id="reviewHint">四个问题，一圈走完。填完一格就亮一格——<b>②没做成</b>和<b>③卡在哪</b>这两格最值钱，别跳过。</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="rWin">① 今天做成了什么？<em>哪怕很小</em></label>
+        <textarea id="rWin" placeholder="例：把客户那句听不懂的报价，换成了三句话讲清楚，当场就签了……"></textarea>
+        <div class="mono-meta"><span></span><span class="count" id="cWin">0 字</span></div>
+      </div>
+      <div class="field">
+        <label for="rMiss">② 今天没做成什么？<em>诚实点，这栏最值钱</em></label>
+        <textarea id="rMiss" placeholder="例：说要拍的那条视频又没拍；客户的报价单拖到晚上才发……"></textarea>
+        <div class="mono-meta"><span></span><span class="count" id="cMiss">0 字</span></div>
+      </div>
+      <div class="field">
+        <label for="rWhy">③ 卡在哪了？<em>找根因，不找借口</em></label>
+        <textarea id="rWhy" placeholder="例：不是没时间，是一开工就想着一次做到最好，反而不敢开始……"></textarea>
+        <div class="mono-meta"><span></span><span class="count" id="cWhy">0 字</span></div>
+      </div>
+      <div class="field">
+        <label for="rNext">④ 明天第一件事做什么？<em>只写一件，写到能立刻动手</em></label>
+        <textarea id="rNext" placeholder="例：明早八点，先把那条视频的前三秒拍完，别的都不管……"></textarea>
+        <div class="mono-meta"><span></span><span class="count" id="cNext">0 字</span></div>
+      </div>
+
+      <div class="field">
+        <label for="rMood">⑤ 今天的状态</label>
+        <select id="rMood">
+          <option value="">没想这个</option>
+          <option value="5">★★★★★ 顺得很，状态在线</option>
+          <option value="4">★★★★ 还不错，有小进展</option>
+          <option value="3">★★★ 一般，不算好也不算差</option>
+          <option value="2">★★ 有点闷，推不动</option>
+          <option value="1">★ 很糟，做什么都没状态</option>
+        </select>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="saveReview">保存复盘</button>
+        <button class="btn" id="autoReview">帮我理一遍（自动填草稿）</button>
+        <button class="btn accent" id="makeMethod">生成方法卡 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 03 拍一条 ============ -->
+  <section id="v-shoot" class="hidden">
+    <div class="card">
+      <div class="card-head"><h2><span class="ic" data-ic="shoot"></span>拍一条</h2><span class="tag">表达输出</span></div>
+      <p class="card-desc">把你想拍的写成一段大白话文稿，工具帮你提取要点、生成口播稿、并列出拍摄与合规注意事项。全程离线，不花钱、不联网。</p>
+
+      <div class="mini">
+        <div class="pipe">
+          <div class="pipe-track">
+            <div class="pipe-bar"></div>
+            <div class="pipe-bar-fill" id="pipeFill"></div>
+            <div class="pipe-step" id="pipeStep-raw">
+              <div class="pipe-node"><span class="rd-ic" data-ic="write"></span></div>
+              <div class="pipe-lbl">写大白话</div>
+            </div>
+            <div class="pipe-step" id="pipeStep-points">
+              <div class="pipe-node"><span class="rd-ic" data-ic="target"></span></div>
+              <div class="pipe-lbl">提要点</div>
+            </div>
+            <div class="pipe-step" id="pipeStep-script">
+              <div class="pipe-node"><span class="rd-ic" data-ic="shoot"></span></div>
+              <div class="pipe-lbl">出口播稿</div>
+            </div>
+            <div class="pipe-step" id="pipeStep-notes">
+              <div class="pipe-node"><span class="rd-ic" data-ic="warn"></span></div>
+              <div class="pipe-lbl">看提醒</div>
+            </div>
+          </div>
+          <div class="pipe-desc" id="pipeDesc">先写大白话，再一步步往下走。每完成一步，右侧就会亮一格。</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="sTopic">这条讲什么？<em>一句话标题</em></label>
+        <input type="text" id="sTopic" placeholder="例：老房插座别急着装，先做这一件事">
+      </div>
+
+      <div class="field">
+        <label for="sRaw">想拍的文稿 / 想法<em>想到哪写到哪，不用组织语言</em></label>
+        <textarea id="sRaw" style="min-height:150px" placeholder="随便写。比如：很多人老房改造，插座一上来就装一堆，结果全用不上，白花钱。我自己的做法是先问三句：客厅沙发的位置、路由器放哪、电视柜后面要不要留。问完再定，插座数量能少一半……"></textarea>
+        <div class="mono-meta"><span>写完点下面的按钮</span><span class="count" id="cRaw">0 字</span></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="genPoints">① 提取要点</button>
+        <button class="btn primary" id="genScript">② 生成口播稿</button>
+        <button class="btn" id="genNotes">③ 拍摄与合规提醒</button>
+        <button class="btn accent" id="genAll">一键全生成</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="cardPoints">
+      <div class="card-head"><h2><span class="ic" data-ic="target"></span>提取到的要点</h2><span class="tag" id="ptCount">0 条</span></div>
+      <p class="card-desc">按「价值密度」排序。数字、动作、转折、结论权重更高。</p>
+      <div class="out" id="pointsBox"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn sm" id="ptUp">要点挪到第一条</button>
+        <button class="btn sm ghost" id="ptCopy">复制要点</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="cardScript">
+      <div class="card-head"><h2><span class="ic" data-ic="shoot"></span>口播稿</h2><span class="tag" id="scLen">0 字 · 约 0 秒</span></div>
+      <p class="card-desc">按「黄金 3 秒 → 共鸣 → 干货 → 收口」结构排好，可以直接改。念的时候，语速按每分钟 280 字。</p>
+      <div class="script" id="scriptBox"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn primary" id="scCopy">复制口播稿</button>
+        <button class="btn ghost" id="scEdit">手动改稿</button>
+      </div>
+      <div class="field hidden" id="scEditWrap" style="margin-top:16px">
+        <label for="scManual">手动编辑</label>
+        <textarea id="scManual" style="min-height:240px"></textarea>
+        <div class="btn-row"><button class="btn primary sm" id="scSave">保存修改</button></div>
+      </div>
+    </div>
+
+    <div class="card hidden" id="cardNotes">
+      <div class="card-head"><h2><span class="ic" data-ic="warn"></span>拍摄与合规提醒</h2><span class="tag" id="noteCount">0 条</span></div>
+      <p class="card-desc">左边是通用拍摄要点，右边会按你这稿子的内容自动追加提示。</p>
+      <ul class="note-list" id="notesBox"></ul>
+
+      <div style="margin-top:22px">
+        <div class="out-label"><span>违禁词 / 风险词自检</span><span id="banCount"></span></div>
+        <div id="banBox"></div>
+      </div>
+
+      <div style="margin-top:22px">
+        <div class="out-label"><span>拍摄清单</span><span>点一下打勾</span></div>
+        <div class="check" id="checkBox"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 04 方法库 ============ -->
+  <section id="v-methods" class="hidden">
+    <div class="card">
+      <div class="card-head"><h2><span class="ic" data-ic="box"></span>方法库</h2><span class="tag" id="mCount">0 条</span></div>
+      <p class="card-desc">做成了事，就把方法步骤存下来。攒够了你就是有东西可讲的人，讲出来别人才跟得上。</p>
+      <div id="methodsBox"></div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <div class="l">数据只存在这台设备的浏览器里，不上传任何服务器。<span class="savehint" id="saveHint">已保存 ✓</span></div>
+    <div class="btn-row">
+      <button class="btn sm" id="copyAll">复制今日合稿</button>
+      <button class="btn sm" id="exportJson">导出备份</button>
+      <button class="btn sm" id="importJson">导入备份</button>
+      <button class="btn sm ghost" id="clearAll">清空</button>
+    </div>
+  </div>
+  <input type="file" id="fileIn" accept="application/json" class="hidden">
+</div>
+
+<div id="toast"></div>
+
+<!-- 安装到手机主屏幕 -->
+<div class="installbar" id="installBar">
+  <div class="ib-txt" id="ibTxt">
+    <b>装到手机桌面</b>
+    <span id="ibHint">加个图标，跟 App 一样打开，断网也能用</span>
+  </div>
+  <button id="ibBtn">安装</button>
+  <button class="ghost" id="ibX" aria-label="关闭">✕</button>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   0. 基础工具
+   ============================================================ */
+var $ = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function pad(n){return n<10?'0'+n:''+n}
+function ymd(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+function today(){return ymd(new Date())}
+function prettyDate(s){
+  var p=s.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]);
+  var wk=['日','一','二','三','四','五','六'][d.getDay()];
+  return p[0]+'年'+(+p[1])+'月'+(+p[2])+'日 星期'+wk;
+}
+function toast(msg){
+  var t=$('#toast');t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on')},2000);
+}
+function copy(text,okMsg){
+  var done=function(){toast(okMsg||'已复制 ✓')};
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(text).then(done,function(){fallback(text,done)});
+  }else fallback(text,done);
+}
+function fallback(text,done){
+  var ta=document.createElement('textarea');
+  ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');done()}catch(e){toast('复制失败，请手动选中')}
+  document.body.removeChild(ta);
+}
+
+/* ============================================================
+   0.5 线性图标库（极简风，不用 emoji）
+   ============================================================ */
+var ICONS={
+  write:'<path d="M4 20l4-1 9-9-3-3-9 9-1 4z"/><path d="M14 7l3 3"/>',
+  review:'<path d="M20 11a8 8 0 1 0-2 5"/><path d="M20 4v6h-6"/>',
+  shoot:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
+  box:'<path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 7v10l9 4 9-4V7"/>',
+  bulb:'<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10z"/>',
+  check:'<path d="M5 12l4 4 10-10"/>',
+  warn:'<path d="M12 3l9 16H3z"/><path d="M12 9v5"/><path d="M12 17h.01"/>',
+  ban:'<circle cx="12" cy="12" r="9"/><path d="M5 5l14 14"/>',
+  sparkle:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
+  flame:'<path d="M12 3c2.2 3.2 4 5.2 4 8a4 4 0 0 1-8 0c0-1 .5-2 1-2.6.5 2 1.6 2 2.1 1 .6-3 1-4.4 1-6.4z"/>',
+  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/>',
+  download:'<path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M4 21h16"/>',
+  upload:'<path d="M12 21V9"/><path d="M7 13l5-5 5 5"/><path d="M4 3h16"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+  trash:'<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/>',
+  arrow:'<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+  magic:'<path d="M5 19l9-9"/><path d="M14 4l1.6 4.4L20 10l-4.4 1.6L14 16l-1.6-4.4L8 10l4.4-1.6z"/>'
+};
+function svgIcon(name,size){
+  size=size||16;
+  return '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICONS[name]||'')+'</svg>';
+}
+function fillIcons(root){
+  (root||document).querySelectorAll('[data-ic]').forEach(function(el){
+    el.innerHTML=svgIcon(el.getAttribute('data-ic'),+(el.getAttribute('data-sz'))||16);
+  });
+}
+
+/* ============================================================
+   1. 数据层（localStorage）
+   ============================================================ */
+var KEY='threeThings.v1';
+var DB={ days:{}, methods:[] };
+var memOnly=false;
+
+function loadDB(){
+  try{
+    var raw=localStorage.getItem(KEY);
+    if(raw){var o=JSON.parse(raw);if(o&&typeof o==='object'){DB=o;DB.days=DB.days||{};DB.methods=DB.methods||[];}}
+  }catch(e){memOnly=true}
+  if(!DB.days)DB.days={};
+  if(!DB.methods)DB.methods=[];
+}
+var saveTimer=null;
+function saveDB(){
+  if(memOnly)return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){
+    try{
+      localStorage.setItem(KEY,JSON.stringify(DB));
+      flashSaved();
+    }catch(e){memOnly=true;toast('本地存储不可用，请用「导出备份」')}
+  },260);
+}
+function flashSaved(){
+  var h=$('#saveHint');h.classList.add('on');
+  clearTimeout(h._t);h._t=setTimeout(function(){h.classList.remove('on')},1400);
+}
+function day(d){
+  d=d||today();
+  if(!DB.days[d])DB.days[d]={write:{found:'',fix:'',value:''},review:{win:'',miss:'',why:'',next:'',mood:''},shoot:{topic:'',raw:'',points:[],script:'',notes:[],checks:{},manual:''}};
+  var o=DB.days[d];
+  o.write=o.write||{found:'',fix:'',value:''};
+  o.review=o.review||{win:'',miss:'',why:'',next:'',mood:''};
+  o.shoot=o.shoot||{topic:'',raw:'',points:[],script:'',notes:[],checks:{},manual:''};
+  o.shoot.points=o.shoot.points||[];
+  o.shoot.notes=o.shoot.notes||[];
+  o.shoot.checks=o.shoot.checks||{};
+  return o;
+}
+var curDate=today();
+function getDay(){return day(curDate)}
+
+/* ============================================================
+   2. 文本分析引擎（要点提取）
+   ============================================================ */
+var PAIN_WORDS=['浪费','踩坑','坑','难受','烦','不值','白花','冤枉','没人','不会','不懂','找不到','返工','出错','问题','麻烦','难搞','差','差劲','垃圾','乱','乱糟','费劲','头疼','生气','气死','憋屈','无奈','被动','尴尬','翻车','出事','隐患','危险','被坑','智商税'];
+var TURN_WORDS=['其实','但是','结果','没想到','原来','关键是','问题在于','误区','真相','居然','竟然','才发现','最容易','往往','通常','一般来说','核心是','归根到底','真正','关键','原来不是'];
+var ACT_WORDS=['先','再','然后','接着','最后','第一步','第二步','第三步','我先','我把','我去','我试','我改','我量','我问','我记','建议','你应该','记住','别再','千万别','一定要','教你','做法','步骤','方法','流程','顺序','改成','换成','加上','拆成','分成','按','照着','照抄','复制'];
+var RESULT_WORDS=['所以','因此','最后','发现','原来','结论','经验','教训','关键','核心','重点','本质','规律','方法','有效','没用','不成','成了','省了','多花','划算'];
+var NUM_RE=/[0-9０-９]+|[一二三四五六七八九十百千万]{1,3}(个|次|条|步|年|天|块|元|米|倍|%|％)/;
+
+function splitSentences(text){
+  if(!text)return [];
+  var raw=text.replace(/\r/g,'')
+    .split(/[。！？!?；;\n]+/)
+    .map(function(s){return s.trim()})
+    .filter(function(s){return s.length>1});
+  var out=[];
+  raw.forEach(function(s){
+    if(s.length>62){
+      var parts=s.split(/[，,、]/).map(function(x){return x.trim()}).filter(function(x){return x.length>=6});
+      if(parts.length>1){parts.forEach(function(p){out.push(p)});return}
+    }
+    out.push(s);
+  });
+  return out;
+}
+function hitCount(s,arr){
+  var n=0;
+  for(var i=0;i<arr.length;i++){if(s.indexOf(arr[i])>-1)n++}
+  return n;
+}
+function scoreSentence(s,idx,total){
+  var sc=0,L=s.length;
+  if(L>=8&&L<=46)sc+=2;
+  else if(L<6)sc-=1.2;
+  else if(L>72)sc-=1;
+  if(NUM_RE.test(s))sc+=1.6;
+  if(/[？?！!]$/.test(s))sc+=1.4;
+  sc+=Math.min(hitCount(s,PAIN_WORDS),3)*0.95;
+  sc+=Math.min(hitCount(s,TURN_WORDS),3)*1.05;
+  sc+=Math.min(hitCount(s,ACT_WORDS),3)*1.0;
+  sc+=Math.min(hitCount(s,RESULT_WORDS),3)*0.85;
+  if(/(我|我们|自己|亲手|咱)/.test(s))sc+=0.6;
+  if(/(别人|你也|大家|很多人|同行)/.test(s))sc+=0.8;
+  if(/(其实|说白了|简单说|关键就是|说白了就是)/.test(s))sc+=1.2;
+  if(idx===0)sc+=1.4;
+  if(idx===total-1)sc+=1.0;
+  if(/(^|[，,。！？])\s*(所以|总之|一句话|总结)/.test(s))sc+=1.4;
+  return sc;
+}
+function extractPoints(text,max){
+  max=max||4;
+  var sents=splitSentences(text);
+  if(!sents.length)return[];
+  var scored=sents.map(function(s,i){
+    return {t:s,sc:scoreSentence(s,i,sents.length),i:i};
+  });
+  var picked=scored.slice().sort(function(a,b){return b.sc-a.sc}).slice(0,Math.min(max,sents.length));
+  picked.sort(function(a,b){return a.i-b.i});
+  // 去重：包含关系
+  var res=[];
+  picked.forEach(function(p){
+    var dup=false;
+    res.forEach(function(r){if(r.t.indexOf(p.t)>-1||p.t.indexOf(r.t)>-1)dup=true});
+    if(!dup)res.push(p);
+  });
+  return res.map(function(p){return p.t});
+}
+function classify(t){
+  if(/(其实|结果|所以|结论|归根到底|本质|关键)/.test(t)&&hitCount(t,RESULT_WORDS))return 'concl';
+  if(hitCount(t,ACT_WORDS)>=2||/(步骤|方法|流程|顺序)/.test(t))return 'method';
+  if(hitCount(t,PAIN_WORDS)>=1||/(很多|大家|大多数人)/.test(t))return 'pain';
+  if(/[？?]$/.test(t))return 'quest';
+  return 'plain';
+}
+
+/* ============================================================
+   3. 口播稿生成
+   ============================================================ */
+function toQuestion(s){
+  s=s.replace(/[。！？!?]+$/,'');
+  if(/[？?]$/.test(s))return s;
+  // 陈述句太短就别硬转问句，直接用
+  if(s.length<=10)return s;
+  var m=s.match(/^(.*?)(，|,)(.*)$/);
+  if(m&&m[3].length>=6){
+    return m[1]+'，'+m[3].replace(/^(很多人|不少人|大家|我们|你)/,'')+'，你碰到过吗？';
+  }
+  return s+'，是不是这样？';
+}
+/* 从痛点长句里挖出「最短最扎心」的核心分句做钩子
+   策略：去掉泛主语（很多人…）→ 按分句切 → 取最有信息量的 1-2 段合并
+   返回 {core:钩子核心, rest:未被钩子占用的剩余分句（供共鸣段用）} */
+function hookCore(s){
+  var body=s.replace(/^(很多人|不少人|大家|咱们|我们|很多人都会|很多人都是)/,'').trim();
+  var parts=body.split(/[，,、；;]/).map(function(x){return x.trim()}).filter(function(x){return x.length>=3});
+  if(!parts.length)return {core:body||s,rest:''};
+  if(parts.length===1)return {core:parts[0],rest:''};
+  // 给每个分句打分：痛点词 + 数字 + 动作词 + 越靠后越可能是结论
+  var scored=parts.map(function(p,i){
+    var sc=hitCount(p,PAIN_WORDS)*2.4+(NUM_RE.test(p)?2.2:0)+hitCount(p,ACT_WORDS)*1.2+i*0.5;
+    if(p.length<5)sc-=2;
+    if(p.length>20)sc-=1.6;
+    return {t:p,s:sc,i:i};
+  }).sort(function(a,b){return b.s-a.s});
+  var pick=[scored[0]];
+  // 核心句太短就补上相邻的一句，保证钩子有信息量
+  if(pick[0].t.length<10&&scored.length>1){
+    var second=scored.filter(function(x){return x.i!==pick[0].i})[0];
+    if(second)pick.push(second);
+  }
+  pick.sort(function(a,b){return a.i-b.i});
+  var usedIdx=pick.map(function(x){return x.i});
+  var core=pick.map(function(x){return x.t}).join('，');
+  if(core.length>28){
+    core=pick[0].t.length<=26?pick[0].t:pick[0].t.slice(0,26);
+  }
+  // 剩余分句（钩子没用到的）→ 给共鸣段用
+  var rest=parts.filter(function(p,i){return usedIdx.indexOf(i)===-1});
+  return {core:core,rest:rest.join('，')};
+}
+function stripSoft(s){
+  return s.replace(/^(其实|说白了|简单说|说实话|我觉得吧|我发现吧)[，,]?/,'')
+          .replace(/^(那么|然后呢|所以说)[，,]?/,'');
+}
+function pickByClass(points,cls){
+  return points.filter(function(p){return classify(p)===cls});
+}
+function buildScript(topic,raw,points){
+  var pts=points&&points.length?points:extractPoints(raw,5);
+  if(!pts.length)return '';
+  var T=topic||'这件事';
+
+  /* --- 钩子：从痛点句里挖出「最短最扎心」的一句，改成问句 --- */
+  var painPool=pickByClass(pts,'pain');
+  var hookSrc='';
+  if(painPool.length){
+    // 优先：带数字/转折的痛点句 > 最长的痛点句（信息完整）
+    var scored=painPool.map(function(p){
+      return {t:p,s:scoreSentence(p,0,pts.length)+ (NUM_RE.test(p)?2.5:0)};
+    }).sort(function(a,b){return b.s-a.s});
+    hookSrc=scored[0].t;
+  }else{
+    hookSrc=pts[0];
+  }
+  var hk=hookCore(hookSrc);
+  var hook=toQuestion(stripSoft(hk.core));
+
+  /* --- 共鸣：优先用痛点句里「钩子没讲完的部分」；否则找另一句痛点句；再否则用通用句 --- */
+  var used=[stripSoft(hookSrc)];
+  var painLine='';
+  if(hk.rest&&hk.rest.length>=5){
+    painLine=hk.rest;
+  }else{
+    var cand=pains_candidates(pts,used);
+    if(cand)painLine=stripSoft(cand);
+  }
+  if(painLine)used.push(painLine);
+
+  /* --- 干货：按原文顺序保留，只放「做法/结论」句 --- */
+  var body=[],seen={};
+  function push(t,order){
+    var s=stripSoft(t);
+    if(!s||seen[s])return false;
+    if(s.length<6)return false;
+    // 与已用内容有包含关系（是它的片段，或包含它）→ 判为重复
+    for(var i=0;i<used.length;i++){
+      if(used[i].indexOf(s)>-1||s.indexOf(used[i])>-1)return false;
+    }
+    seen[s]=1;body.push({t:s,o:order===undefined?999:order});return true;
+  }
+  // 第一轮：非痛点句，按原文顺序
+  pts.forEach(function(p,i){
+    if(body.length>=4)return;
+    var c=classify(p);
+    if(c!=='pain')push(p,i);
+  });
+  // 第二轮：不够 3 条就把痛点句也放进来（宁可重复也不能太少）
+  pts.forEach(function(p,i){if(body.length<3)push(p,i)});
+  // 第三轮：仍然不够 → 从最长句里拆出完整的小句（不能是半截话）
+  if(body.length<3){
+    // 从「还没被用过的句子」里挑最长的一条拆开，而不是从已用句子里拆
+    var longest=null,llen=0;
+    pts.forEach(function(p){
+      var s=stripSoft(p);
+      var dup=used.indexOf(s)>-1||body.some(function(b){return b.t.indexOf(s)>-1||s.indexOf(b.t)>-1});
+      if(!dup&&s.length>llen){llen=s.length;longest=s}
+    });
+    if(!longest){
+      pts.forEach(function(p){
+        var s=stripSoft(p);
+        if(s.length>llen){llen=s.length;longest=s}
+      });
+    }
+    if(longest){
+      var subs=longest.split(/[：:，,、]/).map(function(x){return x.trim()})
+        .filter(function(x){
+          // 必须是完整动作句：有动作词、长度够、且不能停在动词上
+          if(x.length<8||x.length>26)return false;
+          if(!/(先|再|然后|接着|最后|要|得|把|用|问|量|改|做|记|定|选|装|放|试)/.test(x))return false;
+          if(/(先|再|把|用|问|量|改|做|记|定|选|装|放|试)$/.test(x))return false;
+          // 不能是已有内容的片段
+          for(var bi=0;bi<body.length;bi++){if(body[bi].t.indexOf(x)>-1||x.indexOf(body[bi].t)>-1)return false}
+          return true;
+        });
+      subs.forEach(function(x){if(body.length<3)push(x,999)});
+    }
+  }
+  body.sort(function(a,b){return a.o-b.o});
+  body=body.map(function(x){return x.t});
+  body=body.slice(0,4);
+
+  /* --- 干货只有 1-2 条（文稿太短）→ 补一句引导，把原句重组成「做法」 --- */
+  if(body.length<3){
+    var extra=[];
+    var src=body.length?body[body.length-1]:stripSoft(pts[0]);
+    if(src){
+      var m2=src.match(/^(.{4,16}?)[，,](.{4,})$/);
+      if(m2){
+        // 「先做A，再做B」只在 A 是动作短语时才用，否则用「A——B」连接
+        var a=m2[1],b=m2[2];
+        var aIsAction=/^(先|再|把|用|问|量|改|做|记|定|选|装|放|试|买|发|约|定下)/.test(a);
+        extra.push(aIsAction?('先'+a+'，再'+b):(a+'——'+b));
+      }else{
+        extra.push('我的做法是：'+src);
+      }
+    }
+    if(body.length<3)extra.push('这件事我当天就试了一次，先做出个粗糙版本');
+    if(body.length<3)extra.push('把过程记下来，下次直接照着做');
+    extra.forEach(function(x){
+      if(body.length>=3)return;
+      var s=x.trim();
+      if(s.length<6)return;
+      var dup=body.some(function(b){return b.indexOf(s)>-1||s.indexOf(b)>-1});
+      if(!dup)body.push(s);
+    });
+  }
+
+  /* --- 收口：优先「结论型」句子；若没有，用干货里带结论词的最后一条 --- */
+  var concl='';
+  var conclPool=pickByClass(pts,'concl').filter(function(c){
+    var s=stripSoft(c);
+    return used.indexOf(s)===-1&&body.indexOf(s)===-1;
+  });
+  if(conclPool.length){
+    // 取最短的结论句（口播收口宜短）
+    concl=stripSoft(conclPool.slice().sort(function(a,b){return a.length-b.length})[0]);
+  }else{
+    // 在干货里找带结论词的句子
+    var withWord=body.filter(function(b){return /记住|关键|所以|重点|核心|本质|归根|结论|其实|秘诀|方法就是/.test(b)});
+    var pickFrom=withWord.length?withWord:body;
+    for(var bi=pickFrom.length-1;bi>=0;bi--){
+      var t=pickFrom[bi].replace(/^(记住[，,]?|关键是[，,]?|所以[，,]?|总之[，,]?|核心是[，,]?|其实[，,]?|重点是[，,]?)/,'').trim();
+      if(t.length>=6&&t.length<=24){concl=t;break}
+    }
+    if(!concl&&body.length)concl=body[body.length-1];
+  }
+  concl=concl.replace(/^(所以|总之|归根到底|核心是|其实|记住[，,]?|关键是[，,]?|重点是[，,]?)/,'').trim();
+  if(!concl&&body.length)concl=body[body.length-1];
+
+  var L=[];
+  L.push('【0-3秒 · 钩子】');
+  L.push(hook);
+  L.push('');
+  L.push('【3-8秒 · 共鸣】');
+  if(painLine){
+    L.push(painLine+'——是不是很熟悉？');
+  }else if(body.length){
+    L.push('说到'+T+'，你是不是也先入为主觉得：这事儿不难，挺简单的。');
+  }else{
+    L.push('说到'+T+'，大部分人第一步就做错了。');
+  }
+  L.push('');
+  L.push('【8-40秒 · 干货】');
+  body.forEach(function(b,i){L.push((i+1)+'、'+b)});
+  L.push('');
+  L.push('【40-50秒 · 收口】');
+  L.push(concl?('所以记住一句话：'+concl.replace(/^(所以|总之|归根到底)[，,]?/,'')):('就这一件事，照着做，能少走不少弯路。'));
+  L.push('如果对你有用，收藏一下；想细说的，评论区问我，我一条条回。');
+  L.push('');
+  L.push('（念稿提示：钩子那句盯镜头说，说完停半秒；干货每条一个动作，语速别赶；结尾放慢。）');
+  return L.join('\n');
+}
+/* 找一个没被用过的「问题描述句」做共鸣——排除做法句和结论句
+   找不到就返回空，宁可让共鸣段用通用句，也不硬凑一句做法上来 */
+function pains_candidates(pts,used){
+  function notUsed(p){
+    var s=stripSoft(p);
+    if(used.indexOf(s)>-1)return false;
+    for(var i=0;i<used.length;i++){if(used[i].indexOf(s)>-1||s.indexOf(used[i])>-1)return false}
+    return true;
+  }
+  // 第一层：明确的痛点句
+  var pool=pts.filter(function(p){
+    if(!notUsed(p))return false;
+    if(classify(p)!=='pain')return false;
+    var methodHeavy=hitCount(p,ACT_WORDS)>=2&&hitCount(p,PAIN_WORDS)===0;
+    return !methodHeavy;
+  });
+  // 第二层：有情绪/问题特征，但不是做法句
+  if(!pool.length){
+    pool=pts.filter(function(p){
+      if(!notUsed(p))return false;
+      if(hitCount(p,ACT_WORDS)>=2)return false;
+      if(hitCount(p,RESULT_WORDS)>=2)return false;
+      return hitCount(p,PAIN_WORDS)>0||/很多|大家|其实|结果|没想到|原来|就.|天天|老是不|从来/.test(p);
+    });
+  }
+  // 第三层：没用过的短句（短句最适合当共鸣）
+  if(!pool.length){
+    pool=pts.filter(function(p){
+      if(!notUsed(p))return false;
+      return hitCount(p,ACT_WORDS)<2&&stripSoft(p).length<=20;
+    }).sort(function(a,b){return a.length-b.length});
+  }
+  return pool.length?pool[0]:'';
+}
+function scriptLen(s){return (s||'').replace(/\s/g,'').length}
+function scriptSec(s){return Math.round(scriptLen(s)/280*60)}
+
+/* ============================================================
+   4. 违禁词 / 风险词库（本地，不联网）
+   ============================================================ */
+var BAN=[
+  {w:'最好',t:'绝对化用语',f:'改成「我常用的」「比较合适的」'},
+  {w:'最佳',t:'绝对化用语',f:'改成「比较合适」'},
+  {w:'最优',t:'绝对化用语',f:'改成「适合我的」'},
+  {w:'第一品牌',t:'绝对化用语',f:'改成「常用的」'},
+  {w:'全国第一',t:'绝对化用语',f:'删掉排名表述'},
+  {w:'唯一',t:'绝对化用语',f:'改成「其中一个」'},
+  {w:'独家',t:'绝对化用语',f:'改成「我的做法」'},
+  {w:'顶级',t:'绝对化用语',f:'改成「比较高的」'},
+  {w:'国家级',t:'绝对化用语',f:'删掉'},
+  {w:'100%',t:'绝对化用语',f:'改成「大概率」'},
+  {w:'百分百',t:'绝对化用语',f:'改成「大概率」'},
+  {w:'彻底解决',t:'绝对化承诺',f:'改成「能缓解 / 能改善」'},
+  {w:'根治',t:'绝对化承诺',f:'删掉'},
+  {w:'永久',t:'绝对化承诺',f:'改成「长期」'},
+  {w:'包治',t:'绝对化承诺',f:'删掉'},
+  {w:'保证',t:'承诺类',f:'改成「尽量」'},
+  {w:'一定能',t:'承诺类',f:'改成「大概率」'},
+  {w:'绝对不',t:'承诺类',f:'改成「一般不会」'},
+  {w:'零风险',t:'承诺类',f:'改成「风险较低」'},
+  {w:'无副作用',t:'承诺类',f:'删掉'},
+  {w:'特效',t:'功效类',f:'删掉'},
+  {w:'疗效',t:'功效类',f:'删掉'},
+  {w:'最便宜',t:'价格类',f:'改成「价位区间」'},
+  {w:'全网最低',t:'价格类',f:'删掉'},
+  {w:'稳赚',t:'收益类',f:'删掉'},
+  {w:'躺赚',t:'收益类',f:'删掉'},
+  {w:'包赚',t:'收益类',f:'删掉'},
+  {w:'躺赢',t:'收益类',f:'删掉'}
+];
+var PLATFORM_TIPS=[
+  {k:'微信',t:'视频号/公众号可以放微信号和公众号，导流相对宽松，但别在第一条就喊加微信，先给价值。'},
+  {k:'抖音',t:'抖音对站外导流管得严，别出现微信、V信、二维码联系方式；把钩子留在评论区。'},
+  {k:'小红书',t:'小红书正文别留联系方式和外部链接，主页简介才是长期位置；标题别写绝对化词。'},
+  {k:'快手',t:'口播要接地气，前3秒直接说事；别用夸张标题党，容易限流。'}
+];
+function scanBan(text){
+  if(!text)return[];
+  var hits=[],seen={};
+  BAN.forEach(function(b){
+    if(text.indexOf(b.w)>-1&&!seen[b.w]){seen[b.w]=1;hits.push(b)}
+  });
+  return hits;
+}
+
+/* ============================================================
+   5. 注意事项生成
+   ============================================================ */
+function genNotes(raw,topic){
+  var notes=[];
+  var t=(raw||'');
+  // 通用拍摄要点
+  notes.push({icon:'check',h:'不露脸怎么拍',b:'拍操作过程、拍桌面、拍手、拍屏幕录屏、配旁白。不出镜只出声，是最容易上手的一种。'});
+  notes.push({icon:'check',h:'收音比画质重要',b:'手机离嘴 20-30 厘米，先录 10 秒试听；室内关窗、避开空调和风扇。'});
+  notes.push({icon:'check',h:'光线',b:'白天靠窗，人脸朝光；晚上一盏顶灯 + 一个补光，别让灯在正上方（会显眼窝深）。'});
+  notes.push({icon:'check',h:'时长',b:'短视频 45-60 秒最稳，钩子 3 秒内必须说完事；超过 90 秒完播率掉得快。'});
+  notes.push({icon:'check',h:'封面',b:'封面写「具体问题 + 具体结果」，别写「日常分享」这种没信息量的字。'});
+  notes.push({icon:'check',h:'字幕',b:'每句开头留 0.3 秒空隙；重点词单独换行加粗，口播字幕删掉语气词。'});
+  notes.push({icon:'check',h:'发布前自检',b:'念一遍，听有没有卡壳的句子；卡壳的地方就是下次要改的地方。'});
+
+  // 内容动态追加
+  if(NUM_RE.test(t)){
+    notes.push({icon:'warn',c:'warn',h:'稿子里有数字',b:'数字要说明出处（自己实测 / 某品牌官方 / 行业数据），别把个案说成普遍结论。'});
+  }
+  if(/元|价格|报价|多少钱|预算|便宜|贵/.test(t)){
+    notes.push({icon:'warn',c:'warn',h:'涉及价格',b:'按你本地（长治/四五线）的实际水平说，别照搬一二线；口播里不报总金额，只讲「先做什么后做什么」，具体报价私信。'});
+  }
+  if(/专利|品牌|厂家|官方|授权|旗舰店|竞品|友商/.test(t)){
+    notes.push({icon:'warn',c:'warn',h:'提到第三方',b:'说清是「我用的」还是「厂家说的」，别替厂家背书；涉及竞品不做优劣定论。'});
+  }
+  if(/客户|客人|业主|粉丝|朋友|邻居|案例/.test(t)){
+    notes.push({icon:'warn',c:'warn',h:'涉及真人案例',b:'打码、去掉门牌号和小区名；对方不同意就别发。'});
+  }
+  if(/医|药|病|治|疗|养生|病|抑郁|失眠/.test(t)){
+    notes.push({icon:'ban',c:'bad',h:'涉及健康表述',b:'不做疗效承诺、不替代就医；涉及疾病一律改成「我的个人体验」。'});
+  }
+  if(/合同|价格|报价|付款|质保|售后|定金/.test(t)){
+    notes.push({icon:'warn',c:'warn',h:'涉及交易条款',b:'具体条款以合同和书面约定为准，口播别省略关键限制条件。'});
+  }
+  if(/投资|理财|基金|股票|保险|收益/.test(t)){
+    notes.push({icon:'ban',c:'bad',h:'涉及金融',b:'不给收益承诺、不荐具体产品，说清「不构成投资建议」。'});
+  }
+  if(/微信|V信|vx|加我|私信我|二维码/.test(t)){
+    notes.push({icon:'warn',c:'warn',h:'有导流动作',b:'在抖音/小红书上别直接留联系方式，用「评论区扣1」这类合规叫法；微信端可以放。'});
+  }
+  if(/(吗|呢|吧)$/.test((t.split('\n')[0]||'').trim())||t.length<30){
+    notes.push({icon:'warn',c:'warn',h:'文稿偏短',b:'信息量不够，补一句「我自己的做法」和一句「别人能怎么用」，稿子才立得住。'});
+  }
+  // 平台提醒
+  PLATFORM_TIPS.forEach(function(p){
+    if(t.indexOf(p.k)>-1||/微信|视频号|公众号/.test(t))notes.push({icon:'warn',c:'warn',h:p.k+' 发布提醒',b:p.t});
+  });
+  return notes;
+}
+function genChecklist(raw){
+  var base=[
+    {k:'写好口播稿',s:'文案'},
+    {k:'前3秒钩子想好',s:'开场'},
+    {k:'找好位置/背景',s:'拍摄'},
+    {k:'试录10秒看收音',s:'收音'},
+    {k:'拍完检查画面稳不稳',s:'拍摄'},
+    {k:'加字幕+重点词标色',s:'后期'},
+    {k:'写标题和封面文案',s:'发布'},
+    {k:'发布后看评论并回复',s:'运营'},
+    {k:'把这条存进方法库',s:'沉淀'}
+  ];
+  if(/出现|出镜|露脸|正脸/.test(raw))base.splice(1,0,{k:'确认出镜/打码到位',s:'合规'});
+  if(/手|操作|过程/.test(raw))base.splice(2,0,{k:'拍到手部操作特写',s:'拍摄'});
+  return base;
+}
+
+/* ============================================================
+   6. 今日思考题库
+   ============================================================ */
+var PROMPTS=[
+  '今天有谁做了一件让你想感谢的小事？',
+  '今天你在哪儿卡了最久？卡住的那一刻你在想什么？',
+  '今天你听到的一句话，让你改变了想法吗？',
+  '今天你有没有为一个很小的问题，跑了很多弯路？',
+  '今天你帮了谁一个小忙？对方什么反应？',
+  '今天你花的钱里，哪一笔你觉得最值？哪一笔最亏？',
+  '今天有没有什么事，你嘴上说烦，身体却已经动手做了？',
+  '今天你看到的一个「别人都这么做但其实不对」的事是什么？',
+  '如果今天只能留下一句话给明天的自己，你写哪句？',
+  '今天客户/朋友问了你一个你答不上来的问题，是什么？',
+  '今天有没有一个瞬间，你觉得「这事儿我做对了」？',
+  '今天的时间都去哪了？哪一段时间是真正有产出的？',
+  '今天你最想吐槽的一件事是什么？吐槽完，它能变成什么内容？',
+  '今天你学到的一个新说法/新做法是什么？',
+  '今天你拒绝了一次什么？拒绝之后感觉如何？',
+  '今天有没有什么是你本来可以做、但没做的？',
+  '今天你帮自己做成的一件小事是什么？',
+  '今天谁的一句话最扎心？',
+  '今天你的一个习惯，给你省了什么时间？',
+  '今天你遇到的问题里，哪一个别人也一定遇到过？',
+  '如果今天把你做的事讲给朋友听，他能不能照着做？',
+  '今天你有没有对某个人说过「回头再说」？那件事后来做了吗？',
+  '今天你看到的最干净的一个做法是什么？',
+  '今天有什么让你犹豫了很久、最后却很简单的事？',
+  '今天你拍到/记到的一个画面，能变成一条内容吗？',
+  '今天你觉得哪条路走错了？错在哪一步？',
+  '今天有人帮了你，他做对了什么？',
+  '今天你在哪件事上花的力气，其实可以不花？',
+  '今天你的一句话，能让同一个人少踩一个坑吗？',
+  '如果这件事做成了，最想告诉谁？'
+];
+var promptIdx=Math.floor(Math.random()*PROMPTS.length);
+var QUICK=[
+  '今天遇到的一个麻烦事',
+  '今天帮别人解决的一个问题',
+  '今天才想明白的一个道理',
+  '今天想改掉的一个习惯',
+  '今天看到的一个省钱/省事方法',
+  '今天自己动手做的一件小事'
+];
+
+/* ============================================================
+   7. 渲染：写一点
+   ============================================================ */
+function bindCount(ta,out){
+  function upd(){out.textContent=(ta.value||'').length+' 字'}
+  ta.addEventListener('input',upd);upd();
+}
+function renderPrompt(){
+  $('#promptTxt').textContent=PROMPTS[promptIdx%PROMPTS.length];
+}
+function renderChips(){
+  var box=$('#quickChips');box.innerHTML='';
+  QUICK.forEach(function(q){
+    var b=document.createElement('button');
+    b.className='chip';b.textContent=q;
+    b.onclick=function(){
+      var ta=$('#wFound');
+      if(ta.value.trim())ta.value=ta.value.replace(/\s*$/,'')+'\n'+q+'：';
+      else ta.value=q+'：';
+      ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length);
+      bindWrite();saveDB();
+    };
+    box.appendChild(b);
+  });
+}
+function bindWrite(){
+  var d=getDay();
+  var w=d.write;
+  if($('#wFound').value!==w.found)$('#wFound').value=w.found||'';
+  if($('#wFix').value!==w.fix)$('#wFix').value=w.fix||'';
+  if($('#wValue').value!==w.value)$('#wValue').value=w.value||'';
+  bindCount($('#wFound'),$('#cFound'));
+  bindCount($('#wFix'),$('#cFix'));
+  bindCount($('#wValue'),$('#cValue'));
+}
+function readWrite(){
+  var d=getDay();
+  d.write.found=$('#wFound').value;
+  d.write.fix=$('#wFix').value;
+  d.write.value=$('#wValue').value;
+  saveDB();
+}
+
+/* 本地智能优化：清口语助词 + 给针对性建议 + 出优化版（不联网、零成本） */
+var FILLER=/[这那]?(个|么|样子)?(就是|其实就是|说白了|然后呢|的话|什么的|感觉吧|其实吧|呢|啊|呃|额|吧|哈|嘛|对吧|是吧)\s?/g;
+function cleanText(s){
+  return (s||'').replace(FILLER,'').replace(/\s{2,}/g,' ').replace(/，\s*，/g,'，').replace(/。\s*。/g,'。').replace(/[，,]\s*$/,'').trim();
+}
+function optimizeWrite(){
+  readWrite();
+  var d=getDay(),w=d.write;
+  var found=cleanText(w.found), fix=cleanText(w.fix), value=cleanText(w.value);
+  var box=$('#optBox');
+  var sug=[];
+  if((w.found||'').trim().length<12) sug.push(['warn','写清楚一个具体场景或一个人，比写「一个麻烦事」更有画面感。']);
+  if(!/(先|再|然后|接着|问|量|查|改|试|做|定|选|把|用|加|约|发)/.test(fix)) sug.push(['warn','第②栏尽量动词开头（查 / 问 / 量 / 改 / 试），别只写「多想想」。']);
+  if(!value) sug.push(['warn','第③栏空着，等于没说「为什么值得分享」，补一句别人能怎么用。']);
+  if(!NUM_RE.test(found+fix+value)) sug.push(['sparkle','加一个具体数字（几次 / 多少米 / 省多少），可信度直接翻倍。']);
+  if(!sug.length) sug.push(['check','三栏都挺扎实，可以直接生成方法卡了。']);
+  var polished=[];
+  if(found)polished.push('【我发现】'+found);
+  if(fix)polished.push('【我这么做】'+fix);
+  if(value)polished.push('【对别人有用】'+value);
+  if(!polished.length)polished.push('（先把三栏写点东西，再点优化）');
+  var h='<h3><span class="ic" data-ic="magic"></span>优化建议</h3><ul class="sug">';
+  sug.forEach(function(s){ h+='<li><span class="ic" data-ic="'+s[0]+'"></span><span>'+s[1]+'</span></li>'; });
+  h+='</ul><div class="field" style="margin:0"><label>优化版（可直接复制或采用）</label><textarea id="optText" style="min-height:118px">'+esc(polished.join('\n'))+'</textarea></div>';
+  h+='<div class="btn-row" style="margin-top:12px"><button class="btn primary sm" id="optApply"><span class="ic" data-ic="check"></span>采用优化版</button><button class="btn sm" id="optCopy"><span class="ic" data-ic="copy"></span>复制优化版</button></div>';
+  box.innerHTML=h;
+  fillIcons(box);
+  $('#optApply').onclick=function(){
+    if(!found&&!fix&&!value){toast('先写点再采用');return;}
+    w.found=found;w.fix=fix;w.value=value;saveDB();bindWrite();renderStats();
+    toast('已采用优化版 ✓');
+  };
+  $('#optCopy').onclick=function(){copy(polished.join('\n'),'优化版已复制 ✓')};
+  $('#cardOpt').classList.remove('hidden');
+  $('#cardOpt').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ============================================================
+   8. 渲染：复盘
+   ============================================================ */
+function bindReview(){
+  var r=getDay().review;
+  if($('#rWin').value!==r.win)$('#rWin').value=r.win||'';
+  if($('#rMiss').value!==r.miss)$('#rMiss').value=r.miss||'';
+  if($('#rWhy').value!==r.why)$('#rWhy').value=r.why||'';
+  if($('#rNext').value!==r.next)$('#rNext').value=r.next||'';
+  if($('#rMood').value!==(r.mood||''))$('#rMood').value=r.mood||'';
+  bindCount($('#rWin'),$('#cWin'));
+  bindCount($('#rMiss'),$('#cMiss'));
+  bindCount($('#rWhy'),$('#cWhy'));
+  bindCount($('#rNext'),$('#cNext'));
+}
+function readReview(){
+  var r=getDay().review;
+  r.win=$('#rWin').value;r.miss=$('#rMiss').value;r.why=$('#rWhy').value;
+  r.next=$('#rNext').value;r.mood=$('#rMood').value;
+  saveDB();
+}
+function autoReview(){
+  var d=getDay(),w=d.write,r=d.review;
+  var pts=extractPoints(w.found+'。'+w.fix,3);
+  var lines=[];
+  if(w.found.trim()){
+    lines.push('今天发现：'+w.found.trim().replace(/\s+/g,' '));
+  }
+  if(pts.length)lines.push('处理过程：'+pts.join('；')+'。');
+  if(w.value.trim())lines.push('这件事的价值：'+w.value.trim());
+  if(!r.win.trim()&&lines.length){
+    r.win=lines.join('\n');
+    $('#rWin').value=r.win;
+  }
+  if(!r.next.trim()&&w.fix.trim()){
+    r.next='明天第一件事：把「'+(w.fix.trim().split(/[。；\n]/)[0]||'').slice(0,18)+'」这件事做完。';
+    $('#rNext').value=r.next;
+  }
+  if(!r.miss.trim())r.miss='（今天还有哪件没做成的？自己补一句，最值钱）';
+  if(!r.why.trim())r.why='（卡住的根因是什么？不是没时间，是怕做不好——对不对？）';
+  bindReview();saveDB();renderStats();
+  toast('草稿已填好，补上括号里的两行就行');
+}
+
+/* ============================================================
+   9. 渲染：拍一条
+   ============================================================ */
+function bindShoot(){
+  var s=getDay().shoot;
+  if($('#sTopic').value!==s.topic)$('#sTopic').value=s.topic||'';
+  if($('#sRaw').value!==s.raw)$('#sRaw').value=s.raw||'';
+  bindCount($('#sRaw'),$('#cRaw'));
+}
+function readShoot(){
+  var s=getDay().shoot;
+  s.topic=$('#sTopic').value;s.raw=$('#sRaw').value;
+  saveDB();
+}
+function renderPoints(){
+  var s=getDay().shoot,box=$('#pointsBox');
+  if(!s.points.length){$('#cardPoints').classList.add('hidden');return}
+  $('#cardPoints').classList.remove('hidden');
+  $('#ptCount').textContent=s.points.length+' 条';
+  box.innerHTML='';
+  s.points.forEach(function(p,i){
+    var row=document.createElement('div');row.className='point';
+    var n=document.createElement('div');n.className='n';n.textContent=i+1;
+    var t=document.createElement('div');t.className='t';t.textContent=p;
+    row.appendChild(n);row.appendChild(t);box.appendChild(row);
+  });
+}
+function renderScript(){
+  var s=getDay().shoot;
+  if(!s.script){$('#cardScript').classList.add('hidden');return}
+  $('#cardScript').classList.remove('hidden');
+  $('#scriptBox').textContent=s.script;
+  $('#scLen').textContent=scriptLen(s.script)+' 字 · 约 '+scriptSec(s.script)+' 秒';
+  $('#scManual').value=s.manual||s.script;
+}
+function renderNotes(){
+  var s=getDay().shoot;
+  var box=$('#notesBox');box.innerHTML='';
+  if(!s.notes.length&&!s.checks||(!s.notes.length&&!(s.checks&&s.checks.items||[]).length)){
+    $('#cardNotes').classList.add('hidden');
+    return;
+  }
+  $('#cardNotes').classList.remove('hidden');
+  s.notes.forEach(function(n){
+    var li=document.createElement('li');
+    var ic=document.createElement('span');
+    ic.className='ic'+(n.c?' '+n.c:'');
+    ic.style.color=n.c==='warn'?'var(--warn)':n.c==='bad'?'var(--danger)':'var(--ok)';
+    ic.innerHTML=svgIcon(n.icon||'check',16);
+    var body=document.createElement('span');
+    var b=document.createElement('b');b.textContent=n.h+'：';
+    body.appendChild(b);body.appendChild(document.createTextNode(n.b||''));
+    li.appendChild(ic);li.appendChild(body);box.appendChild(li);
+  });
+  $('#noteCount').textContent=s.notes.length+' 条';
+  // 违禁词
+  var bb=$('#banBox');bb.innerHTML='';
+  var hits=scanBan(s.raw+' '+(s.script||''));
+  if(hits.length){
+    var box2=document.createElement('div');box2.className='ban';
+    var h=document.createElement('h4');h.textContent='发现 '+hits.length+' 个风险词，改掉再发';
+    box2.appendChild(h);
+    hits.forEach(function(x){
+      var r=document.createElement('div');r.className='ban-row';
+      var w=document.createElement('span');w.className='w';w.textContent=x.w;
+      var t=document.createElement('span');t.textContent=x.t;
+      var f=document.createElement('span');f.className='fix';f.innerHTML='→ 建议：<b>'+x.f+'</b>';
+      r.appendChild(w);r.appendChild(t);r.appendChild(f);box2.appendChild(r);
+    });
+    bb.appendChild(box2);
+    $('#banCount').textContent=hits.length+' 个';
+  }else{
+    var ok=document.createElement('div');ok.className='ok-box';
+    ok.innerHTML='<span class="ic" style="color:var(--ok)">'+svgIcon('check',16)+'</span><span>没扫到风险词。发布前还是自己念一遍，听听有没有夸大、绝对化、说不清来源的说法。</span>';
+    bb.appendChild(ok);$('#banCount').textContent='0 个';
+  }
+  // 清单
+  var cb=$('#checkBox');cb.innerHTML='';
+  var items=s.checks&&s.checks.items?s.checks.items:genChecklist(s.raw);
+  if(!s.checks||!s.checks.items)s.checks={items:items,done:{}};
+  items.forEach(function(it,i){
+    var row=document.createElement('div');
+    row.className='check-item'+(s.checks.done[i]?' done':'');
+    var bx=document.createElement('span');bx.className='box';bx.textContent=s.checks.done[i]?'✓':'';
+    var tx=document.createElement('span');tx.textContent=it.k;
+    var sd=document.createElement('span');sd.className='side';sd.textContent=it.s;
+    row.appendChild(bx);row.appendChild(tx);row.appendChild(sd);
+    row.onclick=function(){
+      s.checks.done[i]=!s.checks.done[i];saveDB();renderNotes();
+    };
+    cb.appendChild(row);
+  });
+}
+function doPoints(){
+  readShoot();
+  var s=getDay().shoot;
+  s.points=extractPoints(s.raw,4);
+  if(!s.points.length){toast('先写几句想法，我才能提取');return}
+  renderPoints();saveDB();renderStats();
+  toast('提取到 '+s.points.length+' 条要点');
+}
+function doScript(){
+  readShoot();
+  var s=getDay().shoot;
+  if(!s.points.length)s.points=extractPoints(s.raw,4);
+  var sc=buildScript(s.topic,s.raw,s.points);
+  if(!sc){toast('文稿太短，先多写两句');return}
+  s.script=sc;s.manual='';
+  renderScript();saveDB();renderStats();
+  toast('口播稿好了，念一遍顺不顺');
+}
+function doNotes(){
+  readShoot();
+  var s=getDay().shoot;
+  s.notes=genNotes(s.raw,s.topic);
+  s.checks={items:genChecklist(s.raw),done:(s.checks&&s.checks.done)||{}};
+  renderNotes();saveDB();renderStats();
+}
+function doAll(){
+  readShoot();
+  var s=getDay().shoot;
+  s.points=extractPoints(s.raw,4);
+  s.script=buildScript(s.topic,s.raw,s.points);
+  s.notes=genNotes(s.raw,s.topic);
+  s.checks={items:genChecklist(s.raw),done:{}};
+  renderPoints();renderScript();renderNotes();saveDB();renderStats();
+  toast('三样都生成好了');
+}
+
+/* ============================================================
+   10. 方法库
+   ============================================================ */
+function makeMethod(){
+  var d=getDay(),w=d.write,r=d.review;
+  if(!w.found.trim()&&!r.win.trim()){toast('先去写一点或复盘一次，再生成方法卡');return}
+  var pts=extractPoints(w.fix+'。'+w.value,4);
+  var title=(w.found||r.win).trim().split(/[。！？\n]/)[0].slice(0,26)||'今天的方法';
+  var m={
+    id:Date.now(),date:curDate,title:title,
+    what:(w.found||r.win).trim(),
+    steps:pts,
+    value:(w.value||'').trim(),
+    next:(r.next||'').trim()
+  };
+  DB.methods.unshift(m);
+  saveDB();renderMethods();switchTab('methods');renderStats();
+  toast('方法卡已存进方法库');
+}
+function renderMethods(){
+  var box=$('#methodsBox');box.innerHTML='';
+  $('#mCount').textContent=DB.methods.length+' 条';
+  if(!DB.methods.length){
+    var e=document.createElement('div');e.className='empty';
+    e.innerHTML='<div class="big">📒</div>还没有沉淀。<br>完成一次「写一点 + 复盘」，点「生成方法卡」，这里就会攒下你的方法。';
+    box.appendChild(e);return;
+  }
+  DB.methods.forEach(function(m){
+    var el=document.createElement('div');el.className='method';
+    var h='<div class="date">'+m.date+'</div><h3>'+esc(m.title)+'</h3>';
+    if(m.what)h+='<div class="mline"><b>事情：</b>'+esc(m.what)+'</div>';
+    if(m.steps&&m.steps.length){
+      h+='<ol class="steps">';
+      m.steps.forEach(function(s){h+='<li>'+esc(s)+'</li>'});
+      h+='</ol>';
+    }
+    if(m.value)h+='<div class="mline"><b>价值：</b>'+esc(m.value)+'</div>';
+    if(m.next)h+='<div class="mline"><b>明天：</b>'+esc(m.next)+'</div>';
+    var btn='<div class="btn-row" style="margin-top:14px"><button class="btn sm" data-copy="'+m.id+'">复制分享文案</button><button class="btn sm ghost" data-del="'+m.id+'">删除</button></div>';
+    el.innerHTML=h+btn;
+    box.appendChild(el);
+  });
+  $$('[data-copy]',box).forEach(function(b){
+    b.onclick=function(){copy(methodShare(+b.getAttribute('data-copy')),'分享文案已复制 ✓')};
+  });
+  $$('[data-del]',box).forEach(function(b){
+    b.onclick=function(){
+      var id=+b.getAttribute('data-del');
+      DB.methods=DB.methods.filter(function(m){return m.id!==id});
+      saveDB();renderMethods();
+    };
+  });
+}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function methodShare(m){
+  var L=[];
+  L.push('【'+m.date+'】'+m.title);
+  if(m.what)L.push('情况：'+m.what);
+  if(m.steps&&m.steps.length){
+    L.push('我的做法：');
+    m.steps.forEach(function(s,i){L.push((i+1)+'、'+s)});
+  }
+  if(m.value)L.push('为什么值得说：'+m.value);
+  if(m.next)L.push('明天接着做：'+m.next);
+  L.push('—— 做一件小事 · Build in Public · 每日飞轮');
+  return L.join('\n');
+}
+
+/* ============================================================
+   11. 统计 & 导出
+   ============================================================ */
+function dayDone(d){
+  var n=0,w=d.write||{},r=d.review||{},s=d.shoot||{};
+  if((w.found||'').trim()&&(w.fix||'').trim())n++;
+  if((r.win||'').trim()&&(r.next||'').trim())n++;
+  if((s.script||'').trim()||((s.raw||'').trim()&&(s.points||[]).length))n++;
+  return n;
+}
+function calcStreak(){
+  var n=0,d=new Date();
+  for(var i=0;i<400;i++){
+    var k=ymd(d);
+    if(DB.days[k]&&dayDone(DB.days[k])>0)n++;
+    else if(i>0||!DB.days[k]){if(i===0){d.setDate(d.getDate()-1);continue}n++;break}
+    else break;
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+/* ============================================================
+   11.5 飞轮（SVG 仪表盘 + 循环节点）
+   ============================================================ */
+function buildFlywheel(){
+  var cx=130,cy=130,R=92,rNode=19;
+  var sec={
+    write:'M70.9 59.5 A92 92 0 0 1 189.1 59.5',
+    review:'M200.5 70.9 A92 92 0 0 1 200.5 190.1',
+    shoot:'M189.1 190.5 A92 92 0 0 1 70.9 190.5',
+    methods:'M59.5 189.1 A92 92 0 0 1 59.5 70.9'
+  };
+  var nodes=[
+    {k:'write',x:130,y:38,label:'写一点',ic:'write'},
+    {k:'review',x:222,y:130,label:'复盘',ic:'review'},
+    {k:'shoot',x:130,y:222,label:'拍一条',ic:'shoot'},
+    {k:'methods',x:38,y:130,label:'方法库',ic:'box'}
+  ];
+  // 刻度环（表盘感）
+  var ticks='';
+  for(var i=0;i<60;i++){
+    var ang=i*6*Math.PI/180, r1=116, r2=(i%5===0)?109:113;
+    var x1=(cx+r1*Math.cos(ang)).toFixed(1), y1=(cy+r1*Math.sin(ang)).toFixed(1);
+    var x2=(cx+r2*Math.cos(ang)).toFixed(1), y2=(cy+r2*Math.sin(ang)).toFixed(1);
+    ticks+='<line class="fly-tick" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"/>';
+  }
+  // 顺时针旋转箭头（节点之间）
+  var arrows='';
+  [-45,45,135,225].forEach(function(deg){
+    var a=deg*Math.PI/180, px=cx+R*Math.cos(a), py=cy+R*Math.sin(a);
+    var ta=(deg+90)*Math.PI/180, s=5.5;
+    var bx=px-Math.cos(ta)*s, by=py-Math.sin(ta)*s;
+    var lx=px+Math.cos(ta+2.6)*s, ly=py+Math.sin(ta+2.6)*s;
+    var rx=px+Math.cos(ta-2.6)*s, ry=py+Math.sin(ta-2.6)*s;
+    arrows+='<path class="fly-arrow" d="M'+bx.toFixed(1)+' '+by.toFixed(1)+' L'+lx.toFixed(1)+' '+ly.toFixed(1)+' L'+rx.toFixed(1)+' '+ry.toFixed(1)+' Z"/>';
+  });
+  // 4 个节点 + 标签
+  var ns='',labels='';
+  nodes.forEach(function(n){
+    var ip=ICONS[n.ic]||'';
+    ns+='<g class="fly-node" id="flyNode-'+n.k+'">'
+      +'<circle cx="'+n.x+'" cy="'+n.y+'" r="'+rNode+'"/>'
+      +'<g class="fic" transform="translate('+(n.x-9)+','+(n.y-9)+') scale(0.75)">'+ip+'</g>'
+      +'</g>';
+    var lx=n.x,ly=n.y,anchor='middle';
+    if(n.k==='write'){ly=n.y-27;}
+    else{ly=n.y+34;}
+    labels+='<text class="fly-lbl" x="'+lx+'" y="'+ly+'" text-anchor="'+anchor+'">'+n.label+'</text>';
+  });
+  // 中心表盘
+  var gc=58, C=2*Math.PI*gc;
+  var gauge='<circle class="fly-ga-b" cx="130" cy="130" r="'+gc+'"/>'
+    +'<circle class="fly-ga" id="flyArc" cx="130" cy="130" r="'+gc+'" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+C.toFixed(1)+'" transform="rotate(-90 130 130)"/>';
+  var ctext='<text class="fly-num" id="flyNum" x="130" y="134">0</text>'
+    +'<text class="fly-den" x="130" y="158">/ 3 今日完成</text>';
+  var svg='<svg class="flywheel" viewBox="0 0 260 260" role="img" aria-label="每日飞轮进度">'
+    +'<g class="fly-spin"><animateTransform attributeName="transform" type="rotate" from="0 130 130" to="360 130 130" dur="52s" repeatCount="indefinite"/>'
+    +'<circle class="fly-rim-base" cx="130" cy="130" r="116"/><circle class="fly-rim-base" cx="130" cy="130" r="100"/>'+ticks+'</g>'
+    +'<circle class="fly-rim-base" cx="130" cy="130" r="92"/>'
+    +'<path class="fly-sec" id="flySec-write" d="'+sec.write+'"/>'
+    +'<path class="fly-sec" id="flySec-review" d="'+sec.review+'"/>'
+    +'<path class="fly-sec" id="flySec-shoot" d="'+sec.shoot+'"/>'
+    +'<path class="fly-sec" id="flySec-methods" d="'+sec.methods+'"/>'
+    +arrows+gauge+ns+labels+ctext
+    +'</svg>';
+  $('#flywheelBox').innerHTML=svg;
+}
+function renderFlywheel(){
+  var d=getDay();
+  var lit={
+    write:!!((d.write.found||'').trim()&&(d.write.fix||'').trim()),
+    review:!!((d.review.win||'').trim()&&(d.review.next||'').trim()),
+    shoot:!!((d.shoot.script||'').trim()||(((d.shoot.raw||'').trim())&&(d.shoot.points||[]).length)),
+    methods:DB.methods.length>0
+  };
+  ['write','review','shoot','methods'].forEach(function(k){
+    var g=$('#flyNode-'+k); if(g)g.classList.toggle('lit',lit[k]);
+    var s=$('#flySec-'+k); if(s)s.classList.toggle('lit',lit[k]);
+  });
+  var done=dayDone(d), gc=58, C=2*Math.PI*gc;
+  var arc=$('#flyArc'); if(arc)arc.setAttribute('stroke-dashoffset',(C*(1-done/3)).toFixed(1));
+  var num=$('#flyNum'); if(num)num.textContent=done;
+}
+/* ============================================================
+   11.7 轻量可视化：写一点三层扩散环
+   ============================================================ */
+function buildWriteRing(){
+  // 三层嵌套弧（左上 → 右下 逐层扩散）：发现问题 → 怎么处理 → 对别人有用
+  // 节点在每层的左上端（起点），标签在右下端外侧；整体读起来是从"我的问题"往外推
+  var cx=76;
+  var layers=[
+    {k:'found', cy:58,  R:46, a1:250, a2:330, ic:'bulb',   lbl:'发现问题'},
+    {k:'fix',   cy:115, R:46, a1:250, a2:330, ic:'magic',  lbl:'怎么处理'},
+    {k:'value', cy:172, R:46, a1:250, a2:330, ic:'target', lbl:'对别人有用'}
+  ];
+  var s='';
+  layers.forEach(function(L){
+    var x1=cx+L.R*Math.cos(L.a1*Math.PI/180), y1=L.cy+L.R*Math.sin(L.a1*Math.PI/180);
+    var x2=cx+L.R*Math.cos(L.a2*Math.PI/180), y2=L.cy+L.R*Math.sin(L.a2*Math.PI/180);
+    s+='<path class="wr3-arc" id="wr3Arc-'+L.k+'" d="M'+x1.toFixed(1)+' '+y1.toFixed(1)
+      +' A'+L.R+' '+L.R+' 0 0 1 '+x2.toFixed(1)+' '+y2.toFixed(1)+'"/>';
+    // 节点放在弧的左上端（起点）
+    var nx=x1, ny=y1;
+    var ip=ICONS[L.ic]||'';
+    s+='<g class="wr3-dot" id="wr3Dot-'+L.k+'">'
+      +'<circle cx="'+nx.toFixed(1)+'" cy="'+ny.toFixed(1)+'" r="10"/>'
+      +'<g class="rd-ic" transform="translate('+(nx-5.5).toFixed(1)+','+(ny-5.5).toFixed(1)+') scale(0.46)">'+ip+'</g>'
+      +'</g>';
+    // 标签在弧的右下端外侧，垂直方向再让开一些，避免压线
+    var tx=x2+17, ty=y2+11;
+    s+='<text class="wr3-lbl" id="wr3Lbl-'+L.k+'" x="'+tx.toFixed(1)+'" y="'+ty.toFixed(1)+'" text-anchor="start">'+L.lbl+'</text>';
+  });
+  // 进度数字放左上空白处
+  s+='<text class="wr3-num" id="wr3Num" x="24" y="40">0</text>'
+   +'<text class="wr3-cap" id="wr3Cap" x="22" y="52">/ 3 层</text>';
+  var el=$('#writeRing');
+  if(el)el.innerHTML=s;
+}
+function renderWriteRing(){
+  var w=getDay().write;
+  var st={
+    found:!!(w.found||'').trim(),
+    fix:!!(w.fix||'').trim(),
+    value:!!(w.value||'').trim()
+  };
+  var order=['found','fix','value'];
+  var n=0;
+  order.forEach(function(k){
+    if(st[k])n++;
+    var d=$('#wr3Dot-'+k); if(d)d.classList.toggle('lit',st[k]);
+    var a=$('#wr3Arc-'+k); if(a)a.classList.toggle('lit',st[k]);
+    var l=$('#wr3Lbl-'+k); if(l)l.classList.toggle('lit',st[k]);
+  });
+  var num=$('#wr3Num'); if(num)num.textContent=n;
+  var cap=$('#wr3Cap'); if(cap)cap.textContent='/ 3 层';
+  var hint=$('#writeHint');
+  if(hint){
+    if(n>=3)hint.innerHTML='<span class="num">3</span> 层全亮——这件事已经能拿出去讲了。下一步去<b>复盘一次</b>，或者直接<b>拍一条</b>。';
+    else if(n===0)hint.innerHTML='从<b>你自己的问题</b>，一层层推到<b>别人也能用</b>。三层都亮了，这条内容才算能分享出去。';
+    else{
+      var nextName={1:'② 我怎么处理',2:'③ 对别人有什么用'}[n];
+      hint.innerHTML='已推到 <span class="num">'+n+'</span> 层。下一层写<b>'+nextName+'</b>——<b>第三层</b>最关键，填了才叫能分享。';
+    }
+  }
+}
+
+function renderStats(){
+  $('#stStreak').textContent=calcStreak();
+  $('#stDays').textContent=Object.keys(DB.days).length;
+  $('#stTotal').textContent=DB.methods.length;
+  renderFlywheel();
+  renderReviewRing();
+  renderPipe();
+  renderWriteRing();
+}
+
+/* ============================================================
+   11.6 轻量可视化：复盘四问环 + 拍一条流水线
+   ============================================================ */
+function buildReviewRing(){
+  var cx=130,cy=100,R=62;
+  // 4 个扇形弧（对应四问），顺时针
+  var arcOf=function(a1,a2){
+    var x1=cx+R*Math.cos(a1*Math.PI/180), y1=cy+R*Math.sin(a1*Math.PI/180);
+    var x2=cx+R*Math.cos(a2*Math.PI/180), y2=cy+R*Math.sin(a2*Math.PI/180);
+    return 'M'+x1.toFixed(1)+' '+y1.toFixed(1)+' A'+R+' '+R+' 0 0 1 '+x2.toFixed(1)+' '+y2.toFixed(1);
+  };
+  var spans=[[-108,-18],[-18,72],[72,162],[162,252]];
+  var nodes=[
+    {k:'win',  a:-63, ic:'check', lbl:'做成了'},
+    {k:'miss', a:27,  ic:'ban',   lbl:'没做成'},
+    {k:'why',  a:117, ic:'warn',  lbl:'卡在哪'},
+    {k:'next', a:207, ic:'arrow', lbl:'明天'}
+  ];
+  var s='<circle cx="'+cx+'" cy="'+cy+'" r="'+(R+15)+'" fill="none" stroke="var(--brand-soft)" stroke-width="1"/>';
+  spans.forEach(function(sp,i){
+    s+='<path class="ring-arc" id="ringArc-'+i+'" d="'+arcOf(sp[0],sp[1])+'"/>';
+  });  nodes.forEach(function(n,i){
+    var x=cx+R*Math.cos(n.a*Math.PI/180), y=cy+R*Math.sin(n.a*Math.PI/180);
+    var ip=ICONS[n.ic]||'';
+    s+='<g class="ring-dot" id="ringDot-'+n.k+'">'
+      +'<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="14"/>'
+      +'<g class="rd-ic" transform="translate('+(x-7.5).toFixed(1)+','+(y-7.5).toFixed(1)+') scale(0.63)">'+ip+'</g>'
+      +'</g>';
+    // 标签放在节点外侧（半径 +26），全部居中锚点，避免溢出画布
+    var lr=R+26;
+    var lx=cx+lr*Math.cos(n.a*Math.PI/180), ly=cy+lr*Math.sin(n.a*Math.PI/180);
+    lx=Math.max(24,Math.min(236,lx));
+    s+='<text class="ring-lbl" id="ringLbl-'+n.k+'" x="'+lx.toFixed(1)+'" y="'+(ly+3.4).toFixed(1)+'" text-anchor="middle">'+n.lbl+'</text>';
+  });
+  s+='<text class="ring-num" id="ringNum" x="'+cx+'" y="'+(cy+4)+'">0</text>'
+   +'<text class="ring-cap" x="'+cx+'" y="'+(cy+22)+'">/ 4 已复盘</text>';
+  var el=$('#reviewRing');
+  if(el)el.innerHTML=s;
+}
+function renderReviewRing(){
+  var r=getDay().review;
+  var st={
+    win:!!(r.win||'').trim(),
+    miss:!!(r.miss||'').trim(),
+    why:!!(r.why||'').trim(),
+    next:!!(r.next||'').trim()
+  };
+  var order=['win','miss','why','next'];
+  var n=0;order.forEach(function(k){if(st[k])n++});
+  order.forEach(function(k,i){
+    var d=$('#ringDot-'+k); if(d)d.classList.toggle('lit',st[k]);
+    var a=$('#ringArc-'+i); if(a)a.classList.toggle('lit',st[k]);
+    var l=$('#ringLbl-'+k); if(l)l.classList.toggle('lit',st[k]);
+  });
+  var num=$('#ringNum'); if(num)num.textContent=n;
+  var hint=$('#reviewHint');
+  if(hint){
+    if(n>=4)hint.innerHTML='<span class="num">4</span> 格全亮，今天这圈转完了。把方法卡生成出来，这一天就没白过。';
+    else hint.innerHTML='已填 <span class="num">'+n+'</span> / 4 格。剩下 <b>'+(4-n)+'</b> 格——<b>②没做成</b>和<b>③卡在哪</b>最值钱，别跳过。';
+  }
+}
+function renderPipe(){
+  var s=getDay().shoot;
+  var st={
+    raw:!!((s.raw||'').trim()),
+    points:(s.points||[]).length>0,
+    script:!!((s.script||'').trim()),
+    notes:(s.notes||[]).length>0
+  };
+  var order=['raw','points','script','notes'];
+  var done=0;
+  order.forEach(function(k){
+    var el=$('#pipeStep-'+k);
+    if(el)el.classList.toggle('done',st[k]);
+  });
+  // 下一个待做的 = active
+  var activeIdx=-1;
+  for(var i=0;i<order.length;i++){ if(st[order[i]])done++; else {activeIdx=i;break} }
+  order.forEach(function(k,i){
+    var el=$('#pipeStep-'+k);
+    if(el)el.classList.toggle('active', i===activeIdx);
+  });
+  var fill=$('#pipeFill');
+  if(fill){
+    // 连接线区间是 12.5% → 87.5%，总长 75%
+    var pct=0;
+    if(done>=1)pct=12.5+75*0.25;
+    if(done>=2)pct=12.5+75*0.50;
+    if(done>=3)pct=12.5+75*0.75;
+    if(done>=4)pct=87.5;
+    fill.style.width=(pct-12.5)+'%';
+  }
+  var desc=$('#pipeDesc');
+  if(desc){
+    var msg=[
+      '先写大白话——想到哪写到哪，工具负责理。',
+      '要点已提取，接着生成口播稿。',
+      '口播稿好了，念一遍顺不顺。',
+      '最后看拍摄与合规提醒，改完再发。'
+    ];
+    desc.textContent = done>=4 ? '四步走完，这条视频可以发了。记得把方法存进方法库。' : msg[Math.min(done,3)];
+  }
+}
+function copyAll(){
+  var d=getDay(),w=d.write,r=d.review,s=d.shoot;
+  var L=[];
+  L.push('# 做一件小事 · Build in Public · '+prettyDate(curDate));
+  L.push('');
+  L.push('## 一、写一点');
+  if((w.found||'').trim())L.push('- 发现了什么：'+w.found.trim());
+  if((w.fix||'').trim())L.push('- 怎么处理：'+w.fix.trim());
+  if((w.value||'').trim())L.push('- 对别人有什么用：'+w.value.trim());
+  if(!(w.found||'').trim()&&!(w.fix||'').trim())L.push('- （今天还没写）');
+  L.push('');
+  L.push('## 二、复盘');
+  if((r.win||'').trim())L.push('- 做成了：'+r.win.trim());
+  if((r.miss||'').trim())L.push('- 没做成：'+r.miss.trim());
+  if((r.why||'').trim())L.push('- 卡在哪：'+r.why.trim());
+  if((r.next||'').trim())L.push('- 明天第一件事：'+r.next.trim());
+  if(!(r.win||'').trim())L.push('- （今天还没复盘）');
+  L.push('');
+  L.push('## 三、拍一条');
+  if((s.topic||'').trim())L.push('- 主题：'+s.topic.trim());
+  if(s.points&&s.points.length){L.push('- 要点：');s.points.forEach(function(p,i){L.push('  '+(i+1)+'. '+p)})}
+  if((s.script||'').trim()){L.push('');L.push('### 口播稿');L.push(s.script)}
+  if(!(s.topic||'').trim()&&!(s.script||'').trim())L.push('- （今天还没拍）');
+  L.push('');
+  L.push('---');
+  L.push('做一件小事 | Build in Public');
+  L.push('每日飞轮 · 写一点 · 复盘一次 · 拍一条');
+  copy(L.join('\n'),'今日合稿已复制 ✓');
+}
+function exportJson(){
+  var blob=new Blob([JSON.stringify(DB,null,2)],{type:'application/json'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='每日飞轮备份-'+today()+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(function(){URL.revokeObjectURL(a.href)},2000);
+  toast('备份已导出');
+}
+function importJson(file){
+  var fr=new FileReader();
+  fr.onload=function(){
+    try{
+      var o=JSON.parse(fr.result);
+      if(!o||!o.days)throw new Error('bad');
+      DB=o;DB.days=DB.days||{};DB.methods=DB.methods||[];
+      saveDB();bindWrite();bindReview();bindShoot();renderMethods();renderStats();
+      toast('备份已导入');
+    }catch(e){toast('文件读不了，选对 .json 备份')}
+  };
+  fr.readAsText(file);
+}
+
+/* ============================================================
+   12. 交互绑定
+   ============================================================ */
+function switchTab(v){
+  $$('#tabs button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-v')===v)});
+  ['write','review','shoot','methods'].forEach(function(x){
+    $('#v-'+x).classList.toggle('hidden',x!==v);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='methods')renderMethods();
+}
+function bindAll(){
+  // tabs
+  $$('#tabs button').forEach(function(b){b.onclick=function(){switchTab(b.getAttribute('data-v'))}});
+  // prompt
+  $('#promptSwap').onclick=function(){promptIdx++;renderPrompt()};
+  renderPrompt();renderChips();
+  // write
+  ['#wFound','#wFix','#wValue'].forEach(function(s){
+    $(s).addEventListener('input',function(){readWrite();renderStats()});
+  });
+  $('#saveWrite').onclick=function(){readWrite();toast('已保存 ✓');renderStats()};
+  $('#optWrite').onclick=optimizeWrite;
+  $('#toReview').onclick=function(){readWrite();switchTab('review')};
+  // review
+  ['#rWin','#rMiss','#rWhy','#rNext'].forEach(function(s){
+    $(s).addEventListener('input',function(){readReview();renderStats()});
+  });
+  $('#rMood').addEventListener('change',function(){readReview();renderStats()});
+  $('#saveReview').onclick=function(){readReview();toast('已保存 ✓');renderStats()};
+  $('#autoReview').onclick=autoReview;
+  $('#makeMethod').onclick=makeMethod;
+  // shoot
+  $('#sTopic').addEventListener('input',readShoot);
+  $('#sRaw').addEventListener('input',function(){readShoot();renderStats()});
+  $('#genPoints').onclick=doPoints;
+  $('#genScript').onclick=doScript;
+  $('#genNotes').onclick=doNotes;
+  $('#genAll').onclick=doAll;
+  $('#ptUp').onclick=function(){
+    var s=getDay().shoot;if(s.points.length<2)return;
+    s.points.unshift(s.points.splice(1,1)[0]);renderPoints();saveDB();
+  };
+  $('#ptCopy').onclick=function(){
+    var s=getDay().shoot;
+    copy(s.points.map(function(p,i){return (i+1)+'. '+p}).join('\n'),'要点已复制 ✓');
+  };
+  $('#scCopy').onclick=function(){copy(getDay().shoot.script,'口播稿已复制 ✓')};
+  $('#scEdit').onclick=function(){ $('#scEditWrap').classList.toggle('hidden') };
+  $('#scSave').onclick=function(){
+    var s=getDay().shoot;s.manual=$('#scManual').value;s.script=s.manual;
+    renderScript();saveDB();toast('改好了 ✓');
+  };
+  // footer
+  $('#copyAll').onclick=copyAll;
+  $('#exportJson').onclick=exportJson;
+  $('#importJson').onclick=function(){$('#fileIn').click()};
+  $('#fileIn').onchange=function(e){if(e.target.files[0])importJson(e.target.files[0]);e.target.value=''};
+  $('#clearAll').onclick=function(){
+    if(!confirm('清空本机所有记录？建议先「导出备份」。这个操作不能撤销。'))return;
+    DB={days:{},methods:[]};saveDB();bindWrite();bindReview();bindShoot();renderMethods();renderStats();
+    toast('已清空');
+  };
+}
+
+/* ============================================================
+   12.5 安装到手机（PWA）
+   ============================================================ */
+var deferredPrompt=null;
+function isStandalone(){
+  return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)
+      || window.navigator.standalone===true;
+}
+function isIOS(){
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+}
+function showInstallBar(mode){
+  var bar=$('#installBar'); if(!bar)return;
+  var hint=$('#ibHint'), btn=$('#ibBtn');
+  if(mode==='ios'){
+    hint.textContent='点浏览器底部「分享」→「添加到主屏幕」，就有图标了';
+    btn.textContent='知道了';
+    btn.onclick=function(){bar.classList.remove('on');};
+  }else{
+    hint.textContent='加个图标，跟 App 一样打开，断网也能用';
+    btn.textContent='安装';
+    btn.onclick=function(){
+      if(deferredPrompt){
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(c){deferredPrompt=null;bar.classList.remove('on');});
+      }else{
+        bar.classList.remove('on');
+        toast('浏览器菜单里选「添加到主屏幕」');
+      }
+    };
+  }
+  bar.classList.add('on');
+}
+function initInstall(){
+  if(isStandalone())return;                       // 已经是桌面 App 模式，不打扰
+  var dismissed=false;
+  try{dismissed=localStorage.getItem('fly.install.dismissed')==='1'}catch(e){}
+  if(dismissed)return;
+
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();
+    deferredPrompt=e;
+    showInstallBar('native');
+  });
+  // 已安装（beforeinstallprompt 不再触发）时不再提示
+  window.addEventListener('appinstalled',function(){
+    try{localStorage.setItem('fly.install.dismissed','1')}catch(e){}
+    $('#installBar').classList.remove('on');
+    toast('装好啦，去主屏幕看看 ✓');
+  });
+  var x=$('#ibX');
+  if(x)x.onclick=function(){
+    $('#installBar').classList.remove('on');
+    try{localStorage.setItem('fly.install.dismissed','1')}catch(e){}
+  };
+  // iOS 没有 beforeinstallprompt，延迟几秒主动给引导
+  if(isIOS()){
+    setTimeout(function(){
+      if(!deferredPrompt&&!isStandalone()&&!$('#installBar').classList.contains('on')){
+        var d2=false;
+        try{d2=localStorage.getItem('fly.install.dismissed')==='1'}catch(e){}
+        if(!d2)showInstallBar('ios');
+      }
+    },2600);
+  }
+}
+function registerSW(){
+  if(location.protocol.indexOf('http')===0&&navigator.serviceWorker){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+}
+
+/* ============================================================
+   13. 启动
+   ============================================================ */
+function init(){
+  loadDB();
+  bindAll();
+  bindWrite();bindReview();bindShoot();
+  fillIcons();
+  buildFlywheel();
+  buildReviewRing();
+  buildWriteRing();
+  fillIcons();   // 复盘环 / 写一点环 / 流水线里的图标
+  renderPoints();renderScript();renderNotes();renderMethods();renderStats();
+  registerSW();
+  initInstall();
+}
+/* 暴露给自测脚本（不影响使用） */
+window.__TT={
+  extractPoints:extractPoints,
+  buildScript:buildScript,
+  scanBan:scanBan,
+  genNotes:genNotes,
+  classify:classify,
+  dayDone:dayDone,
+  splitSentences:splitSentences
+};
+
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+else init();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "做一件小事 · 每日飞轮",
+  "short_name": "每日飞轮",
+  "description": "写一点、复盘一次、拍一条——从一件有价值的小事开始，做成了就把方法分享出去。可装到手机桌面，离线使用。",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1f3a5f",
+  "theme_color": "#1f3a5f",
+  "orientation": "portrait",
+  "lang": "zh-CN",
+  "categories": ["productivity", "lifestyle"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
