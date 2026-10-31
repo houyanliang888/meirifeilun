@@ -310,35 +310,6 @@ textarea{min-height:92px}
 }
 #toast.on{opacity:1;transform:translate(-50%,0)}
 
-/* ---------- 安装到手机（PWA） ---------- */
-.installbar{
-  position:fixed;left:12px;right:12px;bottom:12px;z-index:120;
-  background:rgba(23,25,29,.95);backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,.14);border-radius:16px;
-  padding:13px 40px 13px 15px;display:flex;align-items:center;gap:12px;
-  box-shadow:0 14px 40px -12px rgba(0,0,0,.6);
-  transform:translateY(140%);transition:transform .34s cubic-bezier(.22,1,.36,1);
-}
-.installbar.on{transform:translateY(0)}
-.installbar .ib-txt{flex:1;min-width:0;color:#fff;line-height:1.55}
-.installbar .ib-txt b{display:block;font-size:14px;font-weight:600}
-.installbar .ib-txt span{font-size:12px;color:rgba(255,255,255,.66);display:block}
-.installbar button{
-  flex:0 0 auto;border:0;cursor:pointer;font-family:inherit;
-  background:var(--accent);color:#fff;font-size:13px;font-weight:600;
-  padding:9px 15px;border-radius:10px;white-space:nowrap;
-}
-.installbar button.ghost{background:rgba(255,255,255,.12);color:rgba(255,255,255,.82)}
-.installbar button.ghost:hover{background:rgba(255,255,255,.2)}
-/* 关闭按钮固定在右上角，任何宽度下都不会换行错位
-   注意：元素是 id="ibX" class="ghost"，要用 #ibX 选中（.ib-x 这个 class 并不存在） */
-.installbar #ibX{
-  position:absolute;top:6px;right:8px;
-  background:none;border:0;color:rgba(255,255,255,.45);
-  font-size:19px;cursor:pointer;padding:4px 7px;line-height:1;border-radius:8px;
-}
-.installbar #ibX:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.1)}
-
 .hidden{display:none !important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
@@ -472,11 +443,6 @@ textarea{min-height:92px}
   .tabs button{padding:11px 11px;font-size:13.5px}
   .field>label{font-size:13.5px}
   textarea{min-height:100px}
-  /* 安装横幅：窄屏时文案长，按钮独占一行更稳；关闭键已绝对定位，不参与换行 */
-  .installbar{flex-wrap:wrap;padding:12px 38px 12px 13px;gap:10px}
-  .installbar .ib-txt{flex:1 1 100%}
-  .installbar #ibBtn{order:2}
-  .installbar #ibCopy{order:2}
 }
 @media print{
   body{background:#fff;padding:0}
@@ -741,17 +707,6 @@ textarea{min-height:92px}
 </div>
 
 <div id="toast"></div>
-
-<!-- 安装到手机主屏幕 -->
-<div class="installbar" id="installBar">
-  <div class="ib-txt" id="ibTxt">
-    <b id="ibTitle">装到手机桌面</b>
-    <span id="ibHint">加个图标，跟 App 一样打开，断网也能用</span>
-  </div>
-  <button id="ibBtn">安装</button>
-  <button class="ghost" id="ibCopy" style="display:none">复制链接</button>
-  <button class="ghost" id="ibX" aria-label="关闭">✕</button>
-</div>
 
 <script>
 (function(){
@@ -2062,111 +2017,10 @@ function bindAll(){
 }
 
 /* ============================================================
-   12.5 安装到手机（PWA）
+   12.5 PWA 离线注册
    ============================================================ */
-var deferredPrompt=null;
-function isStandalone(){
-  return (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches)
-      || window.navigator.standalone===true;
-}
-function isIOS(){
-  return /iPad|iPhone|iPod/.test(navigator.userAgent)
-      || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-}
-/* 微信/QQ/微博/支付宝/钉钉等 App 内置浏览器：能打开页面，但不支持 PWA 安装
-   注意：UC 浏览器、夸克是独立浏览器，能正常「添加到主屏幕」，不要误判 */
-function isInAppBrowser(){
-  var ua=navigator.userAgent||'';
-  return /MicroMessenger|QQ\/|Weibo|AliClient|DingTalk|baiduboxapp|wxwork/i.test(ua);
-}
-function showInstallBar(mode){
-  var bar=$('#installBar'); if(!bar)return;
-  var hint=$('#ibHint'), btn=$('#ibBtn'), title=$('#ibTitle'), cp=$('#ibCopy');
-  if(mode==='inapp'){
-    /* 微信等内置浏览器：装不了，改成引导用系统浏览器打开 */
-    title.textContent='换个浏览器打开就能装';
-    hint.textContent='微信里不支持装到桌面。点右上角「···」→「在浏览器打开」，再用浏览器菜单「添加到主屏幕」';
-    btn.style.display='none';
-    cp.style.display='';
-    cp.onclick=function(){ copy(location.href,'链接已复制，去浏览器粘贴打开 ✓'); };
-    cp.textContent='复制链接';
-  }else if(mode==='ios'){
-    title.textContent='装到手机桌面';
-    hint.textContent='点浏览器底部「分享」→「添加到主屏幕」，就有图标了';
-    btn.style.display='';
-    cp.style.display='none';
-    btn.textContent='知道了';
-    btn.onclick=function(){bar.classList.remove('on');};
-  }else{
-    title.textContent='装到手机桌面';
-    hint.textContent='加个图标，跟 App 一样打开，断网也能用';
-    btn.style.display='';
-    cp.style.display='none';
-    btn.textContent='安装';
-    btn.onclick=function(){
-      if(deferredPrompt){
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function(c){
-          deferredPrompt=null;
-          if(c&&c.outcome==='accepted'){bar.classList.remove('on');toast('装好啦，去桌面看看 ✓');}
-          else{bar.classList.remove('on');}
-        });
-      }else{
-        /* 没有 beforeinstallprompt：说明这个浏览器不支持一键装，走手动路径 */
-        bar.classList.remove('on');
-        toast('用浏览器菜单里的「添加到主屏幕」');
-      }
-    };
-  }
-  bar.classList.add('on');
-}
-function initInstall(){
-  if(isStandalone())return;                       // 已经是桌面 App 模式，不打扰
-  var dismissed=false;
-  try{dismissed=localStorage.getItem('fly.install.dismissed')==='1'}catch(e){}
-  if(dismissed)return;
-
-  var inApp=isInAppBrowser();
-
-  window.addEventListener('beforeinstallprompt',function(e){
-    e.preventDefault();
-    deferredPrompt=e;
-    /* 内置浏览器即使触发了 beforeinstallprompt，prompt() 也弹不出系统安装框，
-       所以这里不显示「安装」按钮，改走「去浏览器打开」引导 */
-    showInstallBar(inApp?'inapp':'native');
-  });
-  // 已安装（beforeinstallprompt 不再触发）时不再提示
-  window.addEventListener('appinstalled',function(){
-    try{localStorage.setItem('fly.install.dismissed','1')}catch(e){}
-    $('#installBar').classList.remove('on');
-    toast('装好啦，去主屏幕看看 ✓');
-  });
-  var x=$('#ibX');
-  if(x)x.onclick=function(){
-    $('#installBar').classList.remove('on');
-    try{localStorage.setItem('fly.install.dismissed','1')}catch(e){}
-  };
-
-  if(inApp){
-    /* 微信等内置浏览器：延迟弹「去浏览器打开」引导 */
-    setTimeout(function(){
-      if(!isStandalone()&&!$('#installBar').classList.contains('on')){
-        var d2=false;
-        try{d2=localStorage.getItem('fly.install.dismissed')==='1'}catch(e){}
-        if(!d2)showInstallBar('inapp');
-      }
-    },1800);
-  }else if(isIOS()){
-    // iOS 没有 beforeinstallprompt，延迟几秒主动给引导
-    setTimeout(function(){
-      if(!deferredPrompt&&!isStandalone()&&!$('#installBar').classList.contains('on')){
-        var d2=false;
-        try{d2=localStorage.getItem('fly.install.dismissed')==='1'}catch(e){}
-        if(!d2)showInstallBar('ios');
-      }
-    },2600);
-  }
-}
+/* 注册 Service Worker：装到桌面后断网也能打开。
+   不做主动安装提示——浏览器自己会弹安装横幅，或用户从菜单里「添加到主屏幕」 */
 function registerSW(){
   if(location.protocol.indexOf('http')===0&&navigator.serviceWorker){
     navigator.serviceWorker.register('sw.js').catch(function(){});
@@ -2187,7 +2041,6 @@ function init(){
   fillIcons();   // 复盘环 / 写一点环 / 流水线里的图标
   renderPoints();renderScript();renderNotes();renderMethods();renderStats();
   registerSW();
-  initInstall();
 }
 /* 暴露给自测脚本（不影响使用） */
 window.__TT={
@@ -2197,12 +2050,7 @@ window.__TT={
   genNotes:genNotes,
   classify:classify,
   dayDone:dayDone,
-  splitSentences:splitSentences,
-  /* 安装相关（自测用） */
-  isInAppBrowser:isInAppBrowser,
-  isIOS:isIOS,
-  isStandalone:isStandalone,
-  showInstallBar:showInstallBar
+  splitSentences:splitSentences
 };
 
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
