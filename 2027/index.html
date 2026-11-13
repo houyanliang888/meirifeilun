@@ -3250,7 +3250,9 @@ boot();
 #pwaTip ol{padding-left:20px;margin:8px 0 14px}
 #pwaTip .close{position:absolute;right:12px;top:9px;border:0;background:none;font-size:20px;color:#948c7f;cursor:pointer}
 #pwaMask{display:none;position:fixed;inset:0;background:rgba(20,18,15,.4);z-index:10000}
-@media print{#pwaDock,#pwaTip,#pwaMask{display:none!important}}
+@media(max-width:640px){body{padding-bottom:62px}#pwaDock{left:10px;bottom:10px}
+  #pwaBtn{padding:7px 12px;font-size:12px;box-shadow:0 4px 16px rgba(30,26,20,.14)}}
+@media print{body{padding-bottom:0}#pwaDock,#pwaTip,#pwaMask{display:none!important}}
 </style>
 <div id="pwaDock"><button id="pwaBtn" type="button"><span>⬇</span><span>装到手机桌面</span></button></div>
 <div id="pwaMask"></div>
