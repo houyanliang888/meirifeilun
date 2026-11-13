@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "2027 每日记事本 · 丁未年",
+  "short_name": "2027记事本",
+  "description": "每天一页：日记、周月复盘、心情曲线、每日单词、古诗词、金句、历史上的今天、知识点、桌面宠物。数据只存本机，离线可用。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#efeae0",
+  "theme_color": "#9c463c",
+  "lang": "zh-CN",
+  "categories": [
+    "productivity",
+    "lifestyle"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
