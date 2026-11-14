@@ -45,8 +45,8 @@ a{color:var(--accent)}
   padding:26px 20px 18px;display:flex;flex-direction:column;gap:20px;overflow-y:auto}
 .brand{display:flex;align-items:center;gap:12px}
 .seal{width:42px;height:42px;flex:0 0 42px;border-radius:5px;background:var(--accent);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:19px;
-  letter-spacing:2px;writing-mode:vertical-rl;line-height:1.05;box-shadow:inset 0 0 0 2px rgba(255,255,255,.32)}
+  display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:15px;
+  letter-spacing:0;white-space:nowrap;line-height:1;box-shadow:inset 0 0 0 2px rgba(255,255,255,.32)}
 .brand h1{font-family:var(--serif);font-size:19px;margin:0;letter-spacing:.06em;font-weight:600}
 .brand p{margin:3px 0 0;font-size:11px;color:var(--ink3);letter-spacing:.14em}
 .side-label{font-size:10px;letter-spacing:.22em;color:var(--ink3);margin:0 0 8px;text-transform:uppercase}
@@ -262,12 +262,12 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
   .rev-grid{grid-template-columns:1fr}
 }
 @media(max-width:780px){
-  .app{grid-template-columns:1fr}
-  .side{position:relative;height:auto;flex-direction:row;align-items:center;gap:12px;padding:12px 16px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}
-  .brand h1{font-size:15px}.brand p,.side-label,.side-foot,.side-search{display:none}
-  .nav{flex-direction:row}.nav button{padding:7px 10px;white-space:nowrap}
-  .themes{display:none}
-  .main{padding:18px 16px 60px}
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:relative;height:auto;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;overflow:visible;border-right:0;border-bottom:1px solid var(--line)}
+  .brand h1{font-size:16px;white-space:nowrap}.brand p,.side-label,.side-foot,.side-search{display:none}
+  .side > div:not(.brand){display:none}
+  .nav,.themes{display:none}
+  .main{padding:18px 16px 60px;min-width:0}
   .day-hero{grid-template-columns:1fr}.hero-right{border-left:0;border-top:1px solid var(--line)}
   .triad{grid-template-columns:1fr}.triad .card:first-child{grid-column:auto}
   .set-grid,.year-top{grid-template-columns:1fr}
@@ -277,8 +277,23 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
   .pet-info{text-align:left}
   .task3{grid-template-columns:1fr}
   .cal .cell{min-height:64px;padding:5px}.cal .d-lunar{display:none}
-  .big-num{font-size:60px}
+  .big-num{font-size:52px}
   .w-grid{margin-left:0}
+  .topbar{gap:8px;margin-bottom:14px;min-width:0}
+  .crumb{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%}
+  .tools{gap:6px;min-width:0}
+  .tools .btn{padding:6px 9px;font-size:11.5px}
+  .day-hero{margin-bottom:12px}
+  .hero-left{padding:18px 20px}
+  .hero-right{padding:14px 20px;gap:10px}
+  .hero-right .tiny.muted{display:none}
+  .day-tabs-tip{padding-right:76px}
+  html,body{overflow-x:hidden;max-width:100%}
+  .side{width:100%;max-width:100vw;box-sizing:border-box}
+  .topbar{width:100%;max-width:100%;min-width:0}
+  .topbar-right{width:100%;max-width:100%;min-width:0;flex-wrap:wrap}
+  .tools{flex:1 1 calc(100% - 24px);min-width:0;max-width:100%;flex-wrap:wrap}
+  .menu-btn{flex:0 0 auto}
 }
 @media(max-width:480px){.year-mini{grid-template-columns:1fr}.cal .cell{min-height:52px}.cal .d-fest{font-size:9px}}
 
@@ -525,6 +540,79 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
    会盖掉浏览器默认的 [hidden]{display:none}，半透明遮罩常驻 → 整页发灰。
    JS 用 .hidden=true/false 控制显隐，去掉属性后 display:flex 照常生效。 */
 [hidden]{display:none!important}
+
+
+/* ---------- ☰ 菜单栏（手机） ---------- */
+body.menu-open{overflow:hidden}
+.menu-btn{display:none;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);
+  color:var(--ink);border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;
+  white-space:nowrap;box-shadow:var(--shadow);font-family:var(--sans)}
+.menu-btn:hover{border-color:var(--accent);color:var(--accent)}
+.mb-ic{font-size:15px;line-height:1}
+.menu-mask{position:fixed;inset:0;background:rgba(20,18,15,.42);z-index:230}
+.menu-panel{position:fixed;right:0;top:0;bottom:0;width:min(340px,88vw);z-index:231;overflow:auto;
+  background:var(--paper);color:var(--ink);border-left:1px solid var(--line);
+  box-shadow:-18px 0 54px rgba(20,18,15,.22);padding:18px 18px 32px;font-family:var(--sans)}
+.menu-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:14px;
+  border-bottom:1px solid var(--line);margin-bottom:6px}
+.menu-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.menu-seal{width:38px;height:38px;flex:0 0 38px;border-radius:5px;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:14px;letter-spacing:0;white-space:nowrap}
+.menu-brand b{display:block;font-family:var(--serif);font-size:15px;font-weight:600;white-space:nowrap}
+.menu-brand small{display:block;font-size:10.5px;color:var(--ink3);letter-spacing:.1em;margin-top:3px;white-space:nowrap}
+.menu-x{border:0;background:transparent;color:var(--ink2);font-size:24px;line-height:1;cursor:pointer;padding:2px 6px}
+.menu-label{font-size:10px;letter-spacing:.22em;color:var(--ink3);text-transform:uppercase;margin:18px 0 9px}
+.mnav{display:flex;flex-direction:column;gap:3px}
+.mnav button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:0;border-radius:var(--r-sm);
+  background:transparent;color:var(--ink2);font-size:13.5px;text-align:left;cursor:pointer;font-family:var(--sans)}
+.mnav button:hover{background:var(--accent-soft);color:var(--ink)}
+.mnav button.on{background:var(--card);color:var(--accent);font-weight:600;box-shadow:var(--shadow);border:1px solid var(--line)}
+.mnav .ic{font-size:15px;width:18px;text-align:center;opacity:.85}
+#menuSearchInput{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r-sm);
+  background:var(--card);color:var(--ink);font-size:13px;outline:none;font-family:var(--sans)}
+#menuSearchInput:focus{border-color:var(--accent)}
+.menu-themes{display:flex;gap:9px;flex-wrap:wrap}
+.menu-meta{margin-top:20px;padding:12px 14px;border-radius:var(--r-sm);background:var(--accent-soft);
+  font-size:11.5px;line-height:1.9;color:var(--ink2)}
+.menu-install{display:none;align-items:center;gap:8px;width:100%;margin-top:14px;padding:10px 12px;
+  border:1px solid var(--line);border-radius:var(--r-sm);background:var(--card);color:var(--ink);
+  font-size:13px;cursor:pointer;font-family:var(--sans)}
+body[data-pwa="1"] .menu-install{display:flex}
+.menu-install:hover{border-color:var(--accent);color:var(--accent)}
+.menu-foot{margin-top:18px;padding-top:12px;border-top:1px solid var(--line);font-size:10.5px;line-height:1.9;color:var(--ink3)}
+
+/* ---------- 日视图：五个选项，点开才展开 ---------- */
+.day-tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 8px}
+.day-tab{display:flex;align-items:center;gap:10px;min-width:0;padding:12px;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--card);color:var(--ink);cursor:pointer;text-align:left;
+  box-shadow:var(--shadow);transition:.16s;font-family:var(--sans)}
+.day-tab:hover{transform:translateY(-2px);border-color:var(--accent)}
+.day-tab.on{border-color:var(--accent);background:var(--accent-soft)}
+.dt-ic{flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:var(--paper);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--accent)}
+.day-tab.on .dt-ic{background:var(--accent);color:#fff;border-color:var(--accent)}
+.dt-txt{min-width:0;flex:1}
+.dt-txt b{display:block;font-family:var(--serif);font-size:13.5px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
+.dt-txt small{display:block;font-size:10.5px;color:var(--ink3);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dt-arrow{flex:0 0 auto;font-size:17px;color:var(--ink3);line-height:1}
+.day-tab.on .dt-arrow{color:var(--accent)}
+.day-tabs-tip{font-size:11px;color:var(--ink3);margin:0 0 18px;letter-spacing:.04em}
+.write-grid.one-col{grid-template-columns:1fr}
+@media(max-width:1080px){.day-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:780px){
+  .day-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .day-tab{padding:10px}
+  .dt-txt b{font-size:12.5px}
+  .dt-ic{flex-basis:26px;width:26px;height:26px;font-size:13px}
+  .menu-btn{display:inline-flex}
+}
+@media print{
+  .day-tabs,.day-tabs-tip,.menu-btn,.menu-mask,.menu-panel{display:none!important}
+  .day-panel[hidden]{display:block!important}
+}
+
+/* 已安装为独立应用后，不再重复显示安装入口 */
+body[data-installed="1"] .menu-install{display:none}
 </style>
 <!-- PWA / GitHub Pages 版注入（本地单文件版不受影响） -->
 <link rel="manifest" href="./manifest.webmanifest">
@@ -567,6 +655,7 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
       <div style="margin-top:8px"><span id="saveState"></span></div>
       <div style="margin-top:8px;opacity:.78">离线可用 · 数据仅存本机<br>Ctrl+P 存 PDF · Ctrl+S 立即保存 · ← → 翻页</div>
     </div>
+    <button class="menu-btn no-print" id="menuBtn" data-act="menu-open" aria-label="打开菜单"><span class="mb-ic">☰</span><span>菜单</span></button>
   </aside>
   <main class="main">
     <header class="topbar no-print">
@@ -579,6 +668,8 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
     <div id="view"></div>
   </main>
 </div>
+<div id="menuMask" class="menu-mask no-print" data-act="menu-close" hidden></div>
+<aside id="menuPanel" class="menu-panel no-print" hidden></aside>
 <div id="petWidget" class="pet-widget no-print"></div>
 <div id="petGame" class="pet-game no-print" hidden></div>
 <div id="monkeyDock" class="monkey-dock no-print"></div>
@@ -2278,8 +2369,76 @@ function applyTheme(){
 /* ============ 界面：渲染与交互 ============ */
 let memoYM='', memoQ='';
 
+/* ---------------- ☰ 菜单栏：手机上收起全部导航 ---------------- */
+function renderMenu(){
+  const p=$('#menuPanel'); if(!p) return;
+  const seal=$('.seal'), h1=$('.brand h1');
+  const navHTML=$$('#nav button[data-view]').map(b=>
+    `<button data-view="${b.dataset.view}">${b.innerHTML}</button>`).join('');
+  const dots=($('#themeDots')||{}).innerHTML||'';
+  const j=(typeof journeyOf==='function')?journeyOf():null;
+  const gz=(typeof yearGanzhi==='function')?yearGanzhi(Number(todayStr().slice(0,4))):(seal?seal.textContent.trim():'');
+  p.innerHTML=`
+    <div class="menu-head">
+      <div class="menu-brand"><span class="menu-seal">${esc(seal?seal.textContent.trim():'记')}</span>
+        <div><b>${esc(h1?h1.textContent.trim():'每日记事本')}</b><small>一天一页 · 写下来就好</small></div></div>
+      <button class="menu-x" data-act="menu-close" aria-label="关闭菜单">×</button>
+    </div>
+    <p class="menu-label">翻页 · PAGES</p>
+    <nav class="mnav">${navHTML}</nav>
+    <p class="menu-label">查找 · SEARCH</p>
+    <input id="menuSearchInput" type="text" placeholder="搜索日记…（回车）" autocomplete="off">
+    <p class="menu-label">纸色 · THEME</p>
+    <div class="themes menu-themes">${dots}</div>
+    <div class="menu-meta">今天 ${todayStr()} · ${gz}<br>${j?'启程第 '+j.day+' 天 · 已写 '+j.written+' 天（自 '+j.start+' 起）':'离线可用 · 数据仅存本机'}<br>记得定期导出 JSON 备份</div>
+    <button class="menu-install" data-act="install-app"><span>📲</span> 装到桌面 / 安装说明</button>
+    <div class="menu-foot">Ctrl+P 存 PDF · Ctrl+S 立即保存<br>← → 翻页 · 数据只存这台设备</div>`;
+  $$('#menuPanel [data-view]').forEach(b=>b.classList.toggle('on',b.dataset.view===cur.view));
+}
+function openMenu(){
+  const p=$('#menuPanel'), m=$('#menuMask');
+  if(p) p.hidden=false; if(m) m.hidden=false;
+  document.body.classList.add('menu-open');
+}
+function closeMenu(){
+  const p=$('#menuPanel'), m=$('#menuMask');
+  if(p) p.hidden=true; if(m) m.hidden=true;
+  document.body.classList.remove('menu-open');
+}
+
+/* ---------------- 日视图：五个选项，点开才展开 ---------------- */
+const DAY_TABS=['write','sky','read','know','review'];
+function validTab(k){ return DAY_TABS.indexOf(k)>=0?k:'write'; }
+function tabHidden(k){ return validTab(state.settings.dayTab)===k?'':'hidden'; }
+function applyDayTab(){
+  const k=validTab(state.settings.dayTab); state.settings.dayTab=k;
+  $$('#view .day-panel').forEach(p=>{ p.hidden=p.dataset.panel!==k; });
+  $$('#dayTabs .day-tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===k));
+  const v=$('#view'); if(v) v.dataset.tab=k;
+}
+function setDayTab(k){
+  state.settings.dayTab=validTab(k); persist(); applyDayTab(); closeMenu();
+  const v=$('#view'); if(v&&v.scrollTop) v.scrollTop=0;
+}
+function dayTabsHTML(i,e,ws,poem){
+  const note=(val(cur.date,'note')||'').length;
+  const wOn=!!(state.weather&&state.weather.data);
+  const items=[
+    ['write','✎','今日书写',note?'已写 '+note+' 字 · 点开继续':'三件事 · 记录 · 感恩'],
+    ['sky','☀','天气与小签',(state.settings.city||'本地')+' · '+(wOn?'天气已更新':'可手记天气')],
+    ['read','▤','每日一读',esc(poem.t)+' · '+ws.length+' 个单词'],
+    ['know','❖','博闻一技','历史上的今天 · 每日一技'],
+    ['review','✓','晚间复盘','复盘 · 刻度 · 习惯打卡']
+  ];
+  const k=validTab(state.settings.dayTab);
+  return `<div class="day-tabs no-print" id="dayTabs">${items.map(x=>
+    `<button class="day-tab ${x[0]===k?'on':''}" data-act="day-tab" data-tab="${x[0]}" aria-pressed="${x[0]===k}">
+       <span class="dt-ic">${x[1]}</span><span class="dt-txt"><b>${x[2]}</b><small>${esc(x[3])}</small></span>
+       <span class="dt-arrow">${x[0]===k?'−':'+'}</span></button>`).join('')}</div>
+    <div class="day-tabs-tip no-print">点选项展开 · 只显示一组 · 会记住上次选择</div>`;
+}
 function renderNav(){
-  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.view===cur.view));
+  $$('#nav button[data-view], #menuPanel [data-view]').forEach(b=>b.classList.toggle('on',b.dataset.view===cur.view));
   const t=todayStr();
   const nf=$('#todayNote');
   if(nf){
@@ -2291,6 +2450,7 @@ function renderNav(){
   if(td && !td.children.length){
     td.innerHTML=THEMES.map(t=>`<button class="theme-dot" data-act="theme" data-theme="${t[0]}" title="${t[1]}" style="background:${t[2]}"><span style="background:${t[3]}"></span></button>`).join('');
   }
+  renderMenu();
 }
 function renderCrumb(){
   const i=infoOf(cur.date), t=todayStr();
@@ -2380,12 +2540,17 @@ function renderDay(){
     </div>
   </section>
 
+  ${dayTabsHTML(i,e,ws,p)}
+
+  <div class="day-panel" data-panel="sky" ${tabHidden('sky')}>
   <section class="card strip" id="weatherWrap" style="flex-direction:column;align-items:stretch;gap:10px">
     <div id="weatherBox" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;width:100%"></div>
     <div id="weatherManual" style="border-top:1px dashed var(--line);padding-top:9px"></div>
   </section>
   <div id="cityPanel"></div>
+  </div>
 
+  <div class="day-panel" data-panel="read" ${tabHidden('read')}>
   <section class="triad">
     <article class="card">
       <div class="card-kicker">每日一诗 · POEM</div>
@@ -2412,7 +2577,9 @@ function renderDay(){
         <span class="tiny muted">点单词看例句 · 重复出现即复习</span></div>
     </article>
   </section>
+  </div>
 
+  <div class="day-panel" data-panel="sky" ${tabHidden('sky')}>
   <section class="card omen">
     <div class="omen-tag">今日小签</div>
     <div class="omen-main">
@@ -2423,7 +2590,9 @@ function renderDay(){
     <div class="omen-lucky"><div class="lucky-dot" style="background:${om.lucky[1]}"></div>
       幸运色 ${esc(om.lucky[0])}<br>幸运数 ${om.num}<br><span class="tiny">趣味随机 · 非预测</span></div>
   </section>
+  </div>
 
+  <div class="day-panel" data-panel="know" ${tabHidden('know')}>
   <section class="duo">
     <article class="card">
       <div class="card-kicker">历史上的今天 · ON THIS DAY</div>
@@ -2434,8 +2603,10 @@ function renderDay(){
       ${knowledgeHTML(i)}
     </article>
   </section>
+  </div>
 
-  <section class="write-grid">
+  <div class="day-panel" data-panel="write" ${tabHidden('write')}>
+  <section class="write-grid one-col">
     <div>
       <div class="card write-card">
         <div class="sec-h"><span class="bar"></span><h2>今日三件事</h2><span class="en">TOP 3</span></div>
@@ -2457,6 +2628,11 @@ function renderDay(){
         </div>
       </div>
     </div>
+  </section>
+  </div>
+
+  <div class="day-panel" data-panel="review" ${tabHidden('review')}>
+  <section class="write-grid one-col">
     <div>
       <div class="card write-card">
         <div class="sec-h"><span class="bar"></span><h2>晚间复盘</h2><span class="en">REVIEW</span></div>
@@ -2486,12 +2662,14 @@ function renderDay(){
       </div>
     </div>
   </section>
+  </div>
 
   <div class="day-nav no-print">
     <button class="btn" data-act="goto" data-date="${addDays(cur.date,-1)}" >‹ ${addDays(cur.date,-1).slice(5)} 前一天</button>
     <span class="today-info">${i.lunar.text}　·　${i.term||SEASON_CN[i.season]+'季'}　·　本页自动保存到本机</span>
     <button class="btn" data-act="goto" data-date="${addDays(cur.date,1)}" >后一天 ${addDays(cur.date,1).slice(5)} ›</button>
   </div>`;
+  applyDayTab();
   paintWeather(state.weather&&state.weather.data?state.weather.data:null,
                state.weather?(state.weather.at+(state.weather.day===todayStr()?'':'（缓存）')):'离线或网络不可用');
   paintManual(false);
@@ -3146,12 +3324,18 @@ function go(date,view){
   cur.date=clampYear(date); cur.month=Number(cur.date.slice(5,7)); cur.view=view||'day';
   quoteShift=0; wordCountShown=6;
   const panel=$('#cityPanel'); if(panel) panel.innerHTML='';
-  render();
+  closeMenu(); render();
 }
 document.addEventListener('click',e=>{
   const t=e.target.closest('[data-act]'); if(!t) return;
   const a=t.dataset.act;
   switch(a){
+    case 'day-tab': setDayTab(t.dataset.tab); break;
+    case 'menu-open': openMenu(); break;
+    case 'menu-close': closeMenu(); break;
+    case 'install-app': closeMenu();
+      if(typeof window.diaryInstall==='function') window.diaryInstall();
+      else toast('线上版可在浏览器菜单选「添加到主屏幕」'); break;
     case 'goto': go(t.dataset.date,'day'); break;
     case 'today': go(todayStr(),'day'); break;
     case 'goto-today-write': go(todayStr(),'day'); setTimeout(()=>{const el=$('textarea[data-f="note"]'); if(el) el.focus();},60); break;
@@ -3243,10 +3427,10 @@ document.addEventListener('click',e=>{
 });
 /* 侧栏导航 */
 document.addEventListener('click',e=>{
-  const b=e.target.closest('#nav button[data-view]'); if(!b) return;
+  const b=e.target.closest('#nav button[data-view], #menuPanel [data-view]'); if(!b) return;
   cur.view=b.dataset.view; $('#cityPanel')&&($('#cityPanel').innerHTML='');
   if(cur.view==='month') cur.month=Number(cur.date.slice(5,7));
-  render();
+  closeMenu(); render();
 });
 /* 输入 */
 document.addEventListener('input',e=>{
@@ -3281,9 +3465,9 @@ document.addEventListener('change',e=>{
   if(t.id==='importFile'&&t.files&&t.files[0]){ importJSON(t.files[0]); t.value=''; }
 });
 document.addEventListener('keydown',e=>{
-  const s=$('#searchInput');
-  if(e.key==='Enter'&&document.activeElement===s){
-    const q=s.value.trim(); if(!q) return; cur.query=q; cur.view='search'; render(); return;
+  const s=document.activeElement;
+  if(e.key==='Enter'&&s&&(s.id==='searchInput'||s.id==='menuSearchInput')){
+    const q=s.value.trim(); if(!q) return; cur.query=q; cur.view='search'; closeMenu(); render(); return;
   }
   const mi=$('#memoInput');
   if(e.key==='Enter'&&document.activeElement===mi){
@@ -3293,7 +3477,10 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&document.activeElement===mki){
     e.preventDefault(); monkeyState.q=(mki.value||'').trim(); monkeyState.mode='search'; renderMonkeyPanel(); return;
   }
-  if(e.key==='Escape'){ const mp=$('#monkeyPanel'); if(mp&&!mp.hidden){ mp.hidden=true; return; } }
+  if(e.key==='Escape'){
+    const mn=$('#menuPanel'); if(mn&&!mn.hidden){ closeMenu(); return; }
+    const mp=$('#monkeyPanel'); if(mp&&!mp.hidden){ mp.hidden=true; return; }
+  }
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){ e.preventDefault(); persist(); toast('已保存到本机'); return; }
   const tag=(document.activeElement||{}).tagName;
   if(cur.view==='day'&&!['INPUT','TEXTAREA','SELECT'].includes(tag)){
@@ -3303,13 +3490,14 @@ document.addEventListener('keydown',e=>{
 });
 /* 打印镜像：把 textarea 内容复制成可打印的 div */
 window.addEventListener('beforeprint',()=>{
+  $$('#view .day-panel').forEach(p=>{ p.hidden=false; });
   $$('textarea').forEach(t=>{
     if(t.nextElementSibling&&t.nextElementSibling.classList.contains('print-only')) return;
     const d=document.createElement('div'); d.className='print-only'; d.textContent=t.value||'';
     t.after(d);
   });
 });
-window.addEventListener('afterprint',()=>{ $$('.print-only').forEach(d=>d.remove()); });
+window.addEventListener('afterprint',()=>{ $$('.print-only').forEach(d=>d.remove()); applyDayTab(); });
 
 /* ---------------- 联网 / 单机 状态指示 ---------------- */
 function updateNet(){
@@ -3333,33 +3521,27 @@ function boot(){
 boot();
 
 })();</script>
-<!-- 安装入口 + Service Worker -->
+<!-- 安装能力（入口收进 ☰ 菜单）+ Service Worker -->
 <style>
-#pwaDock{position:fixed;left:14px;bottom:14px;z-index:9998;font-family:system-ui,"Microsoft YaHei",sans-serif}
-#pwaBtn{border:1px solid #ded6c7;background:#fffdf8;color:#26231f;border-radius:999px;
-  padding:9px 15px;font-size:13px;box-shadow:0 6px 22px rgba(30,26,20,.16);cursor:pointer;
-  display:flex;align-items:center;gap:7px}
-#pwaBtn:active{transform:translateY(1px)}
 #pwaTip{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10001;
   width:min(92vw,400px);background:#fffdf8;color:#26231f;border:1px solid #ded6c7;border-radius:16px;
-  padding:22px 22px 18px;box-shadow:0 24px 80px rgba(20,18,15,.32);font-size:14px;line-height:1.75}
+  padding:22px 22px 18px;box-shadow:0 24px 80px rgba(20,18,15,.32);font-size:14px;line-height:1.75;
+  font-family:system-ui,"Microsoft YaHei",sans-serif}
 #pwaTip h3{margin:0 0 10px;font-size:17px;color:#9c463c}
 #pwaTip b{color:#9c463c}
 #pwaTip .close{position:absolute;right:12px;top:9px;border:0;background:none;font-size:20px;color:#948c7f;cursor:pointer}
 #pwaMask{display:none;position:fixed;inset:0;background:rgba(20,18,15,.4);z-index:10000}
-@media(max-width:640px){body{padding-bottom:62px}#pwaDock{left:10px;bottom:10px}
-  #pwaBtn{padding:7px 12px;font-size:12px;box-shadow:0 4px 16px rgba(30,26,20,.14)}}
-@media print{body{padding-bottom:0}#pwaDock,#pwaTip,#pwaMask{display:none!important}}
+@media print{#pwaTip,#pwaMask{display:none!important}}
 </style>
-<div id="pwaDock"><button id="pwaBtn" type="button"><span>⬇</span><span>装到手机桌面</span></button></div>
 <div id="pwaMask"></div>
 <div id="pwaTip">
   <button class="close" type="button" aria-label="关闭">×</button>
   <h3>把「今日启程」装到桌面</h3>
   <p><b>iPhone / iPad</b>：用 <b>Safari</b> 打开本页 → 点底部「分享」→ 选「添加到主屏幕」。</p>
-  <p><b>安卓 / 鸿蒙</b>：用 Chrome、Edge 或华为浏览器打开 → 菜单里选「安装应用」/「添加到主屏幕」；若出现安装提示，直接点下方按钮即可。</p>
-  <p style="color:#5c554b;font-size:12.5px">第一次打开那天就是<b>启程日</b>，会一直显示「启程第 N 天」。任意年份都能写，跨年自动换年。
-  日记只存在这台设备、不上传服务器；天气需联网，断网可「手记天气」。与「2027 专版」的数据互不干扰。</p>
+  <p><b>安卓 / 鸿蒙</b>：用 Chrome、Edge 或华为浏览器打开 → 菜单里选「安装应用」/「添加到主屏幕」；
+     若在 ☰ 菜单里点「装到桌面」出现安装提示，直接确认即可。</p>
+  <p style="color:#5c554b;font-size:12.5px">安装后全屏运行、离线可写；日记只存在这台设备，不上传服务器。
+     天气需要联网，断网可在页面上「手记天气」。页面内容都收在 ☰ 菜单与五个选项里，点开才展开。</p>
 </div>
 <script>
 (function(){
@@ -3370,30 +3552,24 @@ boot();
       navigator.serviceWorker.register('./sw.js', {scope:'./'}).catch(function(){});
     });
   }
+  /* 菜单里的「装到桌面」只在 PWA 版出现；单文件离线版不显示 */
+  document.body.setAttribute('data-pwa','1');
   var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
-  var dock = document.getElementById('pwaDock');
-  var tip = document.getElementById('pwaTip');
-  var mask = document.getElementById('pwaMask');
-  if (standalone || isFile) { dock.style.display = 'none'; return; }
-  if (localStorage.getItem('diaryToday.pwaDockClosed') === '1') dock.style.display = 'none';
-  var deferred = null;
-  window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault(); deferred = e; dock.style.display = 'flex';
-  });
-  window.addEventListener('appinstalled', function(){ dock.style.display = 'none'; });
-  function openTip(){ tip.style.display = 'block'; mask.style.display = 'block'; }
-  function closeTip(){ tip.style.display = 'none'; mask.style.display = 'none'; }
-  document.getElementById('pwaBtn').addEventListener('click', function(){
-    if (deferred) { deferred.prompt(); deferred.userChoice.then(function(){ deferred = null; }); }
-    else { openTip(); }
-  });
-  mask.addEventListener('click', closeTip);
-  tip.addEventListener('click', function(e){ if (e.target.classList.contains('close')) closeTip(); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeTip(); });
-  dock.addEventListener('contextmenu', function(e){
-    e.preventDefault(); dock.style.display = 'none';
-    localStorage.setItem('diaryToday.pwaDockClosed', '1');
-  });
+  if (standalone) document.body.setAttribute('data-installed','1');
+  var tip=document.getElementById('pwaTip');
+  var mask=document.getElementById('pwaMask');
+  var deferred=null;
+  window.addEventListener('beforeinstallprompt',function(e){ e.preventDefault(); deferred=e; });
+  window.addEventListener('appinstalled',function(){ closeTip(); });
+  function openTip(){ tip.style.display='block'; mask.style.display='block'; }
+  function closeTip(){ tip.style.display='none'; mask.style.display='none'; }
+  window.diaryInstall=function(){
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; }); }
+    else openTip();
+  };
+  mask.addEventListener('click',closeTip);
+  tip.addEventListener('click',function(e){ if(e.target.classList.contains('close')) closeTip(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeTip(); });
 })();
 </script>
 </body>
