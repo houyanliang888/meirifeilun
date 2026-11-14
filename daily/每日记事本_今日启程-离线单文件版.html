@@ -520,6 +520,11 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
   .cal .cell{min-height:78px}
   .app[data-theme]{--bg:#fff;--paper:#fff;--card:#fff;--ink:#111;--ink2:#444;--ink3:#777;--line:#ddd;--accent:#8a3f36;--accent-soft:#f7efec}
 }
+
+/* 修复：HTML hidden 属性必须生效。.monkey-panel / .pet-game 写了 display:flex，
+   会盖掉浏览器默认的 [hidden]{display:none}，半透明遮罩常驻 → 整页发灰。
+   JS 用 .hidden=true/false 控制显隐，去掉属性后 display:flex 照常生效。 */
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
