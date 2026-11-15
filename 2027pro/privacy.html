@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>隐私政策 · 2027 每日记事本（新年版）</title>
+<style>
+:root{--paper:#f7f3ea;--ink:#26231f;--ink2:#524c43;--ink3:#8c8478;--line:#ded6c7;--red:#9c463c;--gold:#b08d57}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.9 system-ui,"Microsoft YaHei",sans-serif}
+.page{max-width:820px;margin:0 auto;padding:40px 44px 64px;background:#fffdf8;min-height:100vh;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.kicker{font-size:11px;letter-spacing:3px;color:var(--gold)}h1{font-size:27px;margin:8px 0 4px}
+.meta{font-size:12px;color:var(--ink3);border-bottom:2px solid var(--red);padding-bottom:16px;margin-bottom:24px}
+h2{font-size:17px;margin:28px 0 8px;padding-left:11px;border-left:4px solid var(--red)}
+p,li{margin:7px 0}ul{padding-left:22px}table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}th{background:#f7efec;color:var(--red)}
+b{color:var(--red)}code{background:#f7efec;padding:1px 5px;border-radius:4px;font-size:12.5px}
+.box{background:#eef5ef;border-left:3px solid #4f7a68;padding:13px 17px;margin:16px 0;border-radius:0 8px 8px 0}
+a{color:var(--red);word-break:break-all}.foot{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;font-size:12px;color:var(--ink3)}
+@media print{body{background:#fff}.page{border:0;padding:0}h2{break-after:avoid}@page{size:A4;margin:15mm}}
+@media(max-width:640px){.page{padding:24px 18px 44px}}
+</style></head>
+<body><div class="page">
+<div class="kicker">PRIVACY POLICY</div>
+<h1>隐私政策 · 2027 每日记事本（新年版）</h1>
+<div class="meta">生效日期：2026-11-14 ｜ 最近更新：2026-11-14 ｜ 版本：2027 新年版 v1.0<br>
+开发者：侯哥智改（个人）｜ 应用形态：网页应用 / 可安装 PWA ｜ 适用网址：<a href="https://houyanliang888.github.io/meirifeilun/2027pro/">https://houyanliang888.github.io/meirifeilun/2027pro/</a></div>
+
+<div class="box"><b>一句话说明</b>：这是一本<b>只存在你自己设备上</b>的日记本。我们不设账号、不开服务器、不收集你的任何个人信息，也看不到你写的任何一个字。</div>
+
+<h2>一、我们收集什么信息</h2>
+<p><b>不收集。</b>本应用不要求注册、不要求登录、不收集姓名、手机号、邮箱、位置、设备标识、通讯录、相册、通讯内容，也不使用 Cookie 统计、埋点分析或第三方广告 / 推送 SDK。</p>
+<p>你在应用里写下的日记、三件事、感恩、复盘、心情刻度、习惯打卡、年度目标、封面署名与寄语、宠物名称与状态，<b>全部只保存在当前设备浏览器的本地存储</b>（localStorage，键名 <code>diary2027.v1</code>）中，由浏览器自行管理，不会上传到任何服务器。</p>
+
+<h2>二、本地存储与离线使用</h2>
+<ul>
+<li>应用通过 Service Worker 缓存页面资源，安装到桌面后<b>断网也能打开、书写与查询</b>。</li>
+<li>本地数据不会自动同步到云端，也不会在你的多台设备之间共享。同一网址在不同设备 / 不同浏览器里是各自独立的一本本子。</li>
+<li>清理浏览器数据、卸载应用、更换设备或浏览器，都会导致本地日记丢失且<b>无法由开发者找回</b>。应用内提供「导出 JSON 备份」「导入备份」，请定期自行备份。</li>
+</ul>
+
+<h2>三、唯一的外部网络请求</h2>
+<table>
+<tr><th>用途</th><th>接收方</th><th>发送内容</th><th>可否关闭</th></tr>
+<tr><td>获取当日天气</td><td>Open-Meteo.com</td><td>所选城市的经纬度</td><td>可以</td></tr>
+<tr><td>搜索城市经纬度</td><td>Open-Meteo.com 地理编码接口</td><td>你输入的地名</td><td>可以</td></tr>
+</table>
+<p>这两项请求<b>不包含任何日记内容、不包含设备标识、不携带账号信息</b>。在「设置 · 关于」中关闭「允许联网获取天气」后，应用<b>不会发出任何外部网络请求</b>，天气可改用「手记天气」，随当天日记一起保存在本机。</p>
+<p>天气数据依 <b>CC BY 4.0</b> 授权使用，署名：<i>Weather data by Open-Meteo.com</i>；许可证见 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by/4.0</a>。Open-Meteo 免费接口依其条款仅限非商业用途；如本应用日后用于带广告、会员或商业推广的场景，将先更换为具备商用授权的数据源或订阅其商用服务。</p>
+
+<h2>四、权限申请</h2>
+<p>本应用<b>不申请</b>定位、通讯录、相册、摄像头、麦克风、通知、蓝牙等系统权限。导入备份、导出文件、打印 / 存 PDF 均由你手动触发，文件只在本机读写，不上传。</p>
+
+<h2>五、信息共享、转让与公开披露</h2>
+<p>由于我们不持有你的数据，<b>不存在共享、转让、公开披露或委托处理</b>的情形。链接本身是公开的，但他人打开只会看到一本空白的新本子，无法读取你设备上的日记。</p>
+
+<h2>六、内容来源与知识产权</h2>
+<ul>
+<li>古诗词多为公有领域作品；近现代名人语录、影视台词仅作节选与学习交流并尽量标注出处，<b>不用于商业售卖或广告素材</b>。</li>
+<li>「历史上的今天」为公开事实性事件的自撰简述；英文单词例句、每日一技与界面文案为原创整理。</li>
+<li>「今日小签」「运势」等为按日期生成的趣味内容，<b>不构成任何预测、命理、医疗或决策依据</b>。</li>
+<li>如第三方内容权利人认为相关内容不妥，可通过文末联系方式提出，我们会核实后删除或替换。</li>
+</ul>
+
+<h2>七、未成年人</h2>
+<p>本应用不收集任何个人信息，未成年人亦可使用，无需监护人另行授权。若设备为多人共用，监护人仍应留意设备本地数据的可见性。</p>
+
+<h2>八、你的权利</h2>
+<ul>
+<li><b>查看 / 修改 / 删除</b>：在应用内直接编辑或清空任意一天；「设置 · 关于」提供「清空全部日记」。</li>
+<li><b>导出</b>：「导出 JSON 备份」「导出全年 Markdown」，文件保存在你的设备上。</li>
+<li><b>彻底删除</b>：清空日记、清除浏览器站点数据或卸载应用即可；开发者侧没有任何副本。</li>
+<li>因我们不收集个人信息，不涉及个人信息查阅、更正、撤回同意等需向开发者提出的操作。</li>
+</ul>
+
+<h2>九、免责说明</h2>
+<p>法定节假日、调休安排与二十四节气依据公开资料整理，如有调整以官方最新发布为准。应用内容仅供参考，不替代医疗、法律、投资等专业意见。应用按「现状」提供，不对数据准确性、服务连续性作担保。</p>
+
+<h2>十、政策变更与联系方式</h2>
+<p>如政策有变更，会更新本页「最近更新」日期。应用本身零账号、零推送，不会主动向你发送通知。</p>
+<p>反馈与内容版权事宜：公众号「全屋智能设计侯哥」（侯哥智改）。<br>
+本页面地址：<a href="https://houyanliang888.github.io/meirifeilun/2027pro/privacy.html">https://houyanliang888.github.io/meirifeilun/2027pro/privacy.html</a></p>
+
+<div class="foot">本政策适用于「2027 每日记事本 · 新年版」网页应用 / PWA。若日后推出微信小程序版本，将按小程序平台要求另行发布对应版本的隐私保护指引。<br>© 2026 侯哥智改</div>
+</div></body></html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2027 每日记事本 · 新年版｜一天一页，写下来就好</title>
+<meta name="description" content="2027 年每天一页的记事本：三件事、一首诗、几个单词、历史上的今天都配好了。扫码装到手机桌面，离线可写，日记只存在自己手机里。">
+<style>
+:root{--bg:#efeae0;--paper:#fbf8f1;--card:#fffdf8;--ink:#26231f;--ink2:#524c43;--ink3:#8c8478;
+--line:#ded6c7;--red:#9c463c;--gold:#b08d57;--soft:#f7efec}
+*{box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.8 system-ui,"Microsoft YaHei","PingFang SC",sans-serif}
+.wrap{max-width:940px;margin:0 auto;padding:0 22px 70px}
+.hero{background:linear-gradient(150deg,#1e232d 0%,#2c3442 60%,#3b3329 100%);color:#f6f0e4;
+  padding:54px 46px 46px;border-radius:0 0 22px 22px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;
+  border:1px solid rgba(176,141,87,.28);border-radius:50%}
+.kicker{font-size:11px;letter-spacing:3.5px;color:#c9ad7d}
+h1{font-size:38px;line-height:1.3;margin:12px 0 8px;letter-spacing:1px;font-weight:600}
+.hero .sub{font-size:16px;color:#d8cdb9;margin:0 0 22px;max-width:560px}
+.hero .badges{display:flex;gap:8px;flex-wrap:wrap}
+.hero .badges span{border:1px solid rgba(201,173,125,.5);color:#d9c49c;border-radius:999px;
+  padding:3px 12px;font-size:12px}
+.hero .open{display:inline-block;margin-top:24px;background:#9c463c;color:#fff;text-decoration:none;
+  padding:11px 22px;border-radius:9px;font-size:14px}
+.hero .open:hover{background:#b0564a}
+.qrband{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:-30px 0 0;position:relative;z-index:2}
+.qrcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px;
+  box-shadow:0 16px 50px rgba(30,26,20,.10);display:flex;gap:20px;align-items:center}
+.qrcard.main{border-top:3px solid var(--red)}
+.qrcard img{width:132px;height:132px;flex:0 0 132px;image-rendering:pixelated;background:#fff;
+  border:1px solid var(--line);border-radius:10px;padding:6px}
+.qrcard h3{margin:0 0 4px;font-size:17px;color:var(--red)}
+.qrcard p{margin:3px 0;font-size:12.5px;color:var(--ink2)}
+.qrcard .hint{color:var(--ink3);font-size:11.5px}
+h2{font-size:22px;margin:44px 0 6px;padding-left:12px;border-left:4px solid var(--red)}
+h2 .en{font-size:11px;color:var(--gold);letter-spacing:2px;margin-left:8px;font-weight:400}
+.lead{color:var(--ink2);font-size:13.5px;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:20px}
+.card .ic{font-size:22px;color:var(--red)}
+.card b{display:block;margin:8px 0 5px;font-size:15.5px}
+.card p{margin:0;font-size:13px;color:var(--ink2);line-height:1.75}
+.list{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:8px 24px}
+.list div{display:flex;gap:12px;padding:11px 0;border-bottom:1px dashed var(--line);font-size:14px;align-items:baseline}
+.list div:last-child{border-bottom:0}
+.list .n{flex:0 0 30px;color:var(--gold);font-size:12px;letter-spacing:1px}
+.list b{color:var(--red)}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:20px;position:relative}
+.step:before{counter-increment:s;content:counter(s);position:absolute;right:16px;top:12px;
+  font-size:30px;color:#eee5d6;font-weight:700}
+.step b{display:block;margin-bottom:6px;color:var(--red)}
+.step p{margin:0;font-size:13px;color:var(--ink2)}
+.privacy{background:#eef5ef;border-left:4px solid #4f7a68;border-radius:0 13px 13px 0;padding:18px 24px;margin-top:18px}
+.privacy b{color:#3f6656}
+.privacy ul{margin:8px 0 0;padding-left:20px;font-size:13.5px;color:#3d4b43}
+.privacy li{margin:4px 0}
+.faq{margin-top:8px}
+.faq details{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 18px;margin-bottom:9px}
+.faq summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--red)}
+.faq p{margin:9px 0 0;font-size:13.5px;color:var(--ink2)}
+.foot{margin-top:46px;border-top:1px solid var(--line);padding-top:18px;font-size:12px;color:var(--ink3);line-height:2}
+.foot a{color:var(--red);word-break:break-all}
+@media(max-width:960px){.hero{padding:38px 24px 40px}h1{font-size:28px}
+ .qrband,.grid,.steps{grid-template-columns:1fr}.qrcard img{width:112px;height:112px;flex-basis:112px}
+ .wrap{padding:0 14px 50px}}
+@media print{body{background:#fff}.hero{background:#fff;color:#111;border-radius:0}
+ .hero .open{display:none}.qrcard,.card,.step{box-shadow:none}@page{size:A4;margin:14mm}}
+</style></head><body>
+
+<div class="hero"><div class="wrap" style="padding:0">
+  <div class="kicker">2027 · 丁未年 · DAILY JOURNAL</div>
+  <h1>给 2027 准备一个本子</h1>
+  <p class="sub">一天一页。三件事、一首诗、几个单词、历史上的今天都配好了，翻开就能写，不用想今天写什么。</p>
+  <div class="badges"><span>装到手机桌面</span><span>断网也能写</span><span>日记只存本机</span><span>零账号 · 零广告 · 零付费</span></div>
+  <a class="open" href="https://houyanliang888.github.io/meirifeilun/2027pro/">直接在浏览器打开 →</a>
+</div></div>
+
+<div class="wrap">
+  <div class="qrband">
+    <div class="qrcard main">
+      <img alt="2027 新年版安装二维码" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQAAAAAgH8RuAAADIklEQVR42u2dW2rDQAxFRTfg/e9ydjAlTSzdO9NCYZSP0mNMaRz7fAQuessxu44RoECBAgUKFChQoECBAgXqz6Eij+vr4/X4qv7mFb3HH5njI9oOUKD+D+rW4DXznzq/9PW8J/X4+DhieQQNggJ1rsGX4lJrt+F7KG687nx+TMtYj6BBUKAaNThnKS6/ijBVokFQoN5pB+ssV7MMInYQFKi3x4PP65qWSdu3SI94EBSoFg3mcc3fnvIIGgQF6lCDemhGtMLDYWcaQSlz8LODAnWqwboiuZcfndL7TjQIClSXL2qJl/tKZmmsbCGP4IuCAtVgB4c4n55+qVyoZEolHYoGQYHqsINSgLBIULtl1ERKGRFfFBSoHl/UpWdNMt48U1ka7CAoUH05GVVcuqDaqGbdpOGtpGgQFKgOO1h9oWITd1OIBkGBeldORhIvav6+jRmrgY14EBSolpxMOqLSpG39MPKItpViB0GB6owHp3mklggVkeZ1fFFQoLrs4G77rJVUJwpljAINggLVbAelPmgWcNoE01q5QIOgQB3awXQsw1pldIJe11kQD4IC1WwHx2oWbd2T94gugxVoEBSoNjs4TGL7NNPas22No/zsoEAdxYNa7KsY8O5MK4801mZRNAgKVI8Gt2AwZLOTzTdptzY1elCgGuPBy+eYIrQYoTULDQaxg6BAddlB8zYlJ1M7RcUO6jJSNAgK1LkdXCRmAlTp5SE7t9EgKFCHGqxWtO+2HVbcpwu3J3P0oED1aXDzLcNHCG1EYlofKRoEBaonHtzGA2ueV6qEtuWJnU6gQPXmZJZ+Uc+O2lPLRgs0CArUsS+qK5uWUSar4C/LD9npBApUox3cyxPicNbYYLarXfTJgALVl5NZcyy3QcxCvM9Q0LMNClSnBrf38OpokpnF7QXZ+KKgQLVosKybvgbUC/Ehb6OodA12EBSoVg3qcnvLzEgwqNEiGgQFqlmDkmx5XZR6fV2hTwYUqPfEgxkVaoSoBcH0QtEgKFBtGsxjycZcc1nnGxH76wjRIChQhxpsOAYoUKBAgQIFChQoUKBAgfpDqE/2WyPq+QscTgAAAABJRU5ErkJggg==">
+      <div><h3>2027 新年版</h3>
+        <p>从元旦第一天开始写，一整年刚好一本。</p>
+        <p class="hint">扫码装到桌面 · 微信扫完要「在浏览器中打开」</p>
+        <p class="hint">https://houyanliang888.github.io/meirifeilun/2027pro/</p></div>
+    </div>
+    <div class="qrcard">
+      <img alt="今日启程版安装二维码" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkwAAAJMAQAAAAAgH8RuAAADKElEQVR42u2dS27cMBBEG7mA7n9L3oCBHalZ1VSQBXsWRp5gGDLHeosBCsX+sBWz6xoBChQoUKBAgQIFChQoUKB+HCryur7u78XrXs9//7of94o+8o36FW0XKFD/D2rJbd2kyq715/3P4xbp/ZE+iwZBgTrToCprye1ZF60960WMaBAUqCYN5rp6322O4/lzokFQoD7mg+PRWoaHf1bmzHU0CArUB+PBTL/MJUmzyBEvj6BBUKBONJhXxnr//JFH0CAoUIcarAWLJwbUqPBOyISZoDzF1w4K1JEG30PC9DuRZCrRNqVoEBSoEw2OdWMyTHlKLvQ2xywdokFQoFpyMmPFg+luxRzTDc0l0SAoUC0a1N9jxYAWM4r0ylNoEBSonnjQVzLiy6gw48HQuiEaBAWqwwetOu/dobVbRpIz+CAoUD05Gc+CxltnWmmSQYOgQDX64Cr5pe7EATUj6iUJNAgKVJ8PFlVundsqwJASIRoEBerUB1VQw1u1RZ6aEaU+CApUpw+q9KacItSzEmOpb21W0SAoUE170VJ3yE+jHKB4gsRVrGcvCgpUR05GPc4CQD9YUawQDYIC1RgPaiva+nRsRYpttAUaBAWqZS+qk2TsWESuTEuW0i8KClSjBlVfpV0t4mWWhTojGgQFqscH39pgSidblPYYNAgKVJ8PWvXBszE20lB3p8SDoEB1+eA+Q/uae03QbFGb3NAgKFBNPlhyL9k4WgyxpmvQIChQhxr0AkRxwNK9ts+7QIOgQB1pcNokbZ1rEeEVw7HcUGWLBkGBOtHgnm95Pa+0T0EkHgQFqjEerA0wYd3a9i6YiC1BytcOCtSRD1rupTSkTStV6FEm6oOgQLXFgzrcSTMzYzs2uE0+RIOgQJ36YIi1Db/XuRazvgKGvSgoUI17URtSsW9NffL21uDN1w4K1JEGU2sqPUuHSpuoGiX1QVCgejW4+revbbqvT56J4J0voEB9xgcjbOz22N6yNOv7KdAgKFBd8WCp2ltLzN/kiQZBgTrUYISGeOED7e0g4bCX0ZOTAQWqRYMN1wAFChQoUKBAgQIFChQoUD8I9RvkI0sdFpbrYAAAAABJRU5ErkJggg==">
+      <div><h3>今日启程版</h3>
+        <p>不想等元旦，今天就能开写，不限年份。</p>
+        <p class="hint">两版数据各自独立，可同时装</p>
+        <p class="hint">https://houyanliang888.github.io/meirifeilun/daily/</p></div>
+    </div>
+  </div>
+
+  <h2>这本子里有什么<span class="en">WHAT'S INSIDE</span></h2>
+  <p class="lead">内容都收在选项里，点开才展开，不会一打开就铺满一屏。</p>
+  <div class="grid">
+    <div class="card"><span class="ic">✎</span><b>今日书写</b><p>三件事、自由记录、感恩、心情刻度、六个习惯打卡。写多写少都算数。</p></div>
+    <div class="card"><span class="ic">▤</span><b>每日一读</b><p>一首古诗词、一则名人金句、6–10 个带例句的单词，按日期自动换。</p></div>
+    <div class="card"><span class="ic">❖</span><b>博闻一技</b><p>历史上的今天、每天一个小技能，力学电学电脑 CAD PS 生活里都用得上。</p></div>
+    <div class="card"><span class="ic">▦</span><b>全年历法</b><p>2027 放假调休、二十四节气、农历干支、传统节日，翻到哪天都有提示。</p></div>
+    <div class="card"><span class="ic">〰</span><b>复盘与趋势</b><p>周复盘、月复盘、心情曲线，回头能看见这一年是怎么过来的。</p></div>
+    <div class="card"><span class="ic">▤</span><b>年度书</b><p>填好署名和年份寄语，Ctrl+P 存成 A4 PDF，年底就是一本可以打印装订的书。</p></div>
+  </div>
+
+  <h2>还有几个小东西<span class="en">LITTLE THINGS</span></h2>
+  <div class="list">
+    <div><span class="n">01</span><span><b>右下角的小猴</b>：输入关键词，一次查遍你写过的日记、诗词、金句、单词、历史和知识点，断网也能查。</span></div>
+    <div><span class="n">02</span><span><b>桌面小宠物</b>：喂食、睡觉、做游戏，写日记顺手养着，不打扰正事。</span></div>
+    <div><span class="n">03</span><span><b>六套纸色</b>：宣纸墨、晨雾青、夜航蓝……白天打印、晚上写字各有一套。</span></div>
+    <div><span class="n">04</span><span><b>回顾查询</b>：按年月翻回去，哪天写过、写了什么，一键补记。</span></div>
+    <div><span class="n">05</span><span><b>天气与小签</b>：可联网看当日天气，也可关掉联网、自己手记一笔。小签纯属趣味。</span></div>
+  </div>
+
+  <h2>三步装到手机<span class="en">INSTALL</span></h2>
+  <div class="steps">
+    <div class="step"><b>扫码打开</b><p>用手机扫上面的码。微信里扫完，先点右上角「···」→「在浏览器中打开」。</p></div>
+    <div class="step"><b>添加到主屏幕</b><p>iPhone 用 Safari 底部「分享」；安卓/鸿蒙用浏览器菜单里的「安装应用」/「添加到主屏幕」。</p></div>
+    <div class="step"><b>回桌面点图标</b><p>全屏打开就是一本本子。断网照样能写，不用注册、不用登录。</p></div>
+  </div>
+
+  <h2>关于隐私，说清楚<span class="en">PRIVACY</span></h2>
+  <div class="privacy"><b>你的日记只在你自己的手机里。</b>
+    <ul>
+      <li>不设账号、不上传服务器、不云端同步、没有广告和统计埋点；</li>
+      <li>链接是公开的，但别人打开只会看到一本空白新本子，<b>看不到你写的任何一个字</b>；</li>
+      <li>唯一的外部请求是天气（只发经纬度/地名，可在设置里关掉，关掉后零外部请求）；</li>
+      <li>换手机或清理浏览器数据会丢，请在「设置 · 关于」里定期导出 JSON 备份；</li>
+      <li>☰ 菜单里有完整的「隐私与授权」和「使用指南」。</li>
+    </ul>
+  </div>
+
+  <h2>常问的几句<span class="en">FAQ</span></h2>
+  <div class="faq">
+    <details><summary>微信里扫开怎么装不了？</summary><p>微信内置浏览器不支持安装到桌面。点右上角「···」→「在浏览器中打开」，再用 Safari / Chrome / 华为浏览器打开一次就行。</p></details>
+    <details><summary>换手机，之前写的还在吗？</summary><p>不在。数据只存在各自设备，没有云同步。换设备前先在原设备「设置 · 关于 → 导出 JSON 备份」，到新设备导入即可。</p></details>
+    <details><summary>能打印出来吗？</summary><p>能。日视图按 <code>Ctrl+P</code> 存 PDF；「年度书」是排好版的 A4 封面 + 全年内容，年底可直接打印装订。</p></details>
+    <details><summary>现在离 2027 还有几天，能先写吗？</summary><p>能先翻开看、把年度目标和封面署名填好，日记从 2027 年 1 月 1 日开始；要是今天就想开写，用旁边那张「今日启程版」的码，不限年份。</p></details>
+    <details><summary>要花钱吗？会上传我的日记吗？</summary><p>零付费、零账号、零广告。日记不上传，也不与电脑同步；天气可以完全关掉，改成自己手记。</p></details>
+  </div>
+
+  <div class="foot">
+    页面内容仅供参考；法定节假日、调休与节气以官方最新发布为准。小签、运势等为趣味内容，不构成预测、命理或决策依据。<br>
+    天气数据：Weather data by Open-Meteo.com（CC BY 4.0）。古诗词多为公有领域；近现代名人语录与影视台词仅作节选与学习交流并标注出处。<br>
+    <a href="https://houyanliang888.github.io/meirifeilun/2027pro/privacy.html">隐私政策</a> ｜ <a href="https://houyanliang888.github.io/meirifeilun/2027pro/">打开本子</a> ｜ <a href="https://houyanliang888.github.io/meirifeilun/daily/">今日启程版</a><br>
+    侯哥智改 · 2027 新年版 · 2026-11-14
+  </div>
+</div></body></html>
