@@ -679,6 +679,54 @@ body[data-installed="1"] .menu-install{display:none}
 .dp-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 @media(max-width:480px){.dp-face{flex:0 0 72px;width:72px;height:72px}.dp-face .pet-svg{width:60px;height:60px}}
 .seal,.menu-seal{text-shadow:0 1px 2px rgba(0,0,0,.55)}
+
+
+/* ===== 书封题签 · 品牌标题（2026-11-15） ===== */
+:root{
+  --art:"STKaiti","Kaiti SC","KaiTi","楷体","STLiti","LiSu","隶书","FangSong","仿宋","Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC",serif;
+  --art-num:"Baskerville","Didot","Palatino Linotype","Book Antiqua",Georgia,"Times New Roman",serif;
+}
+.brand{display:block;position:relative;padding:2px 0 0;margin:-2px 0 0}
+.brand-kicker{display:flex;align-items:center;gap:7px;margin:0 0 13px;
+  font-family:var(--art-num);font-size:9px;letter-spacing:.3em;color:var(--gold);
+  text-transform:uppercase;white-space:nowrap}
+.brand-kicker i{flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent);opacity:.55}
+.brand-main{display:flex;align-items:center;gap:10px;position:relative;z-index:1}
+.brand .seal{width:46px;height:46px;flex:0 0 46px;font-size:16px;border-radius:4px;
+  font-family:var(--art);letter-spacing:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.32),0 3px 13px rgba(120,50,40,.16)}
+.brand-word{position:relative;min-width:0;flex:1}
+.brand-year{position:absolute;right:0;top:-30px;font-family:var(--art-num);
+  font-size:56px;line-height:1;letter-spacing:-.07em;font-weight:400;
+  color:var(--gold);opacity:.13;pointer-events:none;white-space:nowrap}
+.brand h1{position:relative;margin:0;font-family:var(--art);font-size:22px;font-weight:600;
+  letter-spacing:.1em;line-height:1.4;color:var(--ink);white-space:nowrap;
+  text-shadow:0 1px 0 rgba(255,255,255,.42)}
+.brand h1:after{content:"";display:block;width:30px;height:2px;margin-top:9px;
+  background:var(--accent);border-radius:2px;opacity:.8}
+.brand p.brand-sub{position:relative;z-index:1;margin:12px 0 0!important;
+  font-family:var(--art)!important;font-size:11px!important;letter-spacing:.14em;
+  line-height:1.8;color:var(--ink2)!important;white-space:normal}
+.brand-rule{display:flex;align-items:center;gap:8px;margin-top:13px;
+  font-size:9px;letter-spacing:.2em;color:var(--ink3);white-space:nowrap}
+.brand-rule i{flex:1;height:1px;background:var(--line)}
+.side-label{display:flex;align-items:center;gap:8px;font-family:var(--art-num);
+  font-size:9px;letter-spacing:.26em;color:var(--ink3);margin:0 0 10px;text-transform:uppercase}
+.side-label:after{content:"";flex:1;height:1px;background:var(--line)}
+.menu-brand b{font-family:var(--art);font-size:17px;letter-spacing:.1em;font-weight:600}
+.menu-brand small{font-family:var(--art-num);letter-spacing:.16em}
+.menu-seal{font-family:var(--art)!important}
+@media(max-width:780px){
+  .brand{display:flex;align-items:center;gap:9px;padding:0;margin:0}
+  .brand-kicker,.brand-rule,.brand-year,.brand p.brand-sub{display:none!important}
+  .brand-main{gap:9px}
+  .brand .seal{width:34px;height:34px;flex:0 0 34px;font-size:12px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.32)}
+  .brand h1{font-size:17px;letter-spacing:.1em}
+  .brand h1:after{display:none}
+  .side-label{display:none}
+}
+@media print{.brand-kicker,.brand-rule,.brand-year{display:none!important}}
 </style>
 <!-- PWA / GitHub Pages 版注入（本地单文件版不受影响） -->
 <link rel="manifest" href="./manifest.webmanifest">
@@ -694,8 +742,16 @@ body[data-installed="1"] .menu-install{display:none}
 <div class="app" id="app" data-theme="xuan" data-season="winter">
   <aside class="side no-print">
     <div class="brand">
-      <div class="seal">丁未</div>
-      <div><h1>2027 每日记事本</h1><p>新年版 · 一天一页，写下来就好</p></div>
+      <div class="brand-kicker"><span>DAILY</span><i></i><span>MMXXVII</span></div>
+      <div class="brand-main">
+        <div class="seal">丁未</div>
+        <div class="brand-word">
+          <span class="brand-year" aria-hidden="true">2027</span>
+          <h1>每日记事本</h1>
+        </div>
+      </div>
+      <p class="brand-sub">一天一页 · 写下来就好</p>
+      <div class="brand-rule"><i></i><span>丁未年 · 新年版</span><i></i></div>
     </div>
     <div>
       <p class="side-label">翻页 · PAGES</p>
@@ -3565,6 +3621,43 @@ function updateNet(){
 window.addEventListener('online',()=>{ updateNet(); fetchWeather(true); });
 window.addEventListener('offline',updateNet);
 
+
+/* ---------------- 每天打开，自动翻到当天 ---------------- */
+const BOOT_KEY='diary.open.'+((typeof location!=='undefined' && location.pathname)||'local');
+function pageQuery(){ try{ return (location&&location.search)||''; }catch(e){ return ''; } }
+function freshOpen(){
+  let last='';
+  try{ last=sessionStorage.getItem(BOOT_KEY)||''; sessionStorage.setItem(BOOT_KEY,todayStr()); }catch(e){}
+  if(last!==todayStr()) return true;                 /* 隔天第一次打开，必回今天 */
+  let navType='';
+  try{ navType=(performance.getEntriesByType('navigation')[0]||{}).type||''; }catch(e){}
+  return navType!=='reload' && navType!=='back_forward';   /* 刷新 / 前后退保留当前位置 */
+}
+function paintBrandYear(){
+  const y=$('.brand-year[data-auto="1"]'); if(y) y.textContent=String(new Date().getFullYear());
+}
+function goToday(msg){
+  go(clampYear(todayStr()),'day');
+  fetchWeather(false);
+  if(msg) toast(msg);
+}
+let lastOpenDay=todayStr(), dayRollPending=false;
+function checkNewDay(){
+  const t=todayStr();
+  if(t!==lastOpenDay){ lastOpenDay=t; dayRollPending=true; }
+  if(!dayRollPending) return;
+  const ae=document.activeElement;
+  if(ae && /^(INPUT|TEXTAREA|SELECT)$/.test((ae.tagName||'').toUpperCase())) return; /* 正在写字，不打断 */
+  dayRollPending=false;
+  try{ sessionStorage.setItem(BOOT_KEY,t); }catch(e){}
+  const dest=clampYear(t);
+  if(cur.view==='day' && cur.date!==dest) goToday('新的一天 · 已翻到 '+t);
+  else { renderNav(); renderCrumb(); fetchWeather(false); }
+}
+setInterval(checkNewDay,30000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) checkNewDay(); });
+window.addEventListener('focus',checkNewDay);
+
 /* ---------------- 启动 ---------------- */
 
 /* ============ 推广版：首次引导 / 隐私授权 / 分享 ============ */
@@ -3585,7 +3678,7 @@ function promoGuideBody(){
   return `
     <div class="promo-step"><span class="pn">1</span><div><b>什么时候开始写</b>${first}</div></div>
     <div class="promo-step"><span class="pn">2</span><div><b>内容都收在选项里，不堆在桌面上</b>
-      日期卡下面有 5 张卡：<b>今日书写 / 天气与小签 / 每日一读 / 博闻一技 / 晚间复盘</b>，点哪张展开哪张，其它不占地方。
+      日期卡下面有 6 张卡：<b>今日书写 / 天气与小签 / 每日一读 / 博闻一技 / 晚间复盘 / 我的宠物</b>，点哪张展开哪张，其它不占地方。
       全部页面、搜索和六套纸色在右上角 <b>☰ 菜单</b>里；右下角小猴能一次查遍日记和全部内容。</div></div>
     <div class="promo-step"><span class="pn">3</span><div><b>日记只在这台设备</b>
       不上传、不注册、不联网同步、没有广告。换手机、换浏览器或清理浏览数据都会丢，
@@ -3656,7 +3749,16 @@ function closePromo(){
   if(p) p.hidden=true; if(m) m.hidden=true;
 }
 function boot(){
-  readHash();
+  const qs=pageQuery();
+  const qd=(qs.match(/[?&]date=(\d{4}-\d{2}-\d{2})/)||[])[1];
+  const keep=/[?&](stay=1|date=)/.test(qs);
+  if(keep || !freshOpen()){
+    if(qd){ cur.date=clampYear(qd); cur.month=Number(cur.date.slice(5,7)); cur.view='day'; }
+    else readHash();
+  }else{
+    cur.view='day'; cur.date=clampYear(todayStr()); cur.month=Number(cur.date.slice(5,7));
+  }
+  paintBrandYear();
   petDecay(); persist();
   markSaved(true);
   render();
