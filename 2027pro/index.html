@@ -2667,7 +2667,7 @@ function dayTabsHTML(i,e,ws,poem){
   const wOn=!!(state.weather&&state.weather.data);
   const items=[
     ['write','✎','今日书写',note?'已写 '+note+' 字 · 点开继续':'三件事 · 记录 · 感恩'],
-    ['sky','☀','天气与小签',(state.settings.city||'本地')+' · '+(wOn?'天气已更新':'可手记天气')],
+    ['sky','☀','天气',(state.settings.city||'本地')+' · '+(wOn?'天气已更新':'可手记天气')],
     ['read','▤','每日一读',dayGanzhi(i.s).gz+'日 · 每日运势'],
     ['know','❖','博闻一技','历史上的今天 · 每日一技'],
     ['review','✓','晚间复盘','复盘 · 刻度 · 习惯打卡'],
@@ -2860,19 +2860,6 @@ ${dayTabsHTML(i,e,ws,p)}
         幸运色 ${esc(ft.lucky[0])} · 幸运数 ${ft.num}</div>
       <div class="tiny muted" style="margin-top:auto;padding-top:8px;font-size:10px">干支 / 节气 / 建除 / 喜神 / 彭祖百忌依历法与传统通书；宜忌 / 星级 / 幸运为趣味，非预测</div>
     </article>
-  </section>
-  </div>
-
-  <div class="day-panel" data-panel="sky" ${tabHidden('sky')}>
-  <section class="card omen">
-    <div class="omen-tag">今日小签</div>
-    <div class="omen-main">
-      <div><b>宜</b>${esc(om.yi[0])} · ${esc(om.yi[1])}</div>
-      <div><b>忌</b>${esc(om.ji)}</div>
-      <div class="omen-note">${esc(om.note)}</div>
-    </div>
-    <div class="omen-lucky"><div class="lucky-dot" style="background:${om.lucky[1]}"></div>
-      幸运色 ${esc(om.lucky[0])}<br>幸运数 ${om.num}<br><span class="tiny">趣味随机 · 非预测</span></div>
   </section>
   </div>
 
@@ -3154,7 +3141,6 @@ function renderSettings(){
         <li>古诗词 ${POEMS.length} 首，按季节与节日选取，长作用节选并标注；金句 ${QUOTES.length} 条，含《天道》/《遥远的救世主》台词与中外名人语录，尽量标注出处，流传译句已注明。</li>
         <li>每日运势：日柱干支按权威历法逐日推算（如 2027-01-01 庚辰、春节 2/6 丙辰、端午 6/9 己未，均与万年历核对），含年柱生肖、纳音五行、地支相冲。宜忌、星级与幸运色为趣味内容，<b>非预测</b>。</li>
         <li>「历史上的今天」收录 ${Object.keys(HISTORY).length} 天真实可核验的历史事件；「每日一技」收录 ${KNOWLEDGE.length} 条生活实用技能，覆盖生活 / 健康 / 饮食 / 清洁 / 急救 / 育儿 / 收纳 / 睡眠 / 运动 / 理财 / 数码 / 家电 / 园艺等各方面，每天换一类、按年内第几天稳定选取。</li>
-        <li>「今日小签」是按日期在本地随机生成的生活宜忌，<b>纯属趣味，不作任何预测、命理或决策依据</b>。</li>
       </ul>
       <h4>右下角的小猴助理</h4>
       点右下角的卡通小猴头像，会打开「快速查询」：输入任意关键词，一次查遍<b>你写过的日记、古诗词、金句、单词、历史上的今天、每日一技</b>；
@@ -3890,7 +3876,7 @@ function promoGuideBody(){
   return `
     <div class="promo-step"><span class="pn">1</span><div><b>什么时候开始写</b>${first}</div></div>
     <div class="promo-step"><span class="pn">2</span><div><b>内容都收在选项里，不堆在桌面上</b>
-      日期卡下面有 6 张卡：<b>今日书写 / 天气与小签 / 每日一读 / 博闻一技 / 晚间复盘 / 我的宠物</b>，点哪张展开哪张，其它不占地方。
+      日期卡下面有 6 张卡：<b>今日书写 / 天气 / 每日一读 / 博闻一技 / 晚间复盘 / 我的宠物</b>，点哪张展开哪张，其它不占地方。
       全部页面、搜索和六套纸色在右上角 <b>☰ 菜单</b>里；右下角小猴能一次查遍日记和全部内容。</div></div>
     <div class="promo-step"><span class="pn">3</span><div><b>日记只在这台设备</b>
       不上传、不注册、不联网同步、没有广告。换手机、换浏览器或清理浏览数据都会丢，
@@ -3919,7 +3905,7 @@ function promoPrivacyBody(){
       <li>古诗词多为公有领域作品；近现代名人语录、影视台词仅作节选与学习交流并尽量标注出处，
         <b>不作商业售卖或广告素材</b>；「历史上的今天」为公开事实性事件的自撰简述；
         单词例句、每日一技、界面文案为本工具原创整理。</li>
-      <li>「今日小签」「运势」等<b>纯属趣味，不构成任何预测、命理或决策依据</b>。</li>
+      <li>「运势」中的宜忌、星级与幸运色<b>纯属趣味，不构成任何预测、命理或决策依据</b>。</li>
     </ul>
     <h4>免责与未成年人</h4>
     法定节假日、调休与节气以官方最新发布为准；内容仅供参考，不替代医疗、法律、投资等专业意见。
