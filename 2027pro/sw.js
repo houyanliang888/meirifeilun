@@ -1,6 +1,6 @@
 /* 2027 每日记事本 · 离线缓存（网络优先，断网回退）
  * 页面是单文件 HTML，缓存首页即可完整离线使用；天气接口不缓存，断网自动降级。 */
-const CACHE = 'diary2027pro-v5';
+const CACHE = 'diary2027pro-v6';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
