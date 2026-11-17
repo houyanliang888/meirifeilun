@@ -175,6 +175,16 @@ a{color:var(--accent)}
   border-top:1px dashed var(--line);padding-top:9px}
 .fort-foot .lucky-dot{width:15px;height:15px;margin:0;border-width:1px}
 
+/* 每日运势：历法速览 */
+.fort-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;margin:2px 0 8px;
+  border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);padding:9px 0}
+.fort-grid div{display:flex;align-items:baseline;gap:6px;min-width:0;font-size:11px}
+.fort-grid i{font-style:normal;color:var(--ink3);font-size:10px;letter-spacing:.08em;flex:0 0 26px}
+.fort-grid b{font-weight:500;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fort-rel{font-size:11px;color:var(--ink2);line-height:1.6;margin-bottom:4px}
+.fort-rel b{font-weight:600;color:var(--accent)}
+.fort-peng{font-size:11px;color:var(--ink3);line-height:1.6;margin-bottom:9px}
+
 /* 书写区 */
 .write-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:16px}
 .write-card{padding:20px 22px;margin-bottom:16px}
@@ -2167,6 +2177,35 @@ function speakWord(word){
 
 
 /* ---------- 每日运势：干支（客观历法，儒略日算法，万年历核验） ---------- */
+
+/* 传统通书固定口诀（客观文化知识，非预测） */
+const PENG_GAN = {甲:'甲不开仓',乙:'乙不栽植',丙:'丙不修灶',丁:'丁不剃头',戊:'戊不受田',
+                  己:'己不破券',庚:'庚不经络',辛:'辛不合酱',壬:'壬不汲水',癸:'癸不词讼'};
+const PENG_ZHI = {子:'子不问卜',丑:'丑不冠带',寅:'寅不祭祀',卯:'卯不穿井',辰:'辰不哭泣',巳:'巳不远行',
+                  午:'午不苫盖',未:'未不服药',申:'申不安床',酉:'酉不会客',戌:'戌不吃犬',亥:'亥不嫁娶'};
+const GAN_LU = {甲:'寅',乙:'卯',丙:'巳',丁:'午',戊:'巳',己:'午',庚:'申',辛:'酉',壬:'亥',癸:'子'};
+const ZHI_HE = {子:'丑',丑:'子',寅:'亥',亥:'寅',卯:'戌',戌:'卯',辰:'酉',酉:'辰',巳:'申',申:'巳',午:'未',未:'午'};
+const ZHI_SANHE = {子:['辰','申'],辰:['子','申'],申:['子','辰'],午:['寅','戌'],寅:['午','戌'],戌:['寅','午'],
+                   酉:['巳','丑'],巳:['酉','丑'],丑:['巳','酉'],卯:['亥','未'],亥:['卯','未'],未:['亥','卯']};
+const GAN_XISHI = {甲:'艮·东北',己:'艮·东北',乙:'乾·西北',庚:'乾·西北',丙:'坤·西南',辛:'坤·西南',
+                   丁:'离·正南',壬:'离·正南',戊:'巽·东南',癸:'巽·东南'};
+const JIANCHU = ['建','除','满','平','定','执','破','危','成','收','开','闭'];
+const JIE_ZHI = {'小寒':'丑','立春':'寅','惊蛰':'卯','清明':'辰','立夏':'巳','芒种':'午',
+                 '小暑':'未','立秋':'申','白露':'酉','寒露':'戌','立冬':'亥','大雪':'子'};
+function termInfo(s){
+  const keys=Object.keys(SOLAR_TERMS).sort();
+  let cur='', next='', days=0;
+  for(const k of keys){ if(k<=s){ cur=SOLAR_TERMS[k]; }
+    else { next=SOLAR_TERMS[k]; days=diffDays(s,k); break; } }
+  return {cur,next,days};
+}
+function monthZhiOf(s){
+  const keys=Object.keys(SOLAR_TERMS).sort();
+  let zhi='子';                       // 年初小寒之前仍属上一年的子月
+  for(const k of keys){ if(k<=s){ const t=SOLAR_TERMS[k]; if(JIE_ZHI[t]) zhi=JIE_ZHI[t]; } else break; }
+  return zhi;
+}
+
 const GAN10 = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
 const ZHI12 = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
 const ZHI_WX = {子:'水',丑:'土',寅:'木',卯:'木',辰:'土',巳:'火',午:'火',未:'土',申:'金',酉:'金',戌:'土',亥:'水'};
@@ -2187,7 +2226,14 @@ function dayGanzhi(s){
 function fortuneOf(i,om){
   const g=dayGanzhi(i.s);
   const seed=hash(i.s);
+  const ti=termInfo(i.s), mz=monthZhiOf(i.s);
+  const jc=JIANCHU[((ZHI12.indexOf(g.zhi)-ZHI12.indexOf(mz))%12+12)%12];
+  const lu=GAN_LU[g.gan], he=ZHI_HE[g.zhi], sh=ZHI_SANHE[g.zhi];
   return { day:g, year:i.lunar.ganzhi, zodiac:i.lunar.zodiac,
+           lunar:i.lunar.text.replace(/^农历/,''), term:ti.cur, nextTerm:ti.next, termDays:ti.days,
+           jianchu:jc, lu, he, heSx:ZHI_SX[he],
+           sanhe:sh.map(x=>ZHI_SX[x]).join('·'),
+           peng:PENG_GAN[g.gan]+'，'+PENG_ZHI[g.zhi], xishi:GAN_XISHI[g.gan],
            stars:2+Math.floor(rnd(seed,31,7)*4),         // 2–5 星，趣味
            yi:om.yi, ji:om.ji, note:om.note, lucky:om.lucky, num:om.num };
 }
@@ -2717,6 +2763,14 @@ ${dayTabsHTML(i,e,ws,p)}
           <span>${esc(ft.day.nayin)} · ${esc(ft.day.wx)}${esc(ft.day.sx)}</span>
           <span>日冲${esc(ft.day.chong)}</span></div>
       </div>
+      <div class="fort-grid">
+        <div><i>农历</i><b>${esc(ft.lunar)}</b></div>
+        <div><i>节气</i><b>${ft.term?esc(ft.term):('距'+esc(ft.nextTerm)+ft.termDays+'天')}</b></div>
+        <div><i>建除</i><b>${esc(ft.jianchu)}日</b></div>
+        <div><i>喜神</i><b>${esc(ft.xishi)}</b></div>
+      </div>
+      <div class="fort-rel">日禄 <b>${esc(ft.lu)}</b> · 六合 <b>${esc(ft.heSx)}</b> · 三合 <b>${esc(ft.sanhe)}</b>${ft.nextTerm?' · 距'+esc(ft.nextTerm)+' '+ft.termDays+' 天':''}</div>
+      <div class="fort-peng">彭祖百忌 · ${esc(ft.peng)}</div>
       <div class="fort-stars"><span>${'★'.repeat(ft.stars)}${'☆'.repeat(5-ft.stars)}</span>
         <i class="tiny muted">今日状态 · 趣味</i></div>
       <div class="fort-om"><b>宜</b>${esc(ft.yi[0])} · ${esc(ft.yi[1])}<br>
@@ -2724,7 +2778,7 @@ ${dayTabsHTML(i,e,ws,p)}
       <div class="fort-note">${esc(ft.note)}</div>
       <div class="fort-foot"><span class="lucky-dot" style="background:${ft.lucky[1]}"></span>
         幸运色 ${esc(ft.lucky[0])} · 幸运数 ${ft.num}</div>
-      <div class="tiny muted" style="margin-top:auto;padding-top:8px;font-size:10px">干支依历法推算；宜忌 / 星级 / 幸运为趣味，非预测</div>
+      <div class="tiny muted" style="margin-top:auto;padding-top:8px;font-size:10px">干支 / 节气 / 建除 / 喜神 / 彭祖百忌依历法与传统通书；宜忌 / 星级 / 幸运为趣味，非预测</div>
     </article>
   </section>
   </div>
