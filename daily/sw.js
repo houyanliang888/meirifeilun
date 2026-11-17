@@ -1,6 +1,6 @@
 /* 每日记事本 · 今日启程 · 离线缓存（网络优先，断网回退）
  * 页面是单文件 HTML，缓存首页即可完整离线使用；天气接口不缓存，断网自动降级。 */
-const CACHE = 'diaryToday-v4';
+const CACHE = 'diaryToday-v5';
 const ASSETS = ['./', './index.html', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 

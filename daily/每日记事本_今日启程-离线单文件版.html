@@ -136,10 +136,15 @@ a{color:var(--accent)}
 .word-list{display:flex;flex-direction:column;gap:0;flex:1}
 .word-row{padding:7px 0;border-bottom:1px dashed var(--line);cursor:pointer}
 .word-row:last-child{border-bottom:0}
-.word-top{display:flex;align-items:baseline;gap:8px}
+.word-top{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .word-en{font-family:Georgia,serif;font-size:15.5px;letter-spacing:.01em}
+.word-speak{font-size:11px;line-height:1;border:1px solid var(--line);background:var(--accent-soft);
+  color:var(--accent);border-radius:5px;padding:2px 5px;cursor:pointer;flex:0 0 auto}
+.word-speak:hover{background:var(--accent);color:#fff}
+.word-speak:active{transform:scale(.92)}
+.word-ipa{font-family:Georgia,'Times New Roman',serif;font-size:11.5px;color:var(--accent);white-space:nowrap}
 .word-pos{font-size:10.5px;color:var(--ink3)}
-.word-cn{font-size:12px;color:var(--ink2);margin-left:auto}
+.word-cn{font-size:12px;color:var(--ink2);margin:3px 0 0;line-height:1.5;word-break:break-word}
 .word-ex{display:none;font-size:11.5px;color:var(--ink3);line-height:1.7;margin-top:4px;font-style:italic}
 .word-row.open .word-ex{display:block}
 .card-foot{margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -532,6 +537,7 @@ textarea.area::placeholder{color:var(--ink3);opacity:.65}
     background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 27px,#eee 28px,transparent 29px)}
   .line-in{border-bottom:1px solid #ccc}
   .word-ex{display:block!important;font-style:normal}
+  .word-speak{display:none!important}
   .cal .cell{min-height:78px}
   .app[data-theme]{--bg:#fff;--paper:#fff;--card:#fff;--ink:#111;--ink2:#444;--ink3:#777;--line:#ddd;--accent:#8a3f36;--accent-soft:#f7efec}
 }
@@ -1599,239 +1605,239 @@ const QUOTES = [
 /* 每日单词 · 精选高频词库（词|词性|释义|例句）
    说明：按日期滚动取词，重复出现即为复习；每天可展开更多，最多 10 个。 */
 const WORDS = [
-'persist|v.|坚持；持续|Small steps persist longer than big bursts.',
-'resilient|adj.|有韧性的；能复原的|She stayed resilient after the setback.',
-'patient|adj.|有耐心的|Be patient with slow progress.',
-'humble|adj.|谦逊的|He stayed humble after the praise.',
-'curious|adj.|好奇的|Stay curious about ordinary things.',
-'deliberate|adj.|刻意的；从容的|Make one deliberate choice today.',
-'mindful|adj.|留心的；专注当下的|Be mindful of how you spend the morning.',
-'clarity|n.|清晰；清楚|Writing gives clarity to messy thoughts.',
-'perspective|n.|视角；看法|A walk can change your perspective.',
-'integrity|n.|正直；诚信|Integrity shows up when nobody is watching.',
-'discipline|n.|自律；纪律|Discipline is easier when the start is small.',
-'grit|n.|毅力；韧劲|Grit is doing it again on a dull day.',
-'courage|n.|勇气|Courage can be a quiet decision.',
-'modest|adj.|适度的；谦逊的|A modest goal is easier to keep.',
-'sincere|adj.|真诚的|A sincere thank you costs nothing.',
-'steady|adj.|稳定的；持续的|Steady work beats sudden effort.',
-'aware|adj.|意识到的|I was aware of the noise only after it stopped.',
-'reflect|v.|反思；映照|Take ten minutes to reflect on today.',
-'adapt|v.|适应|Good plans adapt to real days.',
-'endure|v.|忍耐；持续|Some days you just endure them.',
-'thrive|v.|茁壮成长|Plants thrive with light and patience.',
-'strive|v.|努力；力求|Strive for better, not perfect.',
-'embrace|v.|接受；拥抱|Embrace a slow beginning.',
-'focus|n./v.|专注|One hour of focus beats three of noise.',
-'calm|adj.|平静的|A calm reply often ends an argument.',
-'grounded|adj.|踏实的；脚踏实地的|Routine keeps me grounded.',
-'purposeful|adj.|有目的的|Make the meeting purposeful.',
-'grateful|adj.|感激的|Write down three things you are grateful for.',
-'insight|n.|洞见；领悟|The insight came after the walk, not before.',
-'wisdom|n.|智慧|Wisdom often sounds very plain.',
-'patience|n.|耐心|Patience is a kind of work.',
-'mindset|n.|心态；思维模式|A growth mindset starts with "not yet".',
-'potential|n.|潜力|Potential needs a schedule.',
-'confidence|n.|信心|Confidence follows small kept promises.',
-'restraint|n.|克制；节制|Restraint left room for a better idea.',
-'tolerance|n.|包容；耐受|Tolerance makes teamwork possible.',
-'resolve|n./v.|决心；解决|She resolved to finish before noon.',
-'composure|n.|镇定|He kept his composure under pressure.',
-'accountability|n.|担当；责任归属|Accountability starts with writing it down.',
+'persist|v.|/pərˈsɪst/|坚持；持续|Small steps persist longer than big bursts.',
+'resilient|adj.|/rɪˈzɪliənt/|有韧性的；能复原的|She stayed resilient after the setback.',
+'patient|adj.|/ˈpeɪʃnt/|有耐心的|Be patient with slow progress.',
+'humble|adj.|/ˈhʌmbl/|谦逊的|He stayed humble after the praise.',
+'curious|adj.|/ˈkjʊriəs/|好奇的|Stay curious about ordinary things.',
+'deliberate|adj.|/dɪˈlɪbərət/|刻意的；从容的|Make one deliberate choice today.',
+'mindful|adj.|/ˈmaɪndfl/|留心的；专注当下的|Be mindful of how you spend the morning.',
+'clarity|n.|/ˈklærəti/|清晰；清楚|Writing gives clarity to messy thoughts.',
+'perspective|n.|/pərˈspektɪv/|视角；看法|A walk can change your perspective.',
+'integrity|n.|/ɪnˈteɡrəti/|正直；诚信|Integrity shows up when nobody is watching.',
+'discipline|n.|/ˈdɪsəplɪn/|自律；纪律|Discipline is easier when the start is small.',
+'grit|n.|/ɡrɪt/|毅力；韧劲|Grit is doing it again on a dull day.',
+'courage|n.|/ˈkɜːrɪdʒ/|勇气|Courage can be a quiet decision.',
+'modest|adj.|/ˈmɑːdɪst/|适度的；谦逊的|A modest goal is easier to keep.',
+'sincere|adj.|/sɪnˈsɪr/|真诚的|A sincere thank you costs nothing.',
+'steady|adj.|/ˈstedi/|稳定的；持续的|Steady work beats sudden effort.',
+'aware|adj.|/əˈwer/|意识到的|I was aware of the noise only after it stopped.',
+'reflect|v.|/rɪˈflekt/|反思；映照|Take ten minutes to reflect on today.',
+'adapt|v.|/əˈdæpt/|适应|Good plans adapt to real days.',
+'endure|v.|/ɪnˈdʊr/|忍耐；持续|Some days you just endure them.',
+'thrive|v.|/θraɪv/|茁壮成长|Plants thrive with light and patience.',
+'strive|v.|/straɪv/|努力；力求|Strive for better, not perfect.',
+'embrace|v.|/ɪmˈbreɪs/|接受；拥抱|Embrace a slow beginning.',
+'focus|n./v.|/ˈfoʊkəs/|专注|One hour of focus beats three of noise.',
+'calm|adj.|/kɑːm/|平静的|A calm reply often ends an argument.',
+'grounded|adj.|/ˈɡraʊndɪd/|踏实的；脚踏实地的|Routine keeps me grounded.',
+'purposeful|adj.|/ˈpɜːrpəsfl/|有目的的|Make the meeting purposeful.',
+'grateful|adj.|/ˈɡreɪtfl/|感激的|Write down three things you are grateful for.',
+'insight|n.|/ˈɪnsaɪt/|洞见；领悟|The insight came after the walk, not before.',
+'wisdom|n.|/ˈwɪzdəm/|智慧|Wisdom often sounds very plain.',
+'patience|n.|/ˈpeɪʃns/|耐心|Patience is a kind of work.',
+'mindset|n.|/ˈmaɪndset/|心态；思维模式|A growth mindset starts with "not yet".',
+'potential|n.|/pəˈtenʃl/|潜力|Potential needs a schedule.',
+'confidence|n.|/ˈkɑːnfɪdəns/|信心|Confidence follows small kept promises.',
+'restraint|n.|/rɪˈstreɪnt/|克制；节制|Restraint left room for a better idea.',
+'tolerance|n.|/ˈtɑːlərəns/|包容；耐受|Tolerance makes teamwork possible.',
+'resolve|n./v.|/rɪˈzɑːlv/|决心；解决|She resolved to finish before noon.',
+'composure|n.|/kəmˈpoʊʒər/|镇定|He kept his composure under pressure.',
+'accountability|n.|/əˌkaʊntəˈbɪləti/|担当；责任归属|Accountability starts with writing it down.',
 
-'prioritize|v.|排优先级|Prioritize the one thing that matters most.',
-'delegate|v.|分派；授权|Delegate what others can do well.',
-'streamline|v.|精简流程|We streamlined the checkout to three steps.',
-'execute|v.|执行|Plans are cheap; execution is rare.',
-'iterate|v.|迭代|Iterate on the draft, not on the idea.',
-'review|v./n.|复盘；审阅|Review the week before planning the next.',
-'deadline|n.|截止日期|A clear deadline makes a vague task real.',
-'milestone|n.|里程碑|Mark the small milestone, not just the finish.',
-'scope|n.|范围|Keep the scope small enough to finish.',
-'workflow|n.|工作流程|A simple workflow survives busy weeks.',
-'draft|n./v.|草稿；起草|Write an ugly draft first.',
-'outline|n.|提纲|An outline saves an hour of rewriting.',
-'concise|adj.|简洁的|Keep the update concise.',
-'feasible|adj.|可行的|Is this feasible by Friday?',
-'efficient|adj.|高效的|Efficient does not mean rushed.',
-'productive|adj.|有产出的|A productive day can be a short day.',
-'consistent|adj.|一贯的；持续的|Consistent beats intense.',
-'reliable|adj.|可靠的|Be the reliable one in the room.',
-'deliver|v.|交付|Deliver what you promised, then rest.',
-'coordinate|v.|协调|I will coordinate with the installer.',
-'negotiate|v.|协商|Negotiate the terms before the work starts.',
-'estimate|v./n.|估算|Estimate roughly, then adjust.',
-'allocate|v.|分配|Allocate two quiet hours to hard work.',
-'verify|v.|核实|Verify the number before sending it.',
-'document|v.|记录|Document the decision so nobody guesses.',
-'schedule|n./v.|日程；安排|Put it on the schedule or let it go.',
-'backlog|n.|待办积压|Clear one item from the backlog each day.',
-'bottleneck|n.|瓶颈|The bottleneck was waiting for approval.',
-'leverage|v.|借力；善用|Leverage the tools you already have.',
-'clarify|v.|澄清|Clarify the ask in one sentence.',
-'align|v.|对齐；一致|Let us align on what "done" means.',
-'measurable|adj.|可衡量的|Make the goal measurable.',
-'sustainable|adj.|可持续的|A sustainable pace wins the year.',
-'tradeoff|n.|取舍|Every yes carries a tradeoff.',
-'bandwidth|n.|精力/时间余量|I do not have the bandwidth this week.',
-'checklist|n.|清单|A short checklist prevents rework.',
-'handover|n.|交接|Write a clean handover note.',
-'prototype|n.|原型|A rough prototype answers more than a debate.',
-'feedback|n.|反馈|Ask for feedback early, not at the end.',
+'prioritize|v.|/praɪˈɔːrətaɪz/|排优先级|Prioritize the one thing that matters most.',
+'delegate|v.|/ˈdelɪɡeɪt/|分派；授权|Delegate what others can do well.',
+'streamline|v.|/ˈstriːmlaɪn/|精简流程|We streamlined the checkout to three steps.',
+'execute|v.|/ˈeksɪkjuːt/|执行|Plans are cheap; execution is rare.',
+'iterate|v.|/ˈɪtəreɪt/|迭代|Iterate on the draft, not on the idea.',
+'review|v./n.|/rɪˈvjuː/|复盘；审阅|Review the week before planning the next.',
+'deadline|n.|/ˈdedlaɪn/|截止日期|A clear deadline makes a vague task real.',
+'milestone|n.|/ˈmaɪlstoʊn/|里程碑|Mark the small milestone, not just the finish.',
+'scope|n.|/skoʊp/|范围|Keep the scope small enough to finish.',
+'workflow|n.|/ˈwɜːrkfloʊ/|工作流程|A simple workflow survives busy weeks.',
+'draft|n./v.|/dræft/|草稿；起草|Write an ugly draft first.',
+'outline|n.|/ˈaʊtlaɪn/|提纲|An outline saves an hour of rewriting.',
+'concise|adj.|/kənˈsaɪs/|简洁的|Keep the update concise.',
+'feasible|adj.|/ˈfiːzəbl/|可行的|Is this feasible by Friday?',
+'efficient|adj.|/ɪˈfɪʃnt/|高效的|Efficient does not mean rushed.',
+'productive|adj.|/prəˈdʌktɪv/|有产出的|A productive day can be a short day.',
+'consistent|adj.|/kənˈsɪstənt/|一贯的；持续的|Consistent beats intense.',
+'reliable|adj.|/rɪˈlaɪəbl/|可靠的|Be the reliable one in the room.',
+'deliver|v.|/dɪˈlɪvər/|交付|Deliver what you promised, then rest.',
+'coordinate|v.|/koʊˈɔːrdɪneɪt/|协调|I will coordinate with the installer.',
+'negotiate|v.|/nɪˈɡoʊʃieɪt/|协商|Negotiate the terms before the work starts.',
+'estimate|v./n.|/ˈestɪmeɪt/|估算|Estimate roughly, then adjust.',
+'allocate|v.|/ˈæləkeɪt/|分配|Allocate two quiet hours to hard work.',
+'verify|v.|/ˈverɪfaɪ/|核实|Verify the number before sending it.',
+'document|v.|/ˈdɑːkjumənt/|记录|Document the decision so nobody guesses.',
+'schedule|n./v.|/ˈskedʒuːl/|日程；安排|Put it on the schedule or let it go.',
+'backlog|n.|/ˈbæklɔːɡ/|待办积压|Clear one item from the backlog each day.',
+'bottleneck|n.|/ˈbɑːtlnek/|瓶颈|The bottleneck was waiting for approval.',
+'leverage|v.|/ˈlevərɪdʒ/|借力；善用|Leverage the tools you already have.',
+'clarify|v.|/ˈklærəfaɪ/|澄清|Clarify the ask in one sentence.',
+'align|v.|/əˈlaɪn/|对齐；一致|Let us align on what "done" means.',
+'measurable|adj.|/ˈmeʒərəbl/|可衡量的|Make the goal measurable.',
+'sustainable|adj.|/səˈsteɪnəbl/|可持续的|A sustainable pace wins the year.',
+'tradeoff|n.|/ˈtreɪdɔːf/|取舍|Every yes carries a tradeoff.',
+'bandwidth|n.|/ˈbændwɪdθ/|精力/时间余量|I do not have the bandwidth this week.',
+'checklist|n.|/ˈtʃeklɪst/|清单|A short checklist prevents rework.',
+'handover|n.|/ˈhændoʊvər/|交接|Write a clean handover note.',
+'prototype|n.|/ˈproʊtətaɪp/|原型|A rough prototype answers more than a debate.',
+'feedback|n.|/ˈfiːdbæk/|反馈|Ask for feedback early, not at the end.',
 
-'rest|n./v.|休息|Rest is part of the work, not a reward.',
-'hydrate|v.|补水|Hydrate before you feel thirsty.',
-'stretch|v.|舒展；拉伸|Stretch for five minutes between tasks.',
-'nourish|v.|滋养|Nourish the body before a long day.',
-'routine|n.|日常惯例|A gentle routine survives bad moods.',
-'unwind|v.|放松|I unwind with a short walk after dinner.',
-'recharge|v.|恢复精力|Take a real break to recharge.',
-'moderate|adj.|适度的|Moderate exercise is easier to repeat.',
-'outdoor|adj.|户外的|Ten outdoor minutes reset the afternoon.',
-'sunlight|n.|阳光|Open the curtains and let sunlight in.',
-'pace|n./v.|节奏|Find a pace you can keep for a year.',
-'tidy|adj./v.|整洁；收拾|A tidy desk lowers the cost of starting.',
-'simple|adj.|简单的|Keep dinner simple on busy nights.',
-'comfort|n.|舒适|Comfort is not the same as ease.',
-'gentle|adj.|温和的|Be gentle with yourself on low days.',
-'recover|v.|恢复|Sleep is how the body recovers.',
-'energy|n.|精力|Protect your best energy for one thing.',
-'stamina|n.|耐力|Stamina builds slowly and quietly.',
-'habit|n.|习惯|A habit needs a trigger, not just willpower.',
-'hygiene|n.|卫生|Sleep hygiene starts with a fixed hour.',
-'portion|n.|份量|A sensible portion is enough.',
-'homemade|adj.|自家做的|Homemade food slows the evening down.',
-'posture|n.|姿势|Check your posture while reading.',
-'breathe|v.|呼吸|Breathe slowly before you answer.',
-'immune|adj.|免疫的|Sleep keeps the immune system steady.',
-'balanced|adj.|均衡的|A balanced day includes some quiet.',
-'fresh|adj.|新鲜的|Fresh air is cheaper than any app.',
-'quiet|adj.|安静的|Give the day one quiet corner.',
-'shelter|n.|遮蔽；住处|The tree gave us shelter from the rain.',
-'warmth|n.|温暖|Warmth came from the small stove.',
-'heal|v.|康复；愈合|Small cuts heal with time and care.',
-'digest|v.|消化；慢慢理解|Give yourself time to digest the idea.',
-'light|adj.|清淡的；轻的|Keep lunch light if you need to focus.',
-'early|adv.|早地|Finish early and leave the evening free.',
-'walk|n./v.|散步|A short walk often untangles a problem.',
-'slow|adj.|慢的|A slow morning is not a wasted morning.',
-'spare|adj.|空余的|Keep one spare hour in the plan.',
-'switch|v.|切换|Switch off the screen at ten.',
+'rest|n./v.|/rest/|休息|Rest is part of the work, not a reward.',
+'hydrate|v.|/ˈhaɪdreɪt/|补水|Hydrate before you feel thirsty.',
+'stretch|v.|/stretʃ/|舒展；拉伸|Stretch for five minutes between tasks.',
+'nourish|v.|/ˈnɜːrɪʃ/|滋养|Nourish the body before a long day.',
+'routine|n.|/ruːˈtiːn/|日常惯例|A gentle routine survives bad moods.',
+'unwind|v.|/ʌnˈwaɪnd/|放松|I unwind with a short walk after dinner.',
+'recharge|v.|/ˌriːˈtʃɑːrdʒ/|恢复精力|Take a real break to recharge.',
+'moderate|adj.|/ˈmɑːdərət/|适度的|Moderate exercise is easier to repeat.',
+'outdoor|adj.|/ˈaʊtdɔːr/|户外的|Ten outdoor minutes reset the afternoon.',
+'sunlight|n.|/ˈsʌnlaɪt/|阳光|Open the curtains and let sunlight in.',
+'pace|n./v.|/peɪs/|节奏|Find a pace you can keep for a year.',
+'tidy|adj./v.|/ˈtaɪdi/|整洁；收拾|A tidy desk lowers the cost of starting.',
+'simple|adj.|/ˈsɪmpl/|简单的|Keep dinner simple on busy nights.',
+'comfort|n.|/ˈkʌmfərt/|舒适|Comfort is not the same as ease.',
+'gentle|adj.|/ˈdʒentl/|温和的|Be gentle with yourself on low days.',
+'recover|v.|/rɪˈkʌvər/|恢复|Sleep is how the body recovers.',
+'energy|n.|/ˈenərdʒi/|精力|Protect your best energy for one thing.',
+'stamina|n.|/ˈstæmɪnə/|耐力|Stamina builds slowly and quietly.',
+'habit|n.|/ˈhæbɪt/|习惯|A habit needs a trigger, not just willpower.',
+'hygiene|n.|/ˈhaɪdʒiːn/|卫生|Sleep hygiene starts with a fixed hour.',
+'portion|n.|/ˈpɔːrʃn/|份量|A sensible portion is enough.',
+'homemade|adj.|/ˌhoʊmˈmeɪd/|自家做的|Homemade food slows the evening down.',
+'posture|n.|/ˈpɑːstʃər/|姿势|Check your posture while reading.',
+'breathe|v.|/briːð/|呼吸|Breathe slowly before you answer.',
+'immune|adj.|/ɪˈmjuːn/|免疫的|Sleep keeps the immune system steady.',
+'balanced|adj.|/ˈbælənst/|均衡的|A balanced day includes some quiet.',
+'fresh|adj.|/freʃ/|新鲜的|Fresh air is cheaper than any app.',
+'quiet|adj.|/ˈkwaɪət/|安静的|Give the day one quiet corner.',
+'shelter|n.|/ˈʃeltər/|遮蔽；住处|The tree gave us shelter from the rain.',
+'warmth|n.|/wɔːrmθ/|温暖|Warmth came from the small stove.',
+'heal|v.|/hiːl/|康复；愈合|Small cuts heal with time and care.',
+'digest|v.|/daɪˈdʒest/|消化；慢慢理解|Give yourself time to digest the idea.',
+'light|adj.|/laɪt/|清淡的；轻的|Keep lunch light if you need to focus.',
+'early|adv.|/ˈɜːrli/|早地|Finish early and leave the evening free.',
+'walk|n./v.|/wɔːk/|散步|A short walk often untangles a problem.',
+'slow|adj.|/sloʊ/|慢的|A slow morning is not a wasted morning.',
+'spare|adj.|/sper/|空余的|Keep one spare hour in the plan.',
+'switch|v.|/swɪtʃ/|切换|Switch off the screen at ten.',
 
-'listen|v.|倾听|Listen all the way before replying.',
-'empathy|n.|共情|Empathy starts with not interrupting.',
-'respect|n./v.|尊重|Respect is visible in small delays.',
-'boundary|n.|边界|A clear boundary is a kindness.',
-'trust|n./v.|信任|Trust is built by kept small promises.',
-'apologize|v.|道歉|Apologize for the act, not for existing.',
-'acknowledge|v.|承认；回应|Acknowledge what they actually said.',
-'appreciate|v.|感激；欣赏|Appreciate the effort, not only the result.',
-'encourage|v.|鼓励|Encourage the attempt out loud.',
-'generous|adj.|慷慨的|Be generous with credit.',
-'considerate|adj.|体贴的|A considerate message saves a meeting.',
-'express|v.|表达|Express the need, not the complaint.',
-'respond|v.|回应|Respond after a pause, not in a flash.',
-'reconcile|v.|和解；调和|They reconciled over a plain dinner.',
-'accompany|v.|陪伴|I will accompany you to the appointment.',
-'forgive|v.|原谅|Forgive the delay, keep the standard.',
-'kindness|n.|善意|Kindness is a repeatable habit.',
-'thoughtful|adj.|周到的|That was a thoughtful question.',
-'mutual|adj.|相互的|Good terms are mutual.',
-'support|n./v.|支持|Support does not always mean fixing.',
-'courteous|adj.|有礼貌的|A courteous no is still clear.',
-'compromise|n./v.|妥协；折中|We found a compromise on the time.',
-'connect|v.|联系；连接|Connect once a month, even briefly.',
-'reach out|phr.|主动联系|Reach out before you need something.',
-'check in|phr.|问候；确认|Check in with the person, not the task.',
-'understanding|n.|理解|Understanding takes one more question.',
-'company|n.|陪伴|Good company needs no programme.',
-'courtesy|n.|礼貌；客气|Courtesy costs nothing and travels far.',
-'share|v.|分享|Share the context, not just the conclusion.',
-'invite|v.|邀请|Invite someone who is usually quiet.',
-'notice|v.|留意|Notice what changed before you judge.',
-'plain|adj.|直白的；朴素的|Say it in plain words.',
-'brief|adj.|简短的|Keep the explanation brief and kind.',
-'agree|v.|同意|Agree on the next step, not everything.',
-'contribute|v.|贡献|Contribute one thing you can finish.',
-'presence|n.|在场；专注陪伴|Presence matters more than advice.',
-'reciprocate|v.|回报；回应|People tend to reciprocate small kindnesses.',
+'listen|v.|/ˈlɪsn/|倾听|Listen all the way before replying.',
+'empathy|n.|/ˈempəθi/|共情|Empathy starts with not interrupting.',
+'respect|n./v.|/rɪˈspekt/|尊重|Respect is visible in small delays.',
+'boundary|n.|/ˈbaʊndri/|边界|A clear boundary is a kindness.',
+'trust|n./v.|/trʌst/|信任|Trust is built by kept small promises.',
+'apologize|v.|/əˈpɑːlədʒaɪz/|道歉|Apologize for the act, not for existing.',
+'acknowledge|v.|/əkˈnɑːlɪdʒ/|承认；回应|Acknowledge what they actually said.',
+'appreciate|v.|/əˈpriːʃieɪt/|感激；欣赏|Appreciate the effort, not only the result.',
+'encourage|v.|/ɪnˈkɜːrɪdʒ/|鼓励|Encourage the attempt out loud.',
+'generous|adj.|/ˈdʒenərəs/|慷慨的|Be generous with credit.',
+'considerate|adj.|/kənˈsɪdərət/|体贴的|A considerate message saves a meeting.',
+'express|v.|/ɪkˈspres/|表达|Express the need, not the complaint.',
+'respond|v.|/rɪˈspɑːnd/|回应|Respond after a pause, not in a flash.',
+'reconcile|v.|/ˈrekənsaɪl/|和解；调和|They reconciled over a plain dinner.',
+'accompany|v.|/əˈkʌmpəni/|陪伴|I will accompany you to the appointment.',
+'forgive|v.|/fərˈɡɪv/|原谅|Forgive the delay, keep the standard.',
+'kindness|n.|/ˈkaɪndnəs/|善意|Kindness is a repeatable habit.',
+'thoughtful|adj.|/ˈθɔːtfl/|周到的|That was a thoughtful question.',
+'mutual|adj.|/ˈmjuːtʃuəl/|相互的|Good terms are mutual.',
+'support|n./v.|/səˈpɔːrt/|支持|Support does not always mean fixing.',
+'courteous|adj.|/ˈkɜːrtiəs/|有礼貌的|A courteous no is still clear.',
+'compromise|n./v.|/ˈkɑːmprəmaɪz/|妥协；折中|We found a compromise on the time.',
+'connect|v.|/kəˈnekt/|联系；连接|Connect once a month, even briefly.',
+'reach out|phr.|/riːtʃ aʊt/|主动联系|Reach out before you need something.',
+'check in|phr.|/tʃek ɪn/|问候；确认|Check in with the person, not the task.',
+'understanding|n.|/ˌʌndərˈstændɪŋ/|理解|Understanding takes one more question.',
+'company|n.|/ˈkʌmpəni/|陪伴|Good company needs no programme.',
+'courtesy|n.|/ˈkɜːrtəsi/|礼貌；客气|Courtesy costs nothing and travels far.',
+'share|v.|/ʃer/|分享|Share the context, not just the conclusion.',
+'invite|v.|/ɪnˈvaɪt/|邀请|Invite someone who is usually quiet.',
+'notice|v.|/ˈnoʊtɪs/|留意|Notice what changed before you judge.',
+'plain|adj.|/pleɪn/|直白的；朴素的|Say it in plain words.',
+'brief|adj.|/briːf/|简短的|Keep the explanation brief and kind.',
+'agree|v.|/əˈɡriː/|同意|Agree on the next step, not everything.',
+'contribute|v.|/kənˈtrɪbjuːt/|贡献|Contribute one thing you can finish.',
+'presence|n.|/ˈprezns/|在场；专注陪伴|Presence matters more than advice.',
+'reciprocate|v.|/rɪˈsɪprəkeɪt/|回报；回应|People tend to reciprocate small kindnesses.',
 
-'budget|n./v.|预算|Put the budget on one page.',
-'save|v.|存钱；节省|Save first, then decide the rest.',
-'spend|v.|花费|Spend on what you will use weekly.',
-'invest|v.|投资|Invest in tools that save hours.',
-'expense|n.|支出|Log the expense while it is fresh.',
-'income|n.|收入|Separate income from cash on hand.',
-'reserve|n.|备用金|A small reserve buys peace of mind.',
-'compound|v.|复利；累积|Small habits compound over a year.',
-'frugal|adj.|节俭的|Frugal is a choice, not a punishment.',
-'afford|v.|负担得起|Can we afford the time as well?',
-'value|n./v.|价值；重视|Value the hour before the invoice.',
-'cost|n.|成本|Count the hidden cost of switching.',
-'worth|adj.|值得的|Is this worth another evening?',
-'track|v.|记录；追踪|Track it for a week before judging.',
-'due|adj.|到期的|The report is due on Thursday.',
-'annual|adj.|年度的|Set one annual theme, not twelve.',
-'monthly|adj.|每月的|A monthly review takes twenty minutes.',
-'quarter|n.|季度|Look back one quarter at a time.',
-'deposit|n./v.|存款；定金|The deposit is refundable.',
-'receipt|n.|收据|Keep the receipt in one envelope.',
-'bargain|n.|便宜货|The cheapest option is not always a bargain.',
-'subscription|n.|订阅|Cancel one unused subscription.',
-'interest|n.|利息；兴趣|Interest grows quietly in both senses.',
-'debt|n.|欠款|Write down the debt number honestly.',
-'surplus|n.|结余|A tiny surplus is still progress.',
-'margin|n.|余量；余地|Leave a margin in every estimate.',
-'long-term|adj.|长期的|Take the long-term view on skills.',
-'plan|n./v.|计划|A plan is a guess you can revise.',
-'goal|n.|目标|A goal should fit on a sticky note.',
-'progress|n.|进度；进步|Progress is easiest to see in writing.',
-'queue|n./v.|队列；排队|Put the small tasks in one queue.',
-'interval|n.|间隔；间歇|Work in one clear interval, then stop.',
-'reserve(v.)|v.|预留|Reserve one hour for nothing.',
-'total|n.|合计|Check the total before paying.',
-'owe|v.|欠|Write down what you owe and to whom.',
-'cash|n.|现金|Cash makes small spending visible.',
+'budget|n./v.|/ˈbʌdʒɪt/|预算|Put the budget on one page.',
+'save|v.|/seɪv/|存钱；节省|Save first, then decide the rest.',
+'spend|v.|/spend/|花费|Spend on what you will use weekly.',
+'invest|v.|/ɪnˈvest/|投资|Invest in tools that save hours.',
+'expense|n.|/ɪkˈspens/|支出|Log the expense while it is fresh.',
+'income|n.|/ˈɪnkʌm/|收入|Separate income from cash on hand.',
+'reserve|n.|/rɪˈzɜːrv/|备用金|A small reserve buys peace of mind.',
+'compound|v.|/kəmˈpaʊnd/|复利；累积|Small habits compound over a year.',
+'frugal|adj.|/ˈfruːɡl/|节俭的|Frugal is a choice, not a punishment.',
+'afford|v.|/əˈfɔːrd/|负担得起|Can we afford the time as well?',
+'value|n./v.|/ˈvæljuː/|价值；重视|Value the hour before the invoice.',
+'cost|n.|/kɔːst/|成本|Count the hidden cost of switching.',
+'worth|adj.|/wɜːrθ/|值得的|Is this worth another evening?',
+'track|v.|/træk/|记录；追踪|Track it for a week before judging.',
+'due|adj.|/duː/|到期的|The report is due on Thursday.',
+'annual|adj.|/ˈænjuəl/|年度的|Set one annual theme, not twelve.',
+'monthly|adj.|/ˈmʌnθli/|每月的|A monthly review takes twenty minutes.',
+'quarter|n.|/ˈkwɔːrtər/|季度|Look back one quarter at a time.',
+'deposit|n./v.|/dɪˈpɑːzɪt/|存款；定金|The deposit is refundable.',
+'receipt|n.|/rɪˈsiːt/|收据|Keep the receipt in one envelope.',
+'bargain|n.|/ˈbɑːrɡən/|便宜货|The cheapest option is not always a bargain.',
+'subscription|n.|/səbˈskrɪpʃn/|订阅|Cancel one unused subscription.',
+'interest|n.|/ˈɪntrəst/|利息；兴趣|Interest grows quietly in both senses.',
+'debt|n.|/det/|欠款|Write down the debt number honestly.',
+'surplus|n.|/ˈsɜːrpləs/|结余|A tiny surplus is still progress.',
+'margin|n.|/ˈmɑːrdʒɪn/|余量；余地|Leave a margin in every estimate.',
+'long-term|adj.|/ˌlɔːŋˈtɜːrm/|长期的|Take the long-term view on skills.',
+'plan|n./v.|/plæn/|计划|A plan is a guess you can revise.',
+'goal|n.|/ɡoʊl/|目标|A goal should fit on a sticky note.',
+'progress|n.|/ˈprɑːɡres/|进度；进步|Progress is easiest to see in writing.',
+'queue|n./v.|/kjuː/|队列；排队|Put the small tasks in one queue.',
+'interval|n.|/ˈɪntərvl/|间隔；间歇|Work in one clear interval, then stop.',
+'reserve(v.)|v.|/rɪˈzɜːrv/|预留|Reserve one hour for nothing.',
+'total|n.|/ˈtoʊtl/|合计|Check the total before paying.',
+'owe|v.|/oʊ/|欠|Write down what you owe and to whom.',
+'cash|n.|/kæʃ/|现金|Cash makes small spending visible.',
 
-'breeze|n.|微风|A breeze came in through the window.',
-'dawn|n.|黎明|We left before dawn.',
-'dusk|n.|黄昏|Dusk is the best ten minutes of the day.',
-'horizon|n.|地平线|The horizon was clear after the rain.',
-'trail|n.|小径|Take the trail on the left.',
-'landscape|n.|风景；格局|The landscape changed after the bend.',
-'bloom|v./n.|开花|The plum trees bloom late here.',
-'drift|v.|飘；漂移|Clouds drifted slowly north.',
-'shade|n.|阴凉|We sat in the shade for an hour.',
-'mist|n.|薄雾|Mist lay over the fields at dawn.',
-'ridge|n.|山脊|The ridge was visible from the road.',
-'shore|n.|岸|Walk along the shore after lunch.',
-'tide|n.|潮汐|The tide comes in quickly here.',
-'ripple|n.|涟漪|One stone made a small ripple.',
-'meadow|n.|草地|The meadow was full of small birds.',
-'foliage|n.|枝叶|Autumn foliage peaked this week.',
-'sunset|n.|日落|We stopped to watch the sunset.',
-'sunrise|n.|日出|Sunrise was behind the clouds.',
-'crisp|adj.|清爽的；脆的|The air felt crisp this morning.',
-'mild|adj.|温和的|A mild winter is easier on old roofs.',
-'humid|adj.|潮湿的|It gets humid after the rain.',
-'chilly|adj.|微冷的|It turned chilly after four.',
-'season|n.|季节|Every season asks for a different pace.',
-'harvest|n.|收获|The harvest came early this year.',
-'frost|n.|霜|Frost covered the steps.',
-'thaw|v.|融化；解冻|The ground began to thaw in March.',
-'starry|adj.|繁星的|We drove home under a starry sky.',
-'wander|v.|漫步|Wander without a destination for once.',
-'roam|v.|闲逛|Let the mind roam before deciding.',
-'detour|n.|绕路|The detour turned out to be the best part.',
-'scenic|adj.|风景好的|We took the scenic route home.',
-'path|n.|小路|The path was muddy but short.',
-'summit|n.|山顶|The summit was still an hour away.',
-'valley|n.|山谷|A thin fog sat in the valley.',
-'current|n.|水流；气流|The current was stronger than it looked.',
-'clear|adj.|晴朗的；清楚的|The sky was clear by noon.',
-'gather|v.|聚集；收集|Gather the notes before you write.',
-'scatter|v.|散落|Leaves scattered across the steps.',
-'glow|n./v.|微光；发光|The lamp gave a soft glow.',
+'breeze|n.|/briːz/|微风|A breeze came in through the window.',
+'dawn|n.|/dɔːn/|黎明|We left before dawn.',
+'dusk|n.|/dʌsk/|黄昏|Dusk is the best ten minutes of the day.',
+'horizon|n.|/həˈraɪzn/|地平线|The horizon was clear after the rain.',
+'trail|n.|/treɪl/|小径|Take the trail on the left.',
+'landscape|n.|/ˈlændskeɪp/|风景；格局|The landscape changed after the bend.',
+'bloom|v./n.|/bluːm/|开花|The plum trees bloom late here.',
+'drift|v.|/drɪft/|飘；漂移|Clouds drifted slowly north.',
+'shade|n.|/ʃeɪd/|阴凉|We sat in the shade for an hour.',
+'mist|n.|/mɪst/|薄雾|Mist lay over the fields at dawn.',
+'ridge|n.|/rɪdʒ/|山脊|The ridge was visible from the road.',
+'shore|n.|/ʃɔːr/|岸|Walk along the shore after lunch.',
+'tide|n.|/taɪd/|潮汐|The tide comes in quickly here.',
+'ripple|n.|/ˈrɪpl/|涟漪|One stone made a small ripple.',
+'meadow|n.|/ˈmedoʊ/|草地|The meadow was full of small birds.',
+'foliage|n.|/ˈfoʊliɪdʒ/|枝叶|Autumn foliage peaked this week.',
+'sunset|n.|/ˈsʌnset/|日落|We stopped to watch the sunset.',
+'sunrise|n.|/ˈsʌnraɪz/|日出|Sunrise was behind the clouds.',
+'crisp|adj.|/krɪsp/|清爽的；脆的|The air felt crisp this morning.',
+'mild|adj.|/maɪld/|温和的|A mild winter is easier on old roofs.',
+'humid|adj.|/ˈhjuːmɪd/|潮湿的|It gets humid after the rain.',
+'chilly|adj.|/ˈtʃɪli/|微冷的|It turned chilly after four.',
+'season|n.|/ˈsiːzn/|季节|Every season asks for a different pace.',
+'harvest|n.|/ˈhɑːrvɪst/|收获|The harvest came early this year.',
+'frost|n.|/frɔːst/|霜|Frost covered the steps.',
+'thaw|v.|/θɔː/|融化；解冻|The ground began to thaw in March.',
+'starry|adj.|/ˈstɑːri/|繁星的|We drove home under a starry sky.',
+'wander|v.|/ˈwɑːndər/|漫步|Wander without a destination for once.',
+'roam|v.|/roʊm/|闲逛|Let the mind roam before deciding.',
+'detour|n.|/ˈdiːtʊr/|绕路|The detour turned out to be the best part.',
+'scenic|adj.|/ˈsiːnɪk/|风景好的|We took the scenic route home.',
+'path|n.|/pæθ/|小路|The path was muddy but short.',
+'summit|n.|/ˈsʌmɪt/|山顶|The summit was still an hour away.',
+'valley|n.|/ˈvæli/|山谷|A thin fog sat in the valley.',
+'current|n.|/ˈkɜːrənt/|水流；气流|The current was stronger than it looked.',
+'clear|adj.|/klɪr/|晴朗的；清楚的|The sky was clear by noon.',
+'gather|v.|/ˈɡæðər/|聚集；收集|Gather the notes before you write.',
+'scatter|v.|/ˈskætər/|散落|Leaves scattered across the steps.',
+'glow|n./v.|/ɡloʊ/|微光；发光|The lamp gave a soft glow.',
 'still|adj.|静止的|The water was completely still.'
 ];
 
@@ -2151,10 +2157,29 @@ function wordsOf(info,count){
   const out=[], start=(info.doy-1)*6;
   for(let i=0;i<count;i++){
     const raw=WORDS[(start+i)%WORDS.length].split('|');
-    out.push({w:raw[0],pos:raw[1],cn:raw[2],ex:raw[3]});
+    out.push({w:raw[0],pos:raw[1],ipa:raw[2],cn:raw[3],ex:raw[4]});
   }
   return out;
 }
+
+let lastSpokenWord='';
+function speakWord(word){
+  word=(word||'').replace(/\(.*?\)/g,'').trim();
+  if(!word) return;
+  if(!('speechSynthesis' in window)){ if(typeof toast==='function') toast('这个浏览器不支持朗读'); return; }
+  try{
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(word);
+    u.lang='en-US'; u.rate=0.85;
+    const vs=window.speechSynthesis.getVoices()||[];
+    const v=vs.find(x=>/en-US/i.test(x.lang)&&/female|samantha|zira|google us/i.test(x.name))
+         || vs.find(x=>/^en/i.test(x.lang));
+    if(v) u.voice=v;
+    window.speechSynthesis.speak(u);
+    lastSpokenWord=word;
+  }catch(e){ if(typeof toast==='function') toast('朗读失败：'+(e&&e.message||'未知错误')); }
+}
+
 let quoteShift=0, wordCountShown=6;
 function omenOf(info){
   const seed=hash(info.s), pick=(arr,k,off)=>arr[Math.floor(rnd(seed,k+off)*arr.length)];
@@ -2668,11 +2693,11 @@ ${dayTabsHTML(i,e,ws,p)}
       <div class="card-kicker">每日单词 · WORDS <span style="letter-spacing:0">${ws.length} 个</span></div>
       <div class="word-list" id="wordList">${ws.map(w=>`
         <div class="word-row" data-act="word-toggle">
-          <div class="word-top"><span class="word-en">${esc(w.w)}</span><span class="word-pos">${esc(w.pos)}</span><span class="word-cn">${esc(w.cn)}</span></div>
+          <div class="word-top"><span class="word-en">${esc(w.w)}</span><button class="word-speak" data-act="speak" data-w="${esc(w.w)}" title="点一下听读音" aria-label="朗读 ${esc(w.w)}">🔊</button><span class="word-ipa">${esc(w.ipa||'')}</span><span class="word-pos">${esc(w.pos)}</span></div><div class="word-cn">${esc(w.cn)}</div>
           <div class="word-ex">${esc(w.ex)}</div>
         </div>`).join('')}</div>
       <div class="card-foot"><button class="btn sm" data-act="words-more">${wordCountShown<10?'再看 2 个':'收起'}</button>
-        <span class="tiny muted">点单词看例句 · 重复出现即复习</span></div>
+        <span class="tiny muted">点单词看例句 · 点 🔊 听读音 · 重复出现即复习</span></div>
     </article>
   </section>
   </div>
@@ -2970,7 +2995,7 @@ function renderSettings(){
       <h4>每日内容</h4>
       <ul>
         <li>古诗词 ${POEMS.length} 首，按季节与节日选取，长作用节选并标注；金句 ${QUOTES.length} 条，含《天道》/《遥远的救世主》台词与中外名人语录，尽量标注出处，流传译句已注明。</li>
-        <li>英文单词 ${WORDS.length} 条（词性、释义、例句），按日期滚动取 6–10 个；词库循环复现，重复出现时当作复习。</li>
+        <li>英文单词 ${WORDS.length} 条（音标、词性、释义、例句；点 🔊 可听读音），按日期滚动取 6–10 个；词库循环复现，重复出现时当作复习。</li>
         <li>「历史上的今天」收录 ${Object.keys(HISTORY).length} 天真实可核验的历史事件；「每日一技」收录 ${KNOWLEDGE.length} 条生活小技能（力学 / 电学 / 电脑 / CAD / PS / 生活等），按年内第几天稳定选取。</li>
         <li>「今日小签」是按日期在本地随机生成的生活宜忌，<b>纯属趣味，不作任何预测、命理或决策依据</b>。</li>
       </ul>
@@ -3252,7 +3277,7 @@ function monkeyResultsHTML(res,q){
   html+=sec('我的日记', res.diary, x=>`<div class="mk-item mk-diary" data-act="goto" data-date="${x.date}"><b>${x.date.slice(5)}</b>　<span>${esc(x.snip)}</span></div>`);
   html+=sec('古诗词', res.poem, p=>`<div class="mk-item"><b>${esc(p.t)}</b>　<em>${esc(p.a)}</em><br><span>${esc(p.c[0]||'')}</span></div>`);
   html+=sec('金句', res.quote, q2=>`<div class="mk-item">「${esc(q2.q)}」— ${esc(q2.s)}</div>`);
-  html+=sec('单词', res.word, s=>{const r=s.split('|');return `<div class="mk-item"><b>${esc(r[0])}</b> <i>${esc(r[1])}</i> ${esc(r[2])}<br><span>${esc(r[3]||'')}</span></div>`;});
+  html+=sec('单词', res.word, s=>{const r=s.split('|');return `<div class="mk-item"><b>${esc(r[0])}</b> <i>${esc(r[2]||'')}</i> <i>${esc(r[1])}</i> ${esc(r[3]||'')}<br><span>${esc(r[4]||'')}</span></div>`;});
   html+=sec('历史上的今天', res.history, x=>`<div class="mk-item"><b>${esc(x.h.y)}</b>　${esc(x.h.t)}</div>`);
   html+=sec('每日一技', res.skill, s=>`<div class="mk-item"><b>[${esc(s.c)}] ${esc(s.t)}</b><br><span>${esc(s.b)}</span></div>`);
   if(!html) html=`<div class="mk-empty">没有找到「${esc(q)}」相关的内容。<br>换个词试试，或点上方按钮快速调取今日信息。</div>`;
@@ -3272,7 +3297,7 @@ function monkeyToday(kind){
   const i=infoOf(cur.date);
   if(kind==='poem'){ const p=poemOf(i); return `<div class="mk-sec"><div class="mk-sec-h">今日诗词</div><div class="mk-item"><b>${esc(p.t)}</b>　<em>${esc(p.a)}</em><br><span>${p.c.map(esc).join('<br>')}</span></div></div>`; }
   if(kind==='quote'){ const q=quoteOf(i,quoteShift); return `<div class="mk-sec"><div class="mk-sec-h">今日金句</div><div class="mk-item">「${esc(q.q)}」— ${esc(q.s)}</div></div>`; }
-  if(kind==='word'){ const ws=wordsOf(i,6); return `<div class="mk-sec"><div class="mk-sec-h">今日单词</div>${ws.map(w=>`<div class="mk-item"><b>${esc(w.w)}</b> <i>${esc(w.pos)}</i> ${esc(w.cn)}<br><span>${esc(w.ex||'')}</span></div>`).join('')}</div>`; }
+  if(kind==='word'){ const ws=wordsOf(i,6); return `<div class="mk-sec"><div class="mk-sec-h">今日单词</div>${ws.map(w=>`<div class="mk-item"><b>${esc(w.w)}</b> <i>${esc(w.ipa||'')}</i> <i>${esc(w.pos)}</i> ${esc(w.cn)}<br><span>${esc(w.ex||'')}</span></div>`).join('')}</div>`; }
   if(kind==='history'){ const list=historyOf(pad(i.month)+'-'+pad(i.day)); return `<div class="mk-sec"><div class="mk-sec-h">历史上的今天 · ${pad(i.month)}-${pad(i.day)}</div>${list.length?list.map(h=>`<div class="mk-item"><b>${esc(h.y)}</b>　${esc(h.t)}</div>`).join(''):'<div class="mk-empty">暂无收录</div>'}</div>`; }
   if(kind==='skill'){ const s=knowledgeOf(i.doy); return `<div class="mk-sec"><div class="mk-sec-h">每日一技 · ${esc(s.c)}</div><div class="mk-item"><b>${esc(s.t)}</b><br><span>${esc(s.b)}</span></div></div>`; }
   return '';
@@ -3470,6 +3495,7 @@ document.addEventListener('click',e=>{
     }
     case 'words-more': wordCountShown=wordCountShown<10?Math.min(10,wordCountShown+2):6; render(); break;
     case 'word-toggle': t.classList.toggle('open'); break;
+    case 'speak': speakWord(t.dataset.w||''); break;
     case 'review-week': cur.reviewKind='week'; render(); break;
     case 'review-month': cur.reviewKind='month'; render(); break;
     case 'star': {
